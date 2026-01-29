@@ -1,0 +1,333 @@
+{
+  "project": "Motoval Setúbal Website",
+  "branchName": "ralph/motoval-website",
+  "description": "SPA informativa para oficina de pneus Motoval Setúbal - React + Vite + Tailwind CSS",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Setup do projeto React + Vite + Tailwind",
+      "description": "Como desenvolvedor, preciso configurar a base do projeto com React, Vite e Tailwind CSS.",
+      "acceptanceCriteria": [
+        "Projeto inicializado com Vite + React template",
+        "Tailwind CSS configurado com tailwind.config.js",
+        "Estrutura de pastas src/components, src/hooks, src/data, src/styles criada",
+        "Fontes Poppins e Inter importadas no CSS global",
+        "Variáveis CSS da paleta de cores definidas em globals.css",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Componente Button reutilizável",
+      "description": "Como desenvolvedor, preciso de um componente Button com variantes primary e secondary.",
+      "acceptanceCriteria": [
+        "Componente Button.jsx criado em src/components/ui/",
+        "Variante primary: fundo amarelo #FBE013, texto preto, hover com glow",
+        "Variante secondary: outline branco, hover com fundo branco",
+        "Props: variant, children, onClick, className",
+        "Animação de hover com scale(1.02) e transição suave",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Componente Card reutilizável",
+      "description": "Como desenvolvedor, preciso de um componente Card para os serviços.",
+      "acceptanceCriteria": [
+        "Componente Card.jsx criado em src/components/ui/",
+        "Estilo: fundo #141414, borda #2D2D2D, border-radius",
+        "Hover: translateY(-8px), border-color #FBE013, sombra amarela",
+        "Props: children, className, icon, title, description, price",
+        "Transição suave de 300ms no hover",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Hook useScrollAnimation",
+      "description": "Como desenvolvedor, preciso de um hook para detectar quando elementos entram na viewport.",
+      "acceptanceCriteria": [
+        "Hook useScrollAnimation.js criado em src/hooks/",
+        "Usa Intersection Observer API",
+        "Retorna ref e boolean isVisible",
+        "Threshold configurável (padrão 0.1)",
+        "Trigger once (não reanima ao scrollar de volta)",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Componente AnimatedSection",
+      "description": "Como desenvolvedor, preciso de um wrapper para animações de entrada nas sections.",
+      "acceptanceCriteria": [
+        "Componente AnimatedSection.jsx criado em src/components/ui/",
+        "Animação fadeUp: opacity 0->1, translateY 40px->0",
+        "Animação triggerada quando section entra na viewport",
+        "Duration: 600ms, ease: [0.22, 1, 0.36, 1]",
+        "Props: children, animation (fadeUp, fadeIn, scaleUp), delay",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Arquivo de conteúdo content.js",
+      "description": "Como desenvolvedor, preciso centralizar todo o conteúdo do site em um arquivo.",
+      "acceptanceCriteria": [
+        "Arquivo content.js criado em src/data/",
+        "Exporta objeto com: hero, servicos, sobre, testemunhos, horario, contactos, faq",
+        "Todos os textos do PRD incluídos em português",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Componente Navbar",
+      "description": "Como utilizador, quero uma navbar fixa para navegar entre as sections.",
+      "acceptanceCriteria": [
+        "Componente Navbar.jsx criado em src/components/",
+        "Fixa no topo (position fixed)",
+        "Logo/título 'Motoval Setúbal' à esquerda",
+        "Links de navegação: Início, Serviços, Sobre, Contactos (âncoras)",
+        "CTA 'Contactar' amarelo à direita",
+        "Comportamento: transparente no hero, fundo escuro após scroll",
+        "Mobile: hamburger menu com slide-in drawer",
+        "Smooth scroll para sections ao clicar",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Componente Hero Section",
+      "description": "Como utilizador, quero uma hero section impactante ao abrir o site.",
+      "acceptanceCriteria": [
+        "Componente Hero.jsx criado em src/components/",
+        "Background: imagem de oficina com overlay gradiente escuro",
+        "Headline: 'Especialistas em Pneus para Carros e Motos'",
+        "Subheadline sobre atendimento 5 estrelas em Palmela",
+        "CTAs: 'Ligar Agora' (amarelo) e 'WhatsApp' (outline)",
+        "Stats row: 4.9★ 142+ Reviews, 3.000+ Clientes Satisfeitos",
+        "Scroll indicator animado (bounce)",
+        "Animações de entrada nos elementos",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Componente Services Section",
+      "description": "Como utilizador, quero ver os serviços oferecidos com preços.",
+      "acceptanceCriteria": [
+        "Componente Services.jsx criado em src/components/",
+        "Título 'Os Nossos Serviços' + subtítulo",
+        "Grid 3 colunas (desktop), 2 (tablet), 1 (mobile)",
+        "6 cards de serviços: Carros, Motos, Alinhamento, Equilibragem, Reparação, Venda",
+        "Cada card: ícone Lucide, título, descrição, preço destacado amarelo",
+        "Hover effects nos cards conforme sistema de design",
+        "Animações stagger nos cards",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "Componente About Section",
+      "description": "Como utilizador, quero conhecer a história da oficina.",
+      "acceptanceCriteria": [
+        "Componente About.jsx criado em src/components/",
+        "Layout 2 colunas: imagem + texto",
+        "Título 'Conheça a Motoval Setúbal'",
+        "Texto sobre Bruno Gonçalves e história da oficina",
+        "Stats grid: 10+ Anos, 3.000+ Clientes, 4.9★, 100%",
+        "Imagem placeholder (pode ser logo ou foto genérica)",
+        "Animações de entrada",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-011",
+      "title": "Componente Testimonials Carousel",
+      "description": "Como utilizador, quero ver reviews de clientes em um carrossel.",
+      "acceptanceCriteria": [
+        "Componente Testimonials.jsx criado em src/components/",
+        "Título 'O Que Dizem os Nossos Clientes'",
+        "Carrossel automático (5s intervalo)",
+        "Setas de navegação esquerda/direita",
+        "Dots indicadores",
+        "Cada slide: aspas decorativas, texto, nome cliente, 5 estrelas amarelas",
+        "3 testemunhos do PRD incluídos",
+        "Pausa no hover",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-012",
+      "title": "Componente Schedule Section",
+      "description": "Como utilizador, quero ver o horário de funcionamento.",
+      "acceptanceCriteria": [
+        "Componente Schedule.jsx criado em src/components/",
+        "Título 'Horário de Funcionamento'",
+        "Tabela com dias da semana e horários",
+        "Formatação conforme PRD (Seg-Sex: 10h-13h30, 15h-19h30)",
+        "Sábado: 10h-13h30 (marcação obrigatória)",
+        "Domingo: Fechado",
+        "Destaque visual para horário atual (opcional)",
+        "Nota sobre marcação recomendada",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-013",
+      "title": "Componente Contact Section",
+      "description": "Como utilizador, quero ver todas as formas de contacto e mapa.",
+      "acceptanceCriteria": [
+        "Componente Contact.jsx criado em src/components/",
+        "Título 'Contacte-nos'",
+        "4 cards de contacto: Telefone (click-to-call), WhatsApp, Email, Morada",
+        "Ícones Lucide em cada card",
+        "Mapa Google Maps embed iframe",
+        "Layout responsivo: cards + mapa",
+        "Links funcionais para telefone e WhatsApp",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-014",
+      "title": "Componente FAQ Accordion",
+      "description": "Como utilizador, quero ver perguntas frequentes com expand/collapse.",
+      "acceptanceCriteria": [
+        "Componente FAQ.jsx criado em src/components/",
+        "Título 'Perguntas Frequentes'",
+        "5 perguntas do PRD incluídas",
+        "Accordion funcional: click para expandir/colapsar",
+        "Ícone +/- animado (rotação 45°)",
+        "Transição suave de altura (300ms)",
+        "Apenas um item aberto por vez",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-015",
+      "title": "Componente Footer",
+      "description": "Como utilizador, quero um footer com links e informações.",
+      "acceptanceCriteria": [
+        "Componente Footer.jsx criado em src/components/",
+        "Logo + descrição curta",
+        "Links rápidos (âncoras para sections)",
+        "Ícones de redes sociais (Facebook, Instagram placeholders)",
+        "Contactos resumidos",
+        "Copyright 2026 Motoval Setúbal",
+        "Background escuro #0A0A0A, separador sutil",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 15,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-016",
+      "title": "Montar App.jsx e verificar responsividade",
+      "description": "Como desenvolvedor, preciso montar todos os componentes na App principal.",
+      "acceptanceCriteria": [
+        "App.jsx importa e renderiza todos os components na ordem correta",
+        "Single Page Application com sections",
+        "IDs de âncora em cada section para navegação",
+        "Teste em mobile (< 768px): menu hamburger, 1 coluna",
+        "Teste em tablet (768-1024px): 2 colunas",
+        "Teste em desktop (> 1024px): 3 colunas",
+        "Scroll suave entre sections",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 16,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-017",
+      "title": "SEO e meta tags",
+      "description": "Como proprietário, quero que o site seja otimizado para motores de busca.",
+      "acceptanceCriteria": [
+        "Title tag: 'Motoval Setúbal | Especialistas em Pneus para Carros e Motos'",
+        "Meta description com conteúdo do PRD",
+        "Meta keywords: pneus palmela, montagem pneus setúbal, etc.",
+        "Favicon configurado",
+        "Schema.org LocalBusiness JSON-LD no index.html",
+        "Tags Open Graph (og:title, og:description, og:image)",
+        "Lang attribute pt-PT no HTML",
+        "Typecheck passes"
+      ],
+      "priority": 17,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-018",
+      "title": "Otimizações de performance",
+      "description": "Como utilizador, quero um site rápido e fluido.",
+      "acceptanceCriteria": [
+        "Imagens com lazy loading",
+        "will-change aplicado em elementos animados",
+        "Animações usando transform e opacity apenas",
+        "Fontes otimizadas (subset latin se possível)",
+        "Verificação de 60fps nas animações",
+        "Build de produção gera assets otimizados",
+        "Typecheck passes"
+      ],
+      "priority": 18,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}
