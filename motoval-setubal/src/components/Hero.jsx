@@ -29,32 +29,32 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center pt-24">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 text-center pt-20 sm:pt-24">
         <AnimatedSection animation="fadeUp">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 font-[var(--font-heading)] leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 font-[var(--font-heading)] leading-tight">
             {hero.headline}
           </h1>
         </AnimatedSection>
 
         <AnimatedSection animation="fadeUp" delay={0.1}>
-          <p className="text-lg sm:text-xl md:text-2xl text-[#9CA3AF] mb-12 max-w-3xl mx-auto leading-relaxed text-center">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#9CA3AF] mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed text-center">
             {hero.subheadline}
           </p>
         </AnimatedSection>
 
         <AnimatedSection animation="fadeUp" delay={0.2}>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-10 sm:mb-12 md:mb-16">
             <Button
               href={`tel:${hero.ctaPrimary.phone}`}
               variant="primary"
-              className="text-lg px-10 py-5 min-w-[220px] animate-glow-pulse"
+              className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 sm:min-w-[220px] animate-glow-pulse"
             >
               {hero.ctaPrimary.text}
             </Button>
             <Button
               href={hero.ctaSecondary.link}
               variant="secondary"
-              className="text-lg px-10 py-5 min-w-[220px]"
+              className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 sm:min-w-[220px]"
             >
               {hero.ctaSecondary.text}
             </Button>
@@ -63,19 +63,19 @@ const Hero = () => {
 
         {/* Stats */}
         <AnimatedSection animation="fadeUp" delay={0.3}>
-          <div className="flex flex-wrap justify-center gap-10 md:gap-20">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-10 lg:gap-20">
             {hero.stats.map((stat, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#FBE013]/10">
+              <div key={index} className="flex items-center gap-3 sm:gap-4">
+                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-[#FBE013]/10">
                   {index === 0 ? (
-                    <Star className="w-7 h-7 text-[#FBE013]" />
+                    <Star className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#FBE013]" />
                   ) : (
-                    <Users className="w-7 h-7 text-[#FBE013]" />
+                    <Users className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#FBE013]" />
                   )}
                 </div>
                 <div className="text-left">
-                  <p className="text-3xl md:text-4xl font-bold text-white">{stat.value}</p>
-                  <p className="text-sm text-[#9CA3AF]">{stat.label}</p>
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{stat.value}</p>
+                  <p className="text-xs sm:text-sm text-[#9CA3AF]">{stat.label}</p>
                 </div>
               </div>
             ))}

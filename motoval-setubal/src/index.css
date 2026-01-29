@@ -163,20 +163,53 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Section spacing */
+/* Section spacing - mobile-first */
 section {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 640px) {
+  section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
 }
 
 @media (min-width: 768px) {
+  section {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  section {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+@media (min-width: 1280px) {
   section {
     padding-top: 8rem;
     padding-bottom: 8rem;
   }
 }
 
-/* Smooth scroll padding for fixed header */
+/* Smooth scroll padding for fixed header - mobile-first */
 html {
-  scroll-padding-top: 80px;
+  scroll-padding-top: 56px;
+}
+
+@media (min-width: 640px) {
+  html {
+    scroll-padding-top: 64px;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 80px;
+  }
 }

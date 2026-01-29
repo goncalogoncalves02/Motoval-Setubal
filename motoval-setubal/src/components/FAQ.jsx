@@ -16,11 +16,11 @@ const FAQ = () => {
   const displayFAQs = faq.items.slice(0, 3);
 
   return (
-    <section className="py-24 md:py-32 bg-[#141414]">
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section className="bg-[#141414]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <SectionTitle title={faq.title} />
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {displayFAQs.map((item, index) => (
             <AnimatedSection
               key={item.id}
@@ -37,23 +37,23 @@ const FAQ = () => {
                 {/* Question */}
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex items-center justify-between p-6 text-left"
+                  className="w-full flex items-center justify-between p-4 sm:p-5 md:p-6 text-left"
                   aria-expanded={openIndex === index}
                 >
-                  <span className="text-white font-medium text-lg pr-4">
+                  <span className="text-white font-medium text-base sm:text-lg pr-3 sm:pr-4">
                     {item.question}
                   </span>
                   <span
-                    className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       openIndex === index
                         ? 'bg-[#FBE013] text-black'
                         : 'bg-[#2D2D2D] text-white'
                     }`}
                   >
                     {openIndex === index ? (
-                      <Minus className="w-5 h-5" />
+                      <Minus className="w-4 h-4 sm:w-5 sm:h-5" />
                     ) : (
-                      <Plus className="w-5 h-5" />
+                      <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                   </span>
                 </button>
@@ -64,7 +64,7 @@ const FAQ = () => {
                     openIndex === index ? 'max-h-96' : 'max-h-0'
                   }`}
                 >
-                  <div className="px-6 pb-6 text-[#9CA3AF] leading-relaxed">
+                  <div className="px-4 pb-4 sm:px-5 sm:pb-5 md:px-6 md:pb-6 text-[#9CA3AF] text-sm sm:text-base leading-relaxed">
                     {item.answer}
                   </div>
                 </div>

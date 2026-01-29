@@ -14,14 +14,14 @@ const iconMap = {
 
 const Contact = () => {
   return (
-    <section className="py-24 md:py-32 bg-[#0A0A0A]">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+    <section className="bg-[#0A0A0A]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <SectionTitle
           title={contact.title}
           subtitle={contact.subtitle}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {contact.items.map((item, index) => {
             const Icon = iconMap[item.icon];
             return (
@@ -34,13 +34,13 @@ const Contact = () => {
                   href={item.href}
                   target={item.id === 'address' ? '_blank' : undefined}
                   rel={item.id === 'address' ? 'noopener noreferrer' : undefined}
-                  className="block bg-[#141414] rounded-xl p-8 border border-[#2D2D2D] hover:border-[#FBE013] transition-all duration-300 h-full group"
+                  className="block bg-[#141414] rounded-xl p-5 sm:p-6 md:p-8 border border-[#2D2D2D] hover:border-[#FBE013] transition-all duration-300 h-full group"
                 >
-                  <div className="w-14 h-14 bg-[#1A1A1A] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#FBE013]/10 transition-colors">
-                    <Icon className="w-7 h-7 text-[#FBE013]" />
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-[#1A1A1A] rounded-xl flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:bg-[#FBE013]/10 transition-colors">
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#FBE013]" />
                   </div>
-                  <p className="text-sm text-[#9CA3AF] mb-2">{item.label}</p>
-                  <p className="text-white font-semibold text-lg group-hover:text-[#FBE013] transition-colors">
+                  <p className="text-xs sm:text-sm text-[#9CA3AF] mb-1 sm:mb-2">{item.label}</p>
+                  <p className="text-white font-semibold text-base sm:text-lg group-hover:text-[#FBE013] transition-colors">
                     {item.value}
                   </p>
                 </a>

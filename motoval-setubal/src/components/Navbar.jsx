@@ -64,11 +64,11 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           {/* Logo */}
           <Link
             to="/"
-            className="text-xl md:text-2xl font-bold text-white font-[var(--font-heading)] hover:text-[#FBE013] transition-colors"
+            className="text-lg sm:text-xl md:text-2xl font-bold text-white font-[var(--font-heading)] hover:text-[#FBE013] transition-colors"
           >
             Motoval Setúbal
           </Link>
@@ -120,13 +120,13 @@ const Navbar = () => {
             : 'opacity-0 invisible -translate-y-4'
         }`}
       >
-        <div className="px-4 py-6 space-y-4">
+        <div className="px-4 py-6 space-y-2">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               to={link.href}
               onClick={(e) => handleLinkClick(e, link.href)}
-              className={`block text-lg font-medium py-2 transition-colors ${
+              className={`block text-base sm:text-lg font-medium py-3 min-h-[48px] flex items-center transition-colors ${
                 location.pathname === link.href
                   ? 'text-[#FBE013]'
                   : 'text-[#9CA3AF] hover:text-[#FBE013]'
@@ -135,8 +135,8 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link to="/contacto" className="block mt-4">
-            <Button variant="primary" className="w-full">
+          <Link to="/contacto" className="block mt-4 pt-2">
+            <Button variant="primary" className="w-full min-h-[48px]">
               Contactar
             </Button>
           </Link>
