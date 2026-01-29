@@ -59,11 +59,11 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || location.pathname !== '/'
-          ? 'bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#2D2D2D]'
+          ? 'bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#3D3D3D]'
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           {/* Logo */}
           <Link
@@ -114,13 +114,13 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#2D2D2D] transition-all duration-300 ${
+        className={`md:hidden absolute top-full left-0 right-0 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#3D3D3D] transition-all duration-300 ${
           isMobileMenuOpen
             ? 'opacity-100 visible translate-y-0'
             : 'opacity-0 invisible -translate-y-4'
         }`}
       >
-        <div className="px-4 py-6 space-y-2">
+        <div className="px-6 py-6 space-y-2">
           {navLinks.map((link) => (
             <Link
               key={link.label}

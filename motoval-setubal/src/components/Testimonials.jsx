@@ -29,7 +29,7 @@ const Testimonials = () => {
 
   return (
     <section className="bg-[#0A0A0A]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <SectionTitle
           title={testimonials.title}
           subtitle={testimonials.subtitle}
@@ -37,7 +37,7 @@ const Testimonials = () => {
 
         <AnimatedSection animation="fadeUp">
           <div
-            className="relative bg-[#141414] rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 border border-[#2D2D2D]"
+            className="relative bg-[#141414] rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 border border-[#3D3D3D]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -65,7 +65,7 @@ const Testimonials = () => {
             </p>
 
             {/* Navigation */}
-            <div className="flex items-center justify-between mt-6 sm:mt-8 md:mt-10 pt-4 sm:pt-6 md:pt-8 border-t border-[#2D2D2D]">
+            <div className="flex items-center justify-between mt-6 sm:mt-8 md:mt-10 pt-4 sm:pt-6 md:pt-8 border-t border-[#3D3D3D]">
               {/* Dots */}
               <div className="flex gap-1.5 sm:gap-2">
                 {testimonials.items.map((_, index) => (
@@ -86,14 +86,14 @@ const Testimonials = () => {
               <div className="flex gap-2 sm:gap-3">
                 <button
                   onClick={prevSlide}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#2D2D2D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                   aria-label="Previous testimonial"
                 >
                   <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#2D2D2D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                   aria-label="Next testimonial"
                 >
                   <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />

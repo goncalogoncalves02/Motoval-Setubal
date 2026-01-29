@@ -15,8 +15,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#0A0A0A] border-t border-[#2D2D2D]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12 lg:py-16">
+    <footer className="bg-[#0A0A0A] border-t border-[#3D3D3D]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 py-8 sm:py-10 md:py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-2">
@@ -32,21 +32,21 @@ const Footer = () => {
             <div className="flex gap-3 sm:gap-4">
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#2D2D2D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
+                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#2D2D2D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
+                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
               <a
                 href="tel:934803632"
-                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#2D2D2D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
+                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                 aria-label="Telefone"
               >
                 <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -130,7 +130,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 border-t border-[#2D2D2D] text-center">
+        <div className="mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 border-t border-[#3D3D3D] text-center">
           <p className="text-[#4A4A4A] text-xs sm:text-sm">{footer.copyright}</p>
         </div>
       </div>

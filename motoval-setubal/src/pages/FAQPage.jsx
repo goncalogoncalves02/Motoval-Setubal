@@ -13,7 +13,7 @@ const FAQPage = () => {
 
   return (
     <div className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0A0A] min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <AnimatedSection animation="fadeUp">
             <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-[#FBE013]/10 rounded-full mb-4 sm:mb-5 md:mb-6">
@@ -37,7 +37,7 @@ const FAQPage = () => {
                 className={`bg-[#141414] rounded-xl border transition-all duration-300 ${
                   openIndex === index
                     ? 'border-[#FBE013]/50 shadow-lg shadow-[#FBE013]/5'
-                    : 'border-[#2D2D2D] hover:border-[#4A4A4A]'
+                    : 'border-[#3D3D3D] hover:border-[#5A5A5A]'
                 }`}
               >
                 {/* Question */}
@@ -81,7 +81,7 @@ const FAQPage = () => {
 
         {/* Contact CTA */}
         <AnimatedSection animation="fadeUp" delay={0.6}>
-          <div className="mt-10 sm:mt-12 md:mt-16 text-center bg-[#141414] rounded-2xl p-5 sm:p-6 md:p-8 border border-[#2D2D2D]">
+          <div className="mt-10 sm:mt-12 md:mt-16 text-center bg-[#141414] rounded-2xl p-6 sm:p-7 md:p-8 border border-[#3D3D3D]">
             <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
               Ainda tem dúvidas?
             </h3>

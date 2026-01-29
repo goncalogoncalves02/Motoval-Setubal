@@ -163,6 +163,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@media (min-width: 1280px) {
+  .container-padding {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
 /* Section spacing - mobile-first */
 section {
   padding-top: 4rem;

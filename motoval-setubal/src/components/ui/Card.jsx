@@ -13,9 +13,9 @@ const Card = ({
     <div
       className={`
         bg-[#141414]
-        border border-[#2D2D2D]
+        border border-[#3D3D3D]
         rounded-xl
-        p-4 sm:p-5 md:p-6
+        p-5 sm:p-6 md:p-7
         transition-all
         duration-300
         hover:-translate-y-2

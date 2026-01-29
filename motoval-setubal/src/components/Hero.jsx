@@ -29,7 +29,7 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 text-center pt-20 sm:pt-24">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 text-center pt-20 sm:pt-24">
         <AnimatedSection animation="fadeUp">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 font-[var(--font-heading)] leading-tight">
             {hero.headline}
