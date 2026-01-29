@@ -29,7 +29,7 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center pt-24">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center pt-24">
         <AnimatedSection animation="fadeUp">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 font-[var(--font-heading)] leading-tight">
             {hero.headline}
@@ -37,24 +37,24 @@ const Hero = () => {
         </AnimatedSection>
 
         <AnimatedSection animation="fadeUp" delay={0.1}>
-          <p className="text-lg sm:text-xl md:text-2xl text-[#9CA3AF] mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-[#9CA3AF] mb-12 max-w-3xl mx-auto leading-relaxed text-center">
             {hero.subheadline}
           </p>
         </AnimatedSection>
 
         <AnimatedSection animation="fadeUp" delay={0.2}>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
             <Button
               href={`tel:${hero.ctaPrimary.phone}`}
               variant="primary"
-              className="text-lg px-8 py-4 animate-glow-pulse"
+              className="text-lg px-10 py-5 min-w-[220px] animate-glow-pulse"
             >
               {hero.ctaPrimary.text}
             </Button>
             <Button
               href={hero.ctaSecondary.link}
               variant="secondary"
-              className="text-lg px-8 py-4"
+              className="text-lg px-10 py-5 min-w-[220px]"
             >
               {hero.ctaSecondary.text}
             </Button>
@@ -63,7 +63,7 @@ const Hero = () => {
 
         {/* Stats */}
         <AnimatedSection animation="fadeUp" delay={0.3}>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+          <div className="flex flex-wrap justify-center gap-10 md:gap-20">
             {hero.stats.map((stat, index) => (
               <div key={index} className="flex items-center gap-4">
                 <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#FBE013]/10">

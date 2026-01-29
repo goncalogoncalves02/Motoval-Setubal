@@ -8,7 +8,7 @@ const Button = ({
   href,
   ...props 
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center px-6 py-3 font-semibold rounded-lg transition-all duration-300 cursor-pointer';
+  const baseStyles = 'inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl transition-all duration-300 cursor-pointer min-h-[56px]';
   
   const variants = {
     primary: 'bg-[#FBE013] text-black hover:bg-[#E5C800] hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(251,224,19,0.4)]',
