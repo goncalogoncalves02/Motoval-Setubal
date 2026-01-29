@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Skill(ralph-wiggum:ralph-loop)",
-      "Bash(\"C:\\\\Users\\\\gonca\\\\.claude\\\\plugins\\\\cache\\\\claude-code-plugins\\\\ralph-wiggum\\\\1.0.0\\\\scripts\\\\setup-ralph-loop.sh\" \"Trabalha nas tarefas do prd.json para corrigir a formatacao mobile-first do website\")"
-    ]
-  }
-}
