@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import AnimatedSection from './ui/AnimatedSection';
 import SectionTitle from './ui/SectionTitle';
 import { faq } from '../data/content';
 
 const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  // Only show first 3 FAQs on homepage
+  const displayFAQs = faq.items.slice(0, 3);
+
   return (
-    <section className="py-20 md:py-32 bg-[#141414]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 md:py-32 bg-[#141414]">
+      <div className="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12">
         <SectionTitle title={faq.title} />
 
         <div className="space-y-4">
-          {faq.items.map((item, index) => (
+          {displayFAQs.map((item, index) => (
             <AnimatedSection
               key={item.id}
               animation="fadeUp"
@@ -36,20 +40,20 @@ const FAQ = () => {
                   className="w-full flex items-center justify-between p-6 text-left"
                   aria-expanded={openIndex === index}
                 >
-                  <span className="text-white font-medium pr-4">
+                  <span className="text-white font-medium text-lg pr-4">
                     {item.question}
                   </span>
                   <span
-                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       openIndex === index
-                        ? 'bg-[#FBE013] text-black rotate-0'
-                        : 'bg-[#2D2D2D] text-white rotate-0'
+                        ? 'bg-[#FBE013] text-black'
+                        : 'bg-[#2D2D2D] text-white'
                     }`}
                   >
                     {openIndex === index ? (
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-5 h-5" />
                     ) : (
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-5 h-5" />
                     )}
                   </span>
                 </button>
@@ -68,6 +72,18 @@ const FAQ = () => {
             </AnimatedSection>
           ))}
         </div>
+
+        {/* See More Button */}
+        <AnimatedSection animation="fadeUp" delay={0.4}>
+          <div className="mt-10 text-center">
+            <Link
+              to="/faq"
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-[#FBE013] text-[#FBE013] font-semibold rounded-lg hover:bg-[#FBE013] hover:text-black transition-all duration-300"
+            >
+              Ver Todas as Perguntas
+            </Link>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );

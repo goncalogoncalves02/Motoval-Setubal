@@ -29,15 +29,15 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 text-center pt-24">
         <AnimatedSection animation="fadeUp">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 font-[var(--font-heading)] leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 font-[var(--font-heading)] leading-tight">
             {hero.headline}
           </h1>
         </AnimatedSection>
 
         <AnimatedSection animation="fadeUp" delay={0.1}>
-          <p className="text-lg sm:text-xl md:text-2xl text-[#9CA3AF] mb-10 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-[#9CA3AF] mb-12 max-w-3xl mx-auto leading-relaxed">
             {hero.subheadline}
           </p>
         </AnimatedSection>
@@ -47,14 +47,14 @@ const Hero = () => {
             <Button
               href={`tel:${hero.ctaPrimary.phone}`}
               variant="primary"
-              className="text-lg animate-glow-pulse"
+              className="text-lg px-8 py-4 animate-glow-pulse"
             >
               {hero.ctaPrimary.text}
             </Button>
             <Button
               href={hero.ctaSecondary.link}
               variant="secondary"
-              className="text-lg"
+              className="text-lg px-8 py-4"
             >
               {hero.ctaSecondary.text}
             </Button>
@@ -65,16 +65,16 @@ const Hero = () => {
         <AnimatedSection animation="fadeUp" delay={0.3}>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16">
             {hero.stats.map((stat, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#FBE013]/10">
+              <div key={index} className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#FBE013]/10">
                   {index === 0 ? (
-                    <Star className="w-6 h-6 text-[#FBE013]" />
+                    <Star className="w-7 h-7 text-[#FBE013]" />
                   ) : (
-                    <Users className="w-6 h-6 text-[#FBE013]" />
+                    <Users className="w-7 h-7 text-[#FBE013]" />
                   )}
                 </div>
                 <div className="text-left">
-                  <p className="text-2xl md:text-3xl font-bold text-white">{stat.value}</p>
+                  <p className="text-3xl md:text-4xl font-bold text-white">{stat.value}</p>
                   <p className="text-sm text-[#9CA3AF]">{stat.label}</p>
                 </div>
               </div>
@@ -84,13 +84,13 @@ const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
         <button
           onClick={handleScrollToServices}
           className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors animate-bounce-slow"
           aria-label="Scroll to services"
         >
-          <ChevronDown className="w-8 h-8" />
+          <ChevronDown className="w-10 h-10" />
         </button>
       </div>
     </section>

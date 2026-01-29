@@ -36,8 +36,10 @@ body {
   font-family: var(--font-body);
   background-color: var(--color-black);
   color: var(--color-white);
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -139,4 +141,42 @@ h1, h2, h3, h4, h5, h6 {
 
 .glow-yellow {
   box-shadow: 0 0 30px rgba(251, 224, 19, 0.4);
+}
+
+/* Container spacing utility */
+.container-padding {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .container-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-padding {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* Section spacing */
+section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Smooth scroll padding for fixed header */
+html {
+  scroll-padding-top: 80px;
 }

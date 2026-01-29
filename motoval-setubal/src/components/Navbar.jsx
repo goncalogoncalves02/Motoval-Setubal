@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import Button from './ui/Button';
-import { nav } from '../data/content';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const prevLocation = useRef(location.pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,11 +18,39 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    if (prevLocation.current !== location.pathname) {
+      prevLocation.current = location.pathname;
+      // Use setTimeout to avoid synchronous setState
+      const timeoutId = setTimeout(() => {
+        setIsMobileMenuOpen(false);
+      }, 0);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [location.pathname]);
+
+  const navLinks = [
+    { label: 'Início', href: '/' },
+    { label: 'Serviços', href: '/#services' },
+    { label: 'Sobre', href: '/#about' },
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Contactos', href: '/contacto' },
+  ];
+
   const handleLinkClick = (e, href) => {
-    e.preventDefault();
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    if (href.startsWith('/#')) {
+      // If we're not on the home page, navigate to home first
+      if (location.pathname !== '/') {
+        return; // Let the Link component handle the navigation
+      }
+      // We're on home page, scroll to section
+      e.preventDefault();
+      const sectionId = href.replace('/#', '');
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
     setIsMobileMenuOpen(false);
   };
@@ -28,7 +58,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        isScrolled || location.pathname !== '/'
           ? 'bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#2D2D2D]'
           : 'bg-transparent'
       }`}
@@ -36,34 +66,35 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <a
-            href="#hero"
-            onClick={(e) => handleLinkClick(e, '#hero')}
+          <Link
+            to="/"
             className="text-xl md:text-2xl font-bold text-white font-[var(--font-heading)] hover:text-[#FBE013] transition-colors"
           >
-            {nav.logo}
-          </a>
+            Motoval Setúbal
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {nav.links.map((link) => (
-              <a
+          <div className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm font-medium"
+                className={`transition-colors text-sm font-medium ${
+                  location.pathname === link.href ||
+                  (link.href.startsWith('/#') && location.pathname === '/' && link.href !== '/')
+                    ? 'text-[#FBE013]'
+                    : 'text-[#9CA3AF] hover:text-[#FBE013]'
+                }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <Button
-              href={nav.cta.href}
-              variant="primary"
-              className="text-sm py-2 px-4"
-              onClick={(e) => handleLinkClick(e, nav.cta.href)}
-            >
-              {nav.cta.label}
-            </Button>
+            <Link to="/contacto">
+              <Button variant="primary" className="text-sm py-2 px-4">
+                Contactar
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,24 +121,25 @@ const Navbar = () => {
         }`}
       >
         <div className="px-4 py-6 space-y-4">
-          {nav.links.map((link) => (
-            <a
+          {navLinks.map((link) => (
+            <Link
               key={link.label}
-              href={link.href}
+              to={link.href}
               onClick={(e) => handleLinkClick(e, link.href)}
-              className="block text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-lg font-medium py-2"
+              className={`block text-lg font-medium py-2 transition-colors ${
+                location.pathname === link.href
+                  ? 'text-[#FBE013]'
+                  : 'text-[#9CA3AF] hover:text-[#FBE013]'
+              }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <Button
-            href={nav.cta.href}
-            variant="primary"
-            className="w-full mt-4"
-            onClick={(e) => handleLinkClick(e, nav.cta.href)}
-          >
-            {nav.cta.label}
-          </Button>
+          <Link to="/contacto" className="block mt-4">
+            <Button variant="primary" className="w-full">
+              Contactar
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>

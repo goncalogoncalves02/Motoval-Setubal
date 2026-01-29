@@ -1,5 +1,6 @@
 import React from 'react';
 import { Facebook, Instagram, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { footer } from '../data/content';
 
 const Footer = () => {
@@ -19,9 +20,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <h3 className="text-2xl font-bold text-white mb-4 font-[var(--font-heading)]">
-              Motoval Setúbal
-            </h3>
+            <Link to="/" className="inline-block">
+              <h3 className="text-2xl font-bold text-white mb-4 font-[var(--font-heading)] hover:text-[#FBE013] transition-colors">
+                Motoval Setúbal
+              </h3>
+            </Link>
             <p className="text-[#9CA3AF] mb-6 max-w-md">
               {footer.description}
             </p>
@@ -55,17 +58,48 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-4">Links Rápidos</h4>
             <ul className="space-y-3">
-              {footer.quickLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
-                    className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link
+                  to="/"
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
+                >
+                  Início
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="/#services"
+                  onClick={(e) => handleLinkClick(e, '#services')}
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
+                >
+                  Serviços
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#about"
+                  onClick={(e) => handleLinkClick(e, '#about')}
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
+                >
+                  Sobre
+                </a>
+              </li>
+              <li>
+                <Link
+                  to="/faq"
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
+                >
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contacto"
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
+                >
+                  Contactos
+                </Link>
+              </li>
             </ul>
           </div>
 
