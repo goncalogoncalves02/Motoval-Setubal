@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Plus, Minus, HelpCircle } from 'lucide-react';
-import AnimatedSection from '../components/ui/AnimatedSection';
-import SectionTitle from '../components/ui/SectionTitle';
-import { faq } from '../data/content';
+import { useState } from "react";
+import { Plus, Minus, HelpCircle } from "lucide-react";
+import AnimatedSection from "../components/ui/AnimatedSection";
+import SectionTitle from "../components/ui/SectionTitle";
+import { faq } from "../data/content";
 
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -12,7 +12,7 @@ const FAQPage = () => {
   };
 
   return (
-    <div className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0A0A] min-h-screen">
+    <div className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0A0A] min-h-screen mt-2">
       <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <AnimatedSection animation="fadeUp">
@@ -36,8 +36,8 @@ const FAQPage = () => {
               <div
                 className={`bg-[#141414] rounded-xl border transition-all duration-300 ${
                   openIndex === index
-                    ? 'border-[#FBE013]/50 shadow-lg shadow-[#FBE013]/5'
-                    : 'border-[#3D3D3D] hover:border-[#5A5A5A]'
+                    ? "border-[#FBE013]/50 shadow-lg shadow-[#FBE013]/5"
+                    : "border-[#3D3D3D] hover:border-[#5A5A5A]"
                 }`}
               >
                 {/* Question */}
@@ -52,8 +52,8 @@ const FAQPage = () => {
                   <span
                     className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       openIndex === index
-                        ? 'bg-[#FBE013] text-black rotate-0'
-                        : 'bg-[#2D2D2D] text-white rotate-0'
+                        ? "bg-[#FBE013] text-black rotate-0"
+                        : "bg-[#2D2D2D] text-white rotate-0"
                     }`}
                   >
                     {openIndex === index ? (
@@ -67,7 +67,7 @@ const FAQPage = () => {
                 {/* Answer */}
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'max-h-96' : 'max-h-0'
+                    openIndex === index ? "max-h-96" : "max-h-0"
                   }`}
                 >
                   <div className="px-4 pb-4 sm:px-5 sm:pb-5 md:px-6 md:pb-6 text-[#9CA3AF] text-sm sm:text-base md:text-lg leading-relaxed">

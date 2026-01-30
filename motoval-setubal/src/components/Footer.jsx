@@ -86,6 +86,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  to="/horario"
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm sm:text-base py-1 inline-block"
+                >
+                  Horário
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/faq"
                   className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm sm:text-base py-1 inline-block"
                 >

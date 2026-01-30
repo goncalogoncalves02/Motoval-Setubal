@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import Button from './ui/Button';
+import React, { useState, useEffect, useRef } from "react";
+import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import Button from "./ui/Button";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,8 +14,8 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu when route changes
@@ -31,25 +31,26 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const navLinks = [
-    { label: 'Início', href: '/' },
-    { label: 'Serviços', href: '/#services' },
-    { label: 'Sobre', href: '/#about' },
-    { label: 'FAQ', href: '/faq' },
-    { label: 'Contactos', href: '/contacto' },
+    { label: "Início", href: "/" },
+    { label: "Serviços", href: "/#services" },
+    { label: "Sobre", href: "/#about" },
+    { label: "Horário", href: "/horario" },
+    { label: "FAQ", href: "/faq" },
+    { label: "Contactos", href: "/contacto" },
   ];
 
   const handleLinkClick = (e, href) => {
-    if (href.startsWith('/#')) {
+    if (href.startsWith("/#")) {
       // If we're not on the home page, navigate to home first
-      if (location.pathname !== '/') {
+      if (location.pathname !== "/") {
         return; // Let the Link component handle the navigation
       }
       // We're on home page, scroll to section
       e.preventDefault();
-      const sectionId = href.replace('/#', '');
+      const sectionId = href.replace("/#", "");
       const element = document.getElementById(sectionId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: "smooth" });
       }
     }
     setIsMobileMenuOpen(false);
@@ -57,13 +58,13 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled || location.pathname !== '/'
-          ? 'bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#3D3D3D]'
-          : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
+        isScrolled || location.pathname !== "/"
+          ? "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#3D3D3D]"
+          : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-12">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           {/* Logo */}
           <Link
@@ -82,9 +83,11 @@ const Navbar = () => {
                 onClick={(e) => handleLinkClick(e, link.href)}
                 className={`transition-colors text-sm font-medium ${
                   location.pathname === link.href ||
-                  (link.href.startsWith('/#') && location.pathname === '/' && link.href !== '/')
-                    ? 'text-[#FBE013]'
-                    : 'text-[#9CA3AF] hover:text-[#FBE013]'
+                  (link.href.startsWith("/#") &&
+                    location.pathname === "/" &&
+                    link.href !== "/")
+                    ? "text-[#FBE013]"
+                    : "text-[#9CA3AF] hover:text-[#FBE013]"
                 }`}
               >
                 {link.label}
@@ -116,8 +119,8 @@ const Navbar = () => {
       <div
         className={`md:hidden absolute top-full left-0 right-0 bg-[#0A0A0A]/95 backdrop-blur-md border-b border-[#3D3D3D] transition-all duration-300 ${
           isMobileMenuOpen
-            ? 'opacity-100 visible translate-y-0'
-            : 'opacity-0 invisible -translate-y-4'
+            ? "opacity-100 visible translate-y-0"
+            : "opacity-0 invisible -translate-y-4"
         }`}
       >
         <div className="px-6 py-6 space-y-2">
@@ -128,8 +131,8 @@ const Navbar = () => {
               onClick={(e) => handleLinkClick(e, link.href)}
               className={`block text-base sm:text-lg font-medium py-3 min-h-[48px] flex items-center transition-colors ${
                 location.pathname === link.href
-                  ? 'text-[#FBE013]'
-                  : 'text-[#9CA3AF] hover:text-[#FBE013]'
+                  ? "text-[#FBE013]"
+                  : "text-[#9CA3AF] hover:text-[#FBE013]"
               }`}
             >
               {link.label}

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Award, Users, Star, ThumbsUp } from 'lucide-react';
-import AnimatedSection from './ui/AnimatedSection';
-import { about } from '../data/content';
+import React from "react";
+import { Award, Users, Star, ThumbsUp } from "lucide-react";
+import AnimatedSection from "./ui/AnimatedSection";
+import { about } from "../data/content";
 
 const About = () => {
   const icons = [Award, Users, Star, ThumbsUp];
 
   return (
-    <section id="about" className="bg-[#141414]">
+    <section id="about" className="bg-[#141414] py-16 sm:py-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 xl:gap-20 items-center">
           {/* Image */}
@@ -55,7 +55,9 @@ const About = () => {
                       <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">
                         {stat.value}
                       </p>
-                      <p className="text-[10px] sm:text-xs md:text-sm text-[#9CA3AF]">{stat.label}</p>
+                      <p className="text-[10px] sm:text-xs md:text-sm text-[#9CA3AF]">
+                        {stat.label}
+                      </p>
                     </div>
                   </AnimatedSection>
                 );

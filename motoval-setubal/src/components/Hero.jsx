@@ -1,21 +1,21 @@
-import React from 'react';
-import { Star, Users, ChevronDown } from 'lucide-react';
-import Button from './ui/Button';
-import AnimatedSection from './ui/AnimatedSection';
-import { hero } from '../data/content';
+import React from "react";
+import { Star, Users, ChevronDown } from "lucide-react";
+import Button from "./ui/Button";
+import AnimatedSection from "./ui/AnimatedSection";
+import { hero } from "../data/content";
 
 const Hero = () => {
   const handleScrollToServices = () => {
-    const element = document.querySelector('#services');
+    const element = document.querySelector("#services");
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-0"
     >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
@@ -74,8 +74,12 @@ const Hero = () => {
                   )}
                 </div>
                 <div className="text-left">
-                  <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{stat.value}</p>
-                  <p className="text-xs sm:text-sm text-[#9CA3AF]">{stat.label}</p>
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs sm:text-sm text-[#9CA3AF]">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             ))}

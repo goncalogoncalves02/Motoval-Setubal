@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import AnimatedSection from './ui/AnimatedSection';
-import SectionTitle from './ui/SectionTitle';
-import { faq } from '../data/content';
+import React, { useState } from "react";
+import { Plus, Minus } from "lucide-react";
+import { Link } from "react-router-dom";
+import AnimatedSection from "./ui/AnimatedSection";
+import SectionTitle from "./ui/SectionTitle";
+import { faq } from "../data/content";
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
@@ -16,7 +16,7 @@ const FAQ = () => {
   const displayFAQs = faq.items.slice(0, 3);
 
   return (
-    <section className="bg-[#141414]">
+    <section className="bg-[#141414] py-16 sm:py-20 lg:py-32">
       <div className="max-w-3xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <SectionTitle title={faq.title} />
 
@@ -30,8 +30,8 @@ const FAQ = () => {
               <div
                 className={`bg-[#1A1A1A] rounded-xl border transition-all duration-300 ${
                   openIndex === index
-                    ? 'border-[#FBE013]/50'
-                    : 'border-[#3D3D3D] hover:border-[#5A5A5A]'
+                    ? "border-[#FBE013]/50"
+                    : "border-[#3D3D3D] hover:border-[#5A5A5A]"
                 }`}
               >
                 {/* Question */}
@@ -46,8 +46,8 @@ const FAQ = () => {
                   <span
                     className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       openIndex === index
-                        ? 'bg-[#FBE013] text-black'
-                        : 'bg-[#2D2D2D] text-white'
+                        ? "bg-[#FBE013] text-black"
+                        : "bg-[#2D2D2D] text-white"
                     }`}
                   >
                     {openIndex === index ? (
@@ -61,7 +61,7 @@ const FAQ = () => {
                 {/* Answer */}
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'max-h-96' : 'max-h-0'
+                    openIndex === index ? "max-h-96" : "max-h-0"
                   }`}
                 >
                   <div className="px-4 pb-4 sm:px-5 sm:pb-5 md:px-6 md:pb-6 text-[#9CA3AF] text-sm sm:text-base leading-relaxed">

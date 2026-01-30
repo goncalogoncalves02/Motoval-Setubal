@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
-import AnimatedSection from './ui/AnimatedSection';
-import SectionTitle from './ui/SectionTitle';
-import { testimonials } from '../data/content';
+import React, { useState, useEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import AnimatedSection from "./ui/AnimatedSection";
+import SectionTitle from "./ui/SectionTitle";
+import { testimonials } from "../data/content";
 
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,7 +14,7 @@ const Testimonials = () => {
 
   const prevSlide = useCallback(() => {
     setCurrentIndex((prev) =>
-      prev === 0 ? testimonials.items.length - 1 : prev - 1
+      prev === 0 ? testimonials.items.length - 1 : prev - 1,
     );
   }, []);
 
@@ -28,7 +28,7 @@ const Testimonials = () => {
   const currentTestimonial = testimonials.items[currentIndex];
 
   return (
-    <section className="bg-[#0A0A0A]">
+    <section className="bg-[#0A0A0A] py-16 sm:py-20 lg:py-32">
       <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <SectionTitle
           title={testimonials.title}
@@ -74,8 +74,8 @@ const Testimonials = () => {
                     onClick={() => setCurrentIndex(index)}
                     className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
                       index === currentIndex
-                        ? 'bg-[#FBE013] w-6 sm:w-8'
-                        : 'bg-[#4A4A4A] hover:bg-[#9CA3AF]'
+                        ? "bg-[#FBE013] w-6 sm:w-8"
+                        : "bg-[#4A4A4A] hover:bg-[#9CA3AF]"
                     }`}
                     aria-label={`Go to slide ${index + 1}`}
                   />
