@@ -83,20 +83,20 @@ export const testimonials = {
   items: [
     {
       id: 1,
-      text: "Excelente atendimento, o Bruno é 5 estrelas! Preços imbatíveis e trabalho de qualidade.",
+      text: "A Motoval é um daqueles locais que demonstra bem como o comércio tradicional tem todos os argumentos para ser uma opção de primeira linha. A simpatia e disponibilidade do Bruno só rivaliza com a perícia e conhecimento do seu trabalho.",
       author: "Pedro E.",
       rating: 5
     },
     {
       id: 2,
-      text: "Simpatia e profissionalismo. Totalmente satisfeito, recomendo a todos!",
-      author: "Valério F.",
+      text: "Totalmente satisfeito com os serviços realizados (mudança de pneus de carro e mota). O Sr. Bruno é um excelente profissional, tentando sempre solucionar as urgências.",
+      author: "Luís O.",
       rating: 5
     },
     {
       id: 3,
-      text: "Muito bom serviço por alguém que percebe de motos! Atendimento top.",
-      author: "Duarte",
+      text: "Hoje em vésperas de ano novo e com a oficina em limpezas ainda anuiu em auxiliar e montar um pneu da minha mota. Trabalho impecável. Precisamos de mais pessoas como o Sr. Bruno.",
+      author: "Nelson T.",
       rating: 5
     }
   ]
@@ -111,7 +111,7 @@ export const schedule = {
     { day: "Quarta", hours: "10:00-13:30 | 15:00-19:30" },
     { day: "Quinta", hours: "10:00-13:30 | 15:00-19:30" },
     { day: "Sexta", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Sábado", hours: "10:00-13:30 (Marcação obrigatória)" },
+    { day: "Sábado", hours: "10:00-13:30" },
     { day: "Domingo", hours: "Fechado" }
   ],
   note: "Recomendamos marcação, especialmente aos sábados. Atendemos urgências conforme disponibilidade."
@@ -146,11 +146,11 @@ export const contact = {
       id: "address",
       icon: "MapPin",
       label: "Morada",
-      value: "Quinta das Asseadas, Lote 1, 2950-019 Palmela",
-      href: "https://maps.google.com/?q=Quinta+das+Asseadas+Lote+1+2950-019+Palmela"
+      value: "Quinta das Asseadas, Lote 1 (EN 252), 2950-019 Palmela",
+      href: "https://maps.app.goo.gl/cSbE86MjY4KjA8RJA"
     }
   ],
-  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3110.796829373938!2d-8.6123!3d38.5689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1943e0e6c6c6c7%3A0x6c6c6c6c6c6c6c6c!2sMotoval%20Set%C3%BAbal!5e0!3m2!1spt-PT!2spt!4v1234567890"
+  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5183.367286587057!2d-8.890975922671554!3d38.56212067179768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd194323971d5b77%3A0xa45ef3600ad7f4d2!2sMotoval%20Set%C3%BAbal!5e1!3m2!1spt-PT!2spt!4v1769799190389!5m2!1spt-PT!2spt"
 };
 
 export const faq = {
@@ -169,7 +169,7 @@ export const faq = {
     {
       id: 3,
       question: "Quanto custa o alinhamento?",
-      answer: "Dianteiro 30€, dianteiro+traseiro 35€. Controlo completo da geometria do veículo."
+      answer: "Dianteiro 25€, dianteiro+traseiro 30€. Controlo completo da geometria do veículo."
     },
     {
       id: 4,
@@ -179,7 +179,7 @@ export const faq = {
     {
       id: 5,
       question: "Têm pneus em stock?",
-      answer: "Sim, grande diversidade. Referências especiais em 1-2 dias."
+      answer: "Sim, grande diversidade. Referências especiais em 2-3 dias."
     }
   ]
 };

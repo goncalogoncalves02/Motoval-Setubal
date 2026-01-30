@@ -78,7 +78,7 @@ const ContactPage = () => {
                   ))}
                 </div>
                 <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-[#3D3D3D] flex items-start gap-2 sm:gap-3">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#FBE013] flex-shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#FBE013] shrink-0 mt-0.5" />
                   <p className="text-[#9CA3AF] text-xs sm:text-sm">{schedule.note}</p>
                 </div>
               </div>
@@ -89,7 +89,7 @@ const ContactPage = () => {
           <AnimatedSection animation="fadeUp" delay={0.2}>
             <div className="bg-[#141414] rounded-2xl overflow-hidden border border-[#3D3D3D] h-full min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3113.5!2d-8.6123!3d38.5689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDM0JzA4LjAiTiA4wrAzNiczNC4zIlc!5e0!3m2!1spt-PT!2spt!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5183.367286587057!2d-8.890975922671554!3d38.56212067179768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd194323971d5b77%3A0xa45ef3600ad7f4d2!2sMotoval%20Set%C3%BAbal!5e1!3m2!1spt-PT!2spt!4v1769799190389!5m2!1spt-PT!2spt"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: 'inherit' }}
@@ -97,7 +97,7 @@ const ContactPage = () => {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Localização Motoval Setúbal"
-                className="grayscale hover:grayscale-0 transition-all duration-500 min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]"
+                className="transition-all duration-500 min-h-[300px] sm:min-h-[400px] lg:min-h-[500px]"
               />
             </div>
           </AnimatedSection>
