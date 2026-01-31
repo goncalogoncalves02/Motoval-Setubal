@@ -1,13 +1,22 @@
-import { Phone, MessageCircle, Mail, MapPin, Clock, Calendar } from 'lucide-react';
-import AnimatedSection from '../components/ui/AnimatedSection';
-import SectionTitle from '../components/ui/SectionTitle';
-import { contact, schedule } from '../data/content';
+import {
+  Phone,
+  MessageCircle,
+  Mail,
+  MapPin,
+  Clock,
+  Calendar,
+} from "lucide-react";
+import AnimatedSection from "../components/ui/AnimatedSection";
+import SectionTitle from "../components/ui/SectionTitle";
+import { contact, schedule } from "../data/content";
+import { WhatsappIcon } from "../components/icons/WhatsappIcon";
 
 const iconMap = {
   Phone,
   MessageCircle,
   Mail,
-  MapPin
+  MapPin,
+  WhatsappIcon,
 };
 
 const ContactPage = () => {
@@ -34,14 +43,16 @@ const ContactPage = () => {
                   >
                     <a
                       href={item.href}
-                      target={item.id === 'address' ? '_blank' : undefined}
-                      rel={item.id === 'address' ? 'noopener noreferrer' : undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="block bg-[#141414] rounded-xl p-4 sm:p-5 md:p-6 border border-[#3D3D3D] hover:border-[#FBE013] transition-all duration-300 h-full group"
                     >
                       <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#1A1A1A] rounded-lg flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-[#FBE013]/10 transition-colors">
                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#FBE013]" />
                       </div>
-                      <p className="text-xs sm:text-sm text-[#9CA3AF] mb-1">{item.label}</p>
+                      <p className="text-xs sm:text-sm text-[#9CA3AF] mb-1">
+                        {item.label}
+                      </p>
                       <p className="text-white font-medium text-sm sm:text-base group-hover:text-[#FBE013] transition-colors">
                         {item.value}
                       </p>
@@ -56,7 +67,9 @@ const ContactPage = () => {
               <div className="bg-[#141414] rounded-2xl p-5 sm:p-6 md:p-7 border border-[#3D3D3D]">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-[#FBE013]" />
-                  <h3 className="text-lg sm:text-xl font-bold text-white">Horário de Funcionamento</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                    Horário de Funcionamento
+                  </h3>
                 </div>
                 <div className="space-y-2 sm:space-y-3">
                   {schedule.hours.map((item, index) => (
@@ -64,12 +77,14 @@ const ContactPage = () => {
                       key={index}
                       className="flex justify-between items-center py-2 px-2 sm:px-3 rounded-lg hover:bg-[#2D2D2D]/50 transition-colors"
                     >
-                      <span className="font-medium text-white text-sm sm:text-base">{item.day}</span>
+                      <span className="font-medium text-white text-sm sm:text-base">
+                        {item.day}
+                      </span>
                       <span
                         className={`text-right text-xs sm:text-sm ${
-                          item.hours === 'Fechado'
-                            ? 'text-[#4A4A4A]'
-                            : 'text-[#9CA3AF]'
+                          item.hours === "Fechado"
+                            ? "text-[#4A4A4A]"
+                            : "text-[#9CA3AF]"
                         }`}
                       >
                         {item.hours}
@@ -79,7 +94,9 @@ const ContactPage = () => {
                 </div>
                 <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-[#3D3D3D] flex items-start gap-2 sm:gap-3">
                   <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[#FBE013] shrink-0 mt-0.5" />
-                  <p className="text-[#9CA3AF] text-xs sm:text-sm">{schedule.note}</p>
+                  <p className="text-[#9CA3AF] text-xs sm:text-sm">
+                    {schedule.note}
+                  </p>
                 </div>
               </div>
             </AnimatedSection>
@@ -92,7 +109,7 @@ const ContactPage = () => {
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5183.367286587057!2d-8.890975922671554!3d38.56212067179768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd194323971d5b77%3A0xa45ef3600ad7f4d2!2sMotoval%20Set%C3%BAbal!5e1!3m2!1spt-PT!2spt!4v1769799190389!5m2!1spt-PT!2spt"
                 width="100%"
                 height="100%"
-                style={{ border: 0, minHeight: 'inherit' }}
+                style={{ border: 0, minHeight: "inherit" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

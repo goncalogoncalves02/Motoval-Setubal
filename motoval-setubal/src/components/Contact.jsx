@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AnimatedSection from "./ui/AnimatedSection";
 import SectionTitle from "./ui/SectionTitle";
 import { contact } from "../data/content";
+import { WhatsappIcon } from '../components/icons/WhatsappIcon';
 
 const iconMap = {
   Phone,

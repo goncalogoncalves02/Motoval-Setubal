@@ -69,7 +69,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="text-lg sm:text-xl md:text-2xl font-bold text-white font-[var(--font-heading)] hover:text-[#FBE013] transition-colors"
+            className="text-lg sm:text-xl md:text-2xl font-bold text-white hover:text-[#FBE013] transition-colors"
           >
             Motoval Setúbal
           </Link>

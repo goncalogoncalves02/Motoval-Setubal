@@ -1,4 +1,5 @@
 import { Car, Bike, Gauge, CircleDot, Wrench, ShoppingCart } from 'lucide-react';
+import { WhatsappIcon } from '../components/icons/WhatsappIcon';
 
 export const hero = {
   headline: "Especialistas em Pneus para Carros e Motos",
@@ -107,7 +108,7 @@ export const schedule = {
   subtitle: "Estamos aqui para o ajudar. Recomendamos marcação, especialmente aos sábados.",
   hours: [
     { day: "Segunda", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Terça", hours: "10:00-13:30 | 15:00-19:00" },
+    { day: "Terça", hours: "10:00-13:30 | 15:00-19:30" },
     { day: "Quarta", hours: "10:00-13:30 | 15:00-19:30" },
     { day: "Quinta", hours: "10:00-13:30 | 15:00-19:30" },
     { day: "Sexta", hours: "10:00-13:30 | 15:00-19:30" },
@@ -130,7 +131,7 @@ export const contact = {
     },
     {
       id: "whatsapp",
-      icon: "MessageCircle",
+      icon: "WhatsappIcon",
       label: "WhatsApp",
       value: "Enviar mensagem",
       href: "https://wa.me/351934803632"

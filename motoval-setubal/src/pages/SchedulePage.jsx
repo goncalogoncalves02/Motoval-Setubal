@@ -2,6 +2,7 @@ import { Clock, Calendar, Phone, MessageCircle } from 'lucide-react';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import SectionTitle from '../components/ui/SectionTitle';
 import { schedule } from '../data/content';
+import { WhatsappIcon } from '../components/icons/WhatsappIcon';
 
 const SchedulePage = () => {
   return (
@@ -63,8 +64,7 @@ const SchedulePage = () => {
               href="tel:934803632"
               className="flex items-center justify-center gap-3 px-6 py-4 bg-[#FBE013] text-black font-semibold rounded-xl hover:bg-[#E5C800] hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(251,224,19,0.4)] transition-all duration-300"
             >
-              <Phone className="w-5 h-5" />
-              Ligar Agora
+              📞 Ligar Agora
             </a>
             <a
               href="https://wa.me/351934803632"
@@ -72,7 +72,7 @@ const SchedulePage = () => {
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 px-6 py-4 bg-[#141414] text-white font-semibold rounded-xl border border-[#3D3D3D] hover:border-[#FBE013] hover:text-[#FBE013] transition-all duration-300"
             >
-              <MessageCircle className="w-5 h-5" />
+              <WhatsappIcon className="w-5 h-5" />
               WhatsApp
             </a>
           </div>

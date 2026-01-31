@@ -33,18 +33,13 @@ const Footer = () => {
             {/* Social Links */}
             <div className="flex gap-3 sm:gap-4">
               <a
-                href="#"
+                href="https://www.facebook.com/motoval.setubal01/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                 aria-label="Facebook"
               >
                 <FacebookIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
-                aria-label="Instagram"
-              >
-                <InstagramIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
               <a
                 href="tel:934803632"
@@ -133,11 +128,11 @@ const Footer = () => {
                   motoval.setubal@gmail.com
                 </a>
               </li>
-              <li className="py-1">Quinta das Asseadas, Lote 1</li>
-              <li className="py-1">2950-019 Palmela</li>
+              <li>
+                <a href="https://maps.app.goo.gl/cSbE86MjY4KjA8RJA" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBE013] transition-colors py-1 inline-block break-all">Quinta das Asseadas, Lote 1 <br /> 2950-019 Palmela</a></li>
             </ul>
           </div>
-        </div>
+        </div
 
         {/* Bottom Bar */}
         <div className="mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 border-t border-[#3D3D3D] text-center">
