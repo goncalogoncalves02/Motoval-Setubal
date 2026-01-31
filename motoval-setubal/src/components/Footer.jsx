@@ -132,7 +132,7 @@ const Footer = () => {
                 <a href="https://maps.app.goo.gl/cSbE86MjY4KjA8RJA" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBE013] transition-colors py-1 inline-block break-all">Quinta das Asseadas, Lote 1 <br /> 2950-019 Palmela</a></li>
             </ul>
           </div>
-        </div
+        </div>
 
         {/* Bottom Bar */}
         <div className="mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 border-t border-[#3D3D3D] text-center">
