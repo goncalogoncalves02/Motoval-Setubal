@@ -8,11 +8,11 @@ export const hero = {
     phone: "934803632"
   },
   ctaSecondary: {
-    text: "💬 Falar no WhatsApp",
+    text: "Falar no WhatsApp",
     link: "https://wa.me/351934803632"
   },
   stats: [
-    { value: "4.9★", label: "142+ Reviews" },
+    { value: "4.9★", label: "300+ Reviews" },
     { value: "3.000+", label: "Clientes Satisfeitos" }
   ]
 };
@@ -139,8 +139,8 @@ export const contact = {
       id: "email",
       icon: "Mail",
       label: "Email",
-      value: "motoval.setubal@outlook.com",
-      href: "mailto:motoval.setubal@outlook.com"
+      value: "motoval.setubal@gmail.com",
+      href: "mailto:motoval.setubal@gmail.com"
     },
     {
       id: "address",

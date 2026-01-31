@@ -3,6 +3,8 @@ import { Star, Users, ChevronDown } from "lucide-react";
 import Button from "./ui/Button";
 import AnimatedSection from "./ui/AnimatedSection";
 import { hero } from "../data/content";
+import { WhatsappIcon } from "./icons/WhatsappIcon";
+
 
 const Hero = () => {
   const handleScrollToServices = () => {
@@ -25,13 +27,13 @@ const Hero = () => {
             backgroundImage: `url('src/assets/img/hero.webp')`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/70 to-[#0A0A0A]" />
+        <div className="absolute inset-0 bg-linear-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/70 to-[#0A0A0A]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 text-center pt-20 sm:pt-24">
         <AnimatedSection animation="fadeUp">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 font-[var(--font-heading)] leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight">
             {hero.headline}
           </h1>
         </AnimatedSection>
@@ -54,8 +56,9 @@ const Hero = () => {
             <Button
               href={hero.ctaSecondary.link}
               variant="secondary"
-              className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 sm:min-w-[220px]"
+              className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 md:px-10 py-4 sm:py-5 sm:min-w-[220px] gap-2"
             >
+              <WhatsappIcon className="w-5 h-5" />
               {hero.ctaSecondary.text}
             </Button>
           </div>

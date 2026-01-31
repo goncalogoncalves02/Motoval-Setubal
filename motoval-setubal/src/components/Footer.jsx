@@ -1,7 +1,9 @@
 import React from 'react';
-import { Facebook, Instagram, Phone } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { footer } from '../data/content';
+import { InstagramIcon } from './icons/InstagramIcon';
+import { FacebookIcon } from './icons/FacebookIcon';
 
 const Footer = () => {
   const handleLinkClick = (e, href) => {
@@ -21,7 +23,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-2">
             <Link to="/" className="inline-block">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 font-[var(--font-heading)] hover:text-[#FBE013] transition-colors">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 hover:text-[#FBE013] transition-colors">
                 Motoval Setúbal
               </h3>
             </Link>
@@ -35,14 +37,14 @@ const Footer = () => {
                 className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                 aria-label="Facebook"
               >
-                <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
+                <FacebookIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
               <a
                 href="#"
                 className="w-10 h-10 rounded-full bg-[#1A1A1A] border border-[#3D3D3D] flex items-center justify-center text-[#9CA3AF] hover:border-[#FBE013] hover:text-[#FBE013] transition-colors"
                 aria-label="Instagram"
               >
-                <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
+                <InstagramIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
               <a
                 href="tel:934803632"
@@ -125,10 +127,10 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="mailto:motoval.setubal@outlook.com"
+                  href="mailto:motoval.setubal@gmail.com"
                   className="hover:text-[#FBE013] transition-colors py-1 inline-block break-all"
                 >
-                  motoval.setubal@outlook.com
+                  motoval.setubal@gmail.com
                 </a>
               </li>
               <li className="py-1">Quinta das Asseadas, Lote 1</li>
