@@ -27,42 +27,42 @@ export const services = {
       icon: Car,
       title: "Montagem de Pneus - Carros",
       description: "Jantes de aço, alumínio, 4x4 e runflat",
-      price: "Desde 19€"
+      price: "Desde 15€"
     },
     {
       id: 2,
       icon: Bike,
       title: "Montagem de Pneus - Motos",
       description: "Todas as cilindradas e estilos",
-      price: "Desde 30€"
+      price: "Desde 25€"
     },
     {
       id: 3,
       icon: Gauge,
       title: "Alinhamento & Paralelismo",
       description: "Controlo completo da geometria",
-      price: "Desde 30€"
+      price: "Desde 25€"
     },
     {
       id: 4,
       icon: CircleDot,
       title: "Equilibragem & Calibragem",
       description: "Rodagem suave e segura",
-      price: "Apenas 5€"
+      price: "Apenas 5€ por roda"
     },
     {
       id: 5,
       icon: Wrench,
       title: "Reparação de Furos",
       description: "Solução rápida e duradoura",
-      price: "Apenas 20€"
+      price: "Desde 10€"
     },
     {
       id: 6,
       icon: ShoppingCart,
       title: "Venda de Pneus",
       description: "Todas as marcas | Stock permanente",
-      price: "Consultar"
+      price: "Sob orçamento"
     }
   ]
 };
@@ -165,7 +165,7 @@ export const faq = {
     {
       id: 2,
       question: "Fazem montagem de pneus de moto?",
-      answer: "Sim, todos os tipos desde 30€. Trabalhamos com todas as cilindradas e estilos de motos."
+      answer: "Sim, todos os tipos desde 25€. Trabalhamos com todas as cilindradas e estilos de motos."
     },
     {
       id: 3,
