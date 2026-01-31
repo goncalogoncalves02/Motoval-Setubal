@@ -4,6 +4,7 @@ import Button from "./ui/Button";
 import AnimatedSection from "./ui/AnimatedSection";
 import { hero } from "../data/content";
 import { WhatsappIcon } from "./icons/WhatsappIcon";
+import heroImage from "../assets/img/hero.webp";
 
 
 const Hero = () => {
@@ -24,7 +25,7 @@ const Hero = () => {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url('src/assets/img/hero.webp')`,
+            backgroundImage: `url(${heroImage})`,
           }}
         />
         <div className="absolute inset-0 bg-linear-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/70 to-[#0A0A0A]" />
