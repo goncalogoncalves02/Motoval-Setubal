@@ -1,21 +1,11 @@
-import React from 'react';
-import { Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { footer } from '../data/content';
-import { InstagramIcon } from './icons/InstagramIcon';
-import { FacebookIcon } from './icons/FacebookIcon';
+import React from "react";
+import { Phone } from "lucide-react";
+import { Link } from "react-router-dom";
+import { footer } from "../data/content";
+import { InstagramIcon } from "./icons/InstagramIcon";
+import { FacebookIcon } from "./icons/FacebookIcon";
 
 const Footer = () => {
-  const handleLinkClick = (e, href) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
   return (
     <footer className="bg-[#0A0A0A] border-t border-[#3D3D3D]">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 py-8 sm:py-10 md:py-12 lg:py-16">
@@ -53,7 +43,9 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Links Rápidos</h4>
+            <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">
+              Links Rápidos
+            </h4>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
@@ -64,22 +56,28 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="/#services"
-                  onClick={(e) => handleLinkClick(e, '#services')}
+                <Link
+                  to="/#services"
                   className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm sm:text-base py-1 inline-block"
                 >
                   Serviços
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/#about"
-                  onClick={(e) => handleLinkClick(e, '#about')}
+                <Link
+                  to="/#about"
                   className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm sm:text-base py-1 inline-block"
                 >
                   Sobre
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/ofertas"
+                  className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm sm:text-base py-1 inline-block"
+                >
+                  Ofertas
+                </Link>
               </li>
               <li>
                 <Link
@@ -110,7 +108,9 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contactos</h4>
+            <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">
+              Contactos
+            </h4>
             <ul className="space-y-2 sm:space-y-3 text-[#9CA3AF] text-sm sm:text-base">
               <li>
                 <a
@@ -129,14 +129,24 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://maps.app.goo.gl/cSbE86MjY4KjA8RJA" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBE013] transition-colors py-1 inline-block break-all">Quinta das Asseadas, Lote 1 <br /> 2950-019 Palmela</a></li>
+                <a
+                  href="https://maps.app.goo.gl/cSbE86MjY4KjA8RJA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#FBE013] transition-colors py-1 inline-block break-all"
+                >
+                  Quinta das Asseadas, Lote 1 <br /> 2950-019 Palmela
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-8 sm:mt-10 md:mt-12 pt-6 sm:pt-8 border-t border-[#3D3D3D] text-center">
-          <p className="text-[#4A4A4A] text-xs sm:text-sm">{footer.copyright}</p>
+          <p className="text-[#4A4A4A] text-xs sm:text-sm">
+            {footer.copyright}
+          </p>
         </div>
       </div>
     </footer>
