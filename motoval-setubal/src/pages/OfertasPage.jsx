@@ -158,7 +158,7 @@ function ProductCard({ product }) {
           <div>
             <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#FBE013] bg-[#FBE013]/10 px-2 py-1 rounded-full mb-2">
               <Tag className="w-3 h-3" />
-              {product.condition || 'Segunda Mão'}
+              {product.condition || 'Usados'}
             </span>
             <h3 className="text-white font-semibold text-base leading-snug">{product.title}</h3>
           </div>

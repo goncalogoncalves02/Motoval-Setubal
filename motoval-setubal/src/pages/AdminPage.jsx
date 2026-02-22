@@ -117,11 +117,11 @@ function LoginView() {
 
 // ─── Product Form ─────────────────────────────────────────────────────────────
 
-const EMPTY_FORM = { title: '', price: '', description: '', condition: 'Segunda Mão', tire_size: '', brand: '' }
+const EMPTY_FORM = { title: '', price: '', description: '', condition: 'Usados', tire_size: '', brand: '' }
 
 function ProductForm({ product, onSave, onCancel }) {
   const [form, setForm] = useState(product
-    ? { title: product.title, price: product.price, description: product.description || '', condition: product.condition || 'Segunda Mão', tire_size: product.tire_size || '', brand: product.brand || '' }
+    ? { title: product.title, price: product.price, description: product.description || '', condition: product.condition || 'Usados', tire_size: product.tire_size || '', brand: product.brand || '' }
     : { ...EMPTY_FORM }
   )
   const [existingImages, setExistingImages] = useState(product?.images || [])
@@ -253,7 +253,7 @@ function ProductForm({ product, onSave, onCancel }) {
                 onChange={(e) => handleField('condition', e.target.value)}
                 className={inputClass}
               >
-                <option value="Segunda Mão">Usados</option>
+                <option value="Usados">Usados</option>
                 <option value="Novos">Novos</option>
               </select>
             </div>
