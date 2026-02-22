@@ -254,7 +254,7 @@ function ProductForm({ product, onSave, onCancel }) {
                 className={inputClass}
               >
                 <option value="Segunda Mão">Usados</option>
-                <option value="Novo">Novo</option>
+                <option value="Novos">Novos</option>
               </select>
             </div>
           </div>
