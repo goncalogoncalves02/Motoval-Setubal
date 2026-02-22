@@ -6,6 +6,10 @@
   # Pasta de publicação (onde ficam os ficheiros após o build)
   publish = "dist"
 
+[build.environment]
+  # Necessário porque react-helmet-async@2.0.5 não declara suporte oficial ao React 19
+  NPM_FLAGS = "--legacy-peer-deps"
+
 # Redireciona todas as rotas para index.html (necessário para React Router SPA)
 [[redirects]]
   from = "/*"
