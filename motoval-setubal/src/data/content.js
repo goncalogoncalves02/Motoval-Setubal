@@ -209,3 +209,11 @@ export const nav = {
     href: "#contact"
   }
 };
+
+export const ofertasTeaser = {
+  badge: "Pneus Novos e Usados",
+  title: "Ofertas Especiais",
+  subtitle: "Pneus a preços acessíveis — carros e motos. Stock limitado, atualizado regularmente.",
+  cta: "Ver Todas as Ofertas",
+  href: "/ofertas"
+};
