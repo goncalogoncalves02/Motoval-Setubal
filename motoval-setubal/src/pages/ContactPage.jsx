@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import {
   Phone,
   MessageCircle,
@@ -22,6 +23,13 @@ const iconMap = {
 const ContactPage = () => {
   return (
     <div className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0A0A] min-h-screen mt-2">
+      <Helmet>
+        <title>Contactos | Motoval Setúbal - Palmela</title>
+        <meta name="description" content="Contacta a Motoval Setúbal em Palmela. Ligue 934 803 632, envie WhatsApp ou venha a Quinta das Asseadas, Lote 1, Aires. Aberto de Segunda a Sábado." />
+        <link rel="canonical" href="https://motovalsetubal.com/contacto" />
+        <meta property="og:title" content="Contactos | Motoval Setúbal - Palmela" />
+        <meta property="og:url" content="https://motovalsetubal.com/contacto" />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <SectionTitle
           title="Contacte-nos"

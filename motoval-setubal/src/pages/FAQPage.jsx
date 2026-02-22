@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Plus, Minus, HelpCircle } from "lucide-react";
 import AnimatedSection from "../components/ui/AnimatedSection";
 import SectionTitle from "../components/ui/SectionTitle";
@@ -13,6 +14,13 @@ const FAQPage = () => {
 
   return (
     <div className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0A0A] min-h-screen mt-2">
+      <Helmet>
+        <title>Perguntas Frequentes | Motoval Setúbal - Pneus em Palmela</title>
+        <meta name="description" content="Perguntas frequentes sobre a Motoval Setúbal: marcações, preços de alinhamento, montagem de pneus de moto, formas de pagamento e stock disponível." />
+        <link rel="canonical" href="https://motovalsetubal.com/faq" />
+        <meta property="og:title" content="Perguntas Frequentes | Motoval Setúbal" />
+        <meta property="og:url" content="https://motovalsetubal.com/faq" />
+      </Helmet>
       <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <AnimatedSection animation="fadeUp">

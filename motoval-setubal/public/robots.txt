@@ -1,11 +1,11 @@
 # Motoval Setúbal - robots.txt
-# https://motoval-setubal.pt
+# https://motovalsetubal.com
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://motoval-setubal.pt/sitemap.xml
+Sitemap: https://motovalsetubal.com/sitemap.xml
 
 # Crawl-delay (optional, for politeness)
 Crawl-delay: 1
