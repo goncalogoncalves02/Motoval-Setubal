@@ -1,10 +1,82 @@
 import { useEffect, useState } from 'react'
-import { MessageCircle, Tag, Ruler, Award, ChevronLeft, ChevronRight } from 'lucide-react'
+import { createPortal } from 'react-dom'
+import { MessageCircle, Tag, Ruler, Award, ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 
-function ProductImageGallery({ images, title }) {
+// ─── Lightbox ─────────────────────────────────────────────────────────────────
+
+function Lightbox({ images, initialIndex, onClose }) {
+  const [current, setCurrent] = useState(initialIndex)
+
+  useEffect(() => {
+    function handleKey(e) {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') setCurrent((c) => (c - 1 + images.length) % images.length)
+      if (e.key === 'ArrowRight') setCurrent((c) => (c + 1) % images.length)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [images.length, onClose])
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-9999 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <img
+          src={images[current]}
+          alt={`Foto ${current + 1}`}
+          className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+        />
+
+        {/* Fechar */}
+        <button
+          onClick={onClose}
+          className="absolute -top-4 -right-4 bg-[#1A1A1A] hover:bg-[#2D2D2D] text-white rounded-full p-2 transition-colors"
+          aria-label="Fechar"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Navegação */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={() => setCurrent((c) => (c - 1 + images.length) % images.length)}
+              className="absolute left-2 bg-black/60 hover:bg-black/90 text-white rounded-full p-2 transition-colors"
+              aria-label="Imagem anterior"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => setCurrent((c) => (c + 1) % images.length)}
+              className="absolute right-2 bg-black/60 hover:bg-black/90 text-white rounded-full p-2 transition-colors"
+              aria-label="Próxima imagem"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Contador */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white text-xs px-3 py-1 rounded-full">
+              {current + 1} / {images.length}
+            </div>
+          </>
+        )}
+      </div>
+    </div>,
+    document.body
+  )
+}
+
+// ─── Gallery ──────────────────────────────────────────────────────────────────
+
+function ProductImageGallery({ images, title, onOpen }) {
   const [current, setCurrent] = useState(0)
 
   if (!images || images.length === 0) {
@@ -16,33 +88,42 @@ function ProductImageGallery({ images, title }) {
   }
 
   return (
-    <div className="relative w-full h-52 rounded-t-xl overflow-hidden bg-[#0A0A0A]">
+    <div className="relative w-full h-52 rounded-t-xl overflow-hidden bg-[#0A0A0A] group">
       <img
         src={images[current]}
         alt={`${title} - foto ${current + 1}`}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover cursor-zoom-in"
+        onClick={() => onOpen(current)}
       />
+
+      {/* Overlay de zoom ao hover */}
+      <div
+        className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center cursor-zoom-in pointer-events-none"
+      >
+        <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-80 transition-opacity drop-shadow-lg" />
+      </div>
+
       {images.length > 1 && (
         <>
           <button
-            onClick={(e) => { e.preventDefault(); setCurrent((c) => (c - 1 + images.length) % images.length) }}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 transition-colors"
+            onClick={(e) => { e.stopPropagation(); setCurrent((c) => (c - 1 + images.length) % images.length) }}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 transition-colors z-10"
             aria-label="Imagem anterior"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
-            onClick={(e) => { e.preventDefault(); setCurrent((c) => (c + 1) % images.length) }}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 transition-colors"
+            onClick={(e) => { e.stopPropagation(); setCurrent((c) => (c + 1) % images.length) }}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 transition-colors z-10"
             aria-label="Próxima imagem"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
             {images.map((_, i) => (
               <button
                 key={i}
-                onClick={(e) => { e.preventDefault(); setCurrent(i) }}
+                onClick={(e) => { e.stopPropagation(); setCurrent(i) }}
                 className={`w-1.5 h-1.5 rounded-full transition-colors ${i === current ? 'bg-[#FBE013]' : 'bg-white/50'}`}
                 aria-label={`Ver foto ${i + 1}`}
               />
@@ -54,59 +135,79 @@ function ProductImageGallery({ images, title }) {
   )
 }
 
+// ─── Card ─────────────────────────────────────────────────────────────────────
+
 function ProductCard({ product }) {
+  const [lightboxIndex, setLightboxIndex] = useState(null)
+
   const whatsappMsg = encodeURIComponent(
     `Olá! Tenho interesse no anúncio: "${product.title}"${product.tire_size ? ` (${product.tire_size})` : ''} pelo preço de ${product.price}. Poderia dar mais informações?`
   )
 
   return (
-    <div className="bg-[#141414] border border-[#2D2D2D] rounded-xl overflow-hidden hover:border-[#FBE013]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col">
-      <ProductImageGallery images={product.images} title={product.title} />
+    <>
+      <div className="bg-[#141414] border border-[#2D2D2D] rounded-xl overflow-hidden hover:border-[#FBE013]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col">
+        <ProductImageGallery
+          images={product.images}
+          title={product.title}
+          onOpen={(index) => setLightboxIndex(index)}
+        />
 
-      <div className="p-5 flex flex-col flex-1 gap-3">
-        <div>
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#FBE013] bg-[#FBE013]/10 px-2 py-1 rounded-full mb-2">
-            <Tag className="w-3 h-3" />
-            {product.condition || 'Segunda Mão'}
-          </span>
-          <h3 className="text-white font-semibold text-base leading-snug">{product.title}</h3>
-        </div>
-
-        <div className="flex flex-wrap gap-2 text-sm text-[#9CA3AF]">
-          {product.tire_size && (
-            <span className="flex items-center gap-1">
-              <Ruler className="w-3.5 h-3.5" />
-              {product.tire_size}
+        <div className="p-5 flex flex-col flex-1 gap-3">
+          <div>
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#FBE013] bg-[#FBE013]/10 px-2 py-1 rounded-full mb-2">
+              <Tag className="w-3 h-3" />
+              {product.condition || 'Segunda Mão'}
             </span>
-          )}
-          {product.brand && (
-            <span className="flex items-center gap-1">
-              <Award className="w-3.5 h-3.5" />
-              {product.brand}
-            </span>
-          )}
-        </div>
+            <h3 className="text-white font-semibold text-base leading-snug">{product.title}</h3>
+          </div>
 
-        {product.description && (
-          <p className="text-[#9CA3AF] text-sm leading-relaxed">{product.description}</p>
-        )}
+          <div className="flex flex-wrap gap-2 text-sm text-[#9CA3AF]">
+            {product.tire_size && (
+              <span className="flex items-center gap-1">
+                <Ruler className="w-3.5 h-3.5" />
+                {product.tire_size}
+              </span>
+            )}
+            {product.brand && (
+              <span className="flex items-center gap-1">
+                <Award className="w-3.5 h-3.5" />
+                {product.brand}
+              </span>
+            )}
+          </div>
 
-        <div className="mt-auto pt-3 border-t border-[#2D2D2D] flex items-center justify-between">
-          <span className="text-[#FBE013] font-bold text-lg">{product.price}</span>
-          <a
-            href={`https://wa.me/351934803632?text=${whatsappMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium px-3 py-2 rounded-lg transition-colors min-h-[40px]"
-          >
-            <MessageCircle className="w-4 h-4" />
-            Contactar
-          </a>
+          {product.description && (
+            <p className="text-[#9CA3AF] text-sm leading-relaxed">{product.description}</p>
+          )}
+
+          <div className="mt-auto pt-3 border-t border-[#2D2D2D] flex items-center justify-between">
+            <span className="text-[#FBE013] font-bold text-lg">{product.price}</span>
+            <a
+              href={`https://wa.me/351934803632?text=${whatsappMsg}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium px-3 py-2 rounded-lg transition-colors min-h-[40px]"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Contactar
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+
+      {lightboxIndex !== null && product.images?.length > 0 && (
+        <Lightbox
+          images={product.images}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+    </>
   )
 }
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
   return (
@@ -121,6 +222,8 @@ function SkeletonCard() {
     </div>
   )
 }
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function OfertasPage() {
   const [products, setProducts] = useState([])
@@ -146,7 +249,7 @@ export default function OfertasPage() {
         <AnimatedSection animation="fadeUp" className="pt-12 pb-10">
           <SectionTitle
             title="Ofertas Especiais"
-            subtitle="Pneus usados em bom estado a preços acessíveis. Stock limitado — contacta-nos para mais informações."
+            subtitle="Pneus a preços acessíveis. Stock limitado, contacta-nos para mais informações."
           />
         </AnimatedSection>
 
@@ -160,7 +263,7 @@ export default function OfertasPage() {
               <div className="text-6xl mb-4">🔧</div>
               <h2 className="text-white text-xl font-semibold mb-2">Brevemente novas ofertas disponíveis</h2>
               <p className="text-[#9CA3AF] text-sm max-w-sm mx-auto">
-                De momento não temos stock de pneus usados. Consulta-nos sobre pneus novos ou volta mais tarde.
+                De momento não temos stock de pneus. Consulta-nos sobre pneus novos ou volta mais tarde.
               </p>
               <a
                 href="https://wa.me/351934803632"
