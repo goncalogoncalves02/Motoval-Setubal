@@ -33,8 +33,8 @@ const Navbar = () => {
   const navLinks = [
     { label: "Início", href: "/" },
     { label: "Serviços", href: "/#services" },
-    { label: "Ofertas", href: "/ofertas" },
     { label: "Sobre", href: "/#about" },
+    { label: "Ofertas", href: "/ofertas" },
     { label: "Horário", href: "/horario" },
     { label: "FAQ", href: "/faq" },
     { label: "Contactos", href: "/contacto" },
@@ -83,10 +83,7 @@ const Navbar = () => {
                 to={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
                 className={`transition-colors text-sm font-medium ${
-                  location.pathname === link.href ||
-                  (link.href.startsWith("/#") &&
-                    location.pathname === "/" &&
-                    link.href !== "/")
+                  location.pathname === link.href
                     ? "text-[#FBE013]"
                     : "text-[#9CA3AF] hover:text-[#FBE013]"
                 }`}
