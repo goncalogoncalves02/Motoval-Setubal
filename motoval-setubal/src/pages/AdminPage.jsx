@@ -3,6 +3,44 @@ import { LogOut, Plus, Pencil, Trash2, Eye, EyeOff, X, Upload, Loader2 } from 'l
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
+// ─── Image processing ─────────────────────────────────────────────────────────
+
+function processImage(file) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+
+    img.onload = () => {
+      const MAX_PX = 1200
+      let { width, height } = img
+
+      if (width > MAX_PX || height > MAX_PX) {
+        if (width >= height) {
+          height = Math.round((height * MAX_PX) / width)
+          width = MAX_PX
+        } else {
+          width = Math.round((width * MAX_PX) / height)
+          height = MAX_PX
+        }
+      }
+
+      const canvas = document.createElement('canvas')
+      canvas.width = width
+      canvas.height = height
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height)
+      URL.revokeObjectURL(url)
+
+      canvas.toBlob(
+        (blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' })),
+        'image/webp',
+        0.75
+      )
+    }
+
+    img.src = url
+  })
+}
+
 // ─── Login ────────────────────────────────────────────────────────────────────
 
 function LoginView() {
@@ -97,11 +135,12 @@ function ProductForm({ product, onSave, onCancel }) {
     setForm((f) => ({ ...f, [field]: value }))
   }
 
-  function handleFileSelect(e) {
+  async function handleFileSelect(e) {
     const selected = Array.from(e.target.files)
     if (selected.length === 0) return
-    setNewFiles((prev) => [...prev, ...selected])
-    const previews = selected.map((f) => URL.createObjectURL(f))
+    const processed = await Promise.all(selected.map(processImage))
+    setNewFiles((prev) => [...prev, ...processed])
+    const previews = processed.map((f) => URL.createObjectURL(f))
     setNewPreviews((prev) => [...prev, ...previews])
   }
 
