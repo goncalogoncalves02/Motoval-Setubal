@@ -33,7 +33,7 @@ function processImage(file) {
       canvas.toBlob(
         (blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' })),
         'image/webp',
-        0.75
+        0.85
       )
     }
 
@@ -80,7 +80,7 @@ function LoginView() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full bg-[#1A1A1A] border border-[#2D2D2D] text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#FBE013] transition-colors"
-              placeholder="admin@motoval.pt"
+              placeholder="motovalsetubal@gmail.com"
             />
           </div>
           <div>
@@ -230,7 +230,7 @@ function ProductForm({ product, onSave, onCancel }) {
               onChange={(e) => handleField('title', e.target.value)}
               required
               className={inputClass}
-              placeholder="Ex: Pneus 195/65 R15 — par"
+              placeholder="Ex: Pneus 205/55 R16 — par"
             />
           </div>
 
@@ -243,7 +243,7 @@ function ProductForm({ product, onSave, onCancel }) {
                 onChange={(e) => handleField('price', e.target.value)}
                 required
                 className={inputClass}
-                placeholder="Ex: 80€ o par"
+                placeholder="Ex: 80€"
               />
             </div>
             <div>
@@ -253,9 +253,8 @@ function ProductForm({ product, onSave, onCancel }) {
                 onChange={(e) => handleField('condition', e.target.value)}
                 className={inputClass}
               >
-                <option value="Segunda Mão">Segunda Mão</option>
+                <option value="Segunda Mão">Usados</option>
                 <option value="Novo">Novo</option>
-                <option value="Recondicionado">Recondicionado</option>
               </select>
             </div>
           </div>
@@ -268,7 +267,7 @@ function ProductForm({ product, onSave, onCancel }) {
                 value={form.tire_size}
                 onChange={(e) => handleField('tire_size', e.target.value)}
                 className={inputClass}
-                placeholder="Ex: 195/65 R15"
+                placeholder="Ex: 205/55 R16"
               />
             </div>
             <div>
