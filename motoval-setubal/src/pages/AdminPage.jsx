@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { LogOut, Plus, Pencil, Trash2, Eye, EyeOff, X, Upload, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import Pagination from '../components/ui/Pagination'
+
+const PAGE_SIZE = 10
 
 // ─── Image processing ─────────────────────────────────────────────────────────
 
@@ -382,18 +385,26 @@ function Dashboard() {
   const [showForm, setShowForm] = useState(false)
   const [editingProduct, setEditingProduct] = useState(null)
   const [deletingId, setDeletingId] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
 
-  async function fetchProducts() {
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE)
+
+  async function fetchProducts(page = currentPage) {
     setLoading(true)
-    const { data } = await supabase
+    const from = (page - 1) * PAGE_SIZE
+    const to = from + PAGE_SIZE - 1
+    const { data, count } = await supabase
       .from('products')
-      .select('*')
+      .select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
+      .range(from, to)
     setProducts(data || [])
+    setTotalCount(count || 0)
     setLoading(false)
   }
 
-  useEffect(() => { fetchProducts() }, [])
+  useEffect(() => { fetchProducts(currentPage) }, [currentPage])
 
   async function toggleActive(product) {
     await supabase
@@ -420,7 +431,12 @@ function Dashboard() {
 
     await supabase.from('products').delete().eq('id', product.id)
     setDeletingId(null)
-    fetchProducts()
+    // Se era o último item da página, voltar à página anterior
+    const newTotal = totalCount - 1
+    const newPage = products.length === 1 && currentPage > 1 ? currentPage - 1 : currentPage
+    setCurrentPage(newPage)
+    setTotalCount(newTotal)
+    fetchProducts(newPage)
   }
 
   function openAdd() {
@@ -440,7 +456,9 @@ function Dashboard() {
 
   async function handleSave() {
     closeForm()
-    await fetchProducts()
+    // Novo produto: ir à página 1 para o ver no topo
+    setCurrentPage(1)
+    await fetchProducts(1)
   }
 
   return (
@@ -470,7 +488,7 @@ function Dashboard() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-white font-semibold text-lg">Ofertas</h2>
-            <p className="text-[#9CA3AF] text-sm">{products.length} produto(s) no total</p>
+            <p className="text-[#9CA3AF] text-sm">{totalCount} produto(s) no total</p>
           </div>
           <button
             onClick={openAdd}
@@ -498,7 +516,8 @@ function Dashboard() {
             </button>
           </div>
         ) : (
-          <div className="space-y-3">
+          <>
+            <div className="space-y-3">
             {products.map((product) => (
               <div
                 key={product.id}
@@ -563,7 +582,13 @@ function Dashboard() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </div>
 
