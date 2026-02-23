@@ -5,6 +5,9 @@ import { MessageCircle, Tag, Ruler, Award, ChevronLeft, ChevronRight, X, ZoomIn 
 import { supabase } from '../lib/supabase'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
+import Pagination from '../components/ui/Pagination'
+
+const PAGE_SIZE = 9
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
 
@@ -229,23 +232,40 @@ function SkeletonCard() {
 export default function OfertasPage() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE)
 
   useEffect(() => {
     async function fetchProducts() {
-      const { data, error } = await supabase
+      const from = (currentPage - 1) * PAGE_SIZE
+      const to = from + PAGE_SIZE - 1
+      const { data, count, error } = await supabase
         .from('products')
-        .select('*')
+        .select('*', { count: 'exact' })
         .eq('is_active', true)
         .order('created_at', { ascending: false })
+        .range(from, to)
 
-      if (!error) setProducts(data || [])
+      if (!error) {
+        setProducts(data || [])
+        setTotalCount(count || 0)
+      }
       setLoading(false)
     }
     fetchProducts()
-  }, [])
+  }, [currentPage])
 
-  const pageTitle = !loading && products.length > 0
-    ? `${products.length} Pneus em Oferta | Motoval Setúbal`
+  function handlePageChange(page) {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const pageTitle = !loading && totalCount > 0
+    ? currentPage > 1
+      ? `Pneus em Oferta — Página ${currentPage} | Motoval Setúbal`
+      : `${totalCount} Pneus em Oferta | Motoval Setúbal`
     : 'Ofertas Especiais de Pneus | Motoval Setúbal'
 
   const pageDescription = !loading && products.length > 0
@@ -257,7 +277,7 @@ export default function OfertasPage() {
     '@type': 'ItemList',
     name: 'Ofertas de Pneus - Motoval Setúbal',
     url: 'https://motovalsetubal.com/ofertas',
-    numberOfItems: products.length,
+    numberOfItems: totalCount,
     itemListElement: products.map((product, i) => ({
       '@type': 'ListItem',
       position: i + 1,
@@ -302,7 +322,7 @@ export default function OfertasPage() {
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, i) => <SkeletonCard key={i} />)}
+            {[...Array(9)].map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : products.length === 0 ? (
           <AnimatedSection animation="fadeUp">
@@ -324,13 +344,20 @@ export default function OfertasPage() {
             </div>
           </AnimatedSection>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product, i) => (
-              <AnimatedSection key={product.id} animation="fadeUp" delay={i * 80}>
-                <ProductCard product={product} />
-              </AnimatedSection>
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {products.map((product, i) => (
+                <AnimatedSection key={product.id} animation="fadeUp" delay={i * 80}>
+                  <ProductCard product={product} />
+                </AnimatedSection>
+              ))}
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
         )}
       </div>
     </main>
