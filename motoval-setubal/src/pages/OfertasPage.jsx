@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Helmet } from 'react-helmet-async'
 import { MessageCircle, Tag, Ruler, Award, ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import Seo from '../components/Seo'
+import { itemListSchema } from '../lib/seo/schema'
+import { site } from '../data/site'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
@@ -272,46 +274,14 @@ export default function OfertasPage() {
     ? `Pneus usados a preços acessíveis em Palmela. ${products.slice(0, 3).map(p => p.title).join(', ')} e mais. Contacta-nos para mais informações.`
     : 'Pneus usados a preços acessíveis para carros e motos em Palmela. Stock limitado e atualizado regularmente. Ligue 934 803 632.'
 
-  const schemaItemList = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: 'Ofertas de Pneus - Motoval Setúbal',
-    url: 'https://motovalsetubal.com/ofertas',
-    numberOfItems: totalCount,
-    itemListElement: products.map((product, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'Product',
-        name: product.title,
-        description: product.description || '',
-        image: product.images?.[0] || '',
-        offers: {
-          '@type': 'Offer',
-          price: product.price,
-          priceCurrency: 'EUR',
-          availability: 'https://schema.org/InStock',
-          itemCondition: product.condition === 'Novo'
-            ? 'https://schema.org/NewCondition'
-            : 'https://schema.org/UsedCondition',
-        },
-      },
-    })),
-  }
-
   return (
     <main className="min-h-screen bg-[#0A0A0A] pt-20 pb-24">
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link rel="canonical" href="https://motovalsetubal.com/ofertas" />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:url" content="https://motovalsetubal.com/ofertas" />
-        {!loading && products.length > 0 && (
-          <script type="application/ld+json">{JSON.stringify(schemaItemList)}</script>
-        )}
-      </Helmet>
+      <Seo
+        title={pageTitle}
+        description={pageDescription}
+        path="/ofertas"
+        jsonLd={!loading && products.length > 0 ? itemListSchema(products, site) : undefined}
+      />
       <div className="max-w-7xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-12 pb-10">
           <SectionTitle
