@@ -19,7 +19,6 @@ export default function seoPlugin() {
     name: 'motoval-seo',
     transformIndexHtml(html) {
       const tags = [
-        meta({ name: 'description', content: homeDesc }),
         meta({ property: 'og:type', content: 'website' }),
         meta({ property: 'og:title', content: `${site.name} | Especialistas em Pneus para Carros e Motos` }),
         meta({ property: 'og:description', content: homeDesc }),

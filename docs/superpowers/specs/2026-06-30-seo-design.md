@@ -84,7 +84,7 @@ Update placeholder email in `AdminPage.jsx` `LoginView` to `motoval.setubal@gmai
 `site.js` → `schema.js` builders → (build) `vite-plugin-seo` injects static HTML + sitemap; (runtime) `<Seo>` injects per-page tags. One source, two render paths.
 
 ## Trade-offs / notes
-- Per-page OG tags from Helmet may coexist with the static home defaults; JS-less scrapers see home defaults on internal pages (acceptable). Google renders JS and sees correct per-page tags.
+- **Tag ownership (post-review refinement).** To avoid duplicate/conflicting head tags (Helmet does not remove static tags it did not render), each tag has exactly one owner: the build plugin emits `og:*`/`twitter:*` + business/website JSON-LD statically (the only copy JS-less social scrapers can read; home values on every route is an inherent SPA limitation without SSR); the `<Seo>` component owns `<title>`, `meta description`, `canonical`, and per-page JSON-LD (consumed by JS-rendering crawlers). No static `canonical` or `meta description` remains in `index.html`.
 - `aggregateRating.reviewCount = 300` must reflect genuine reviews (owner-confirmed) to comply with rich-results policy.
 - No SSR is introduced; scope is metadata/structured-data centralization only. Per-product pages explicitly out of scope.
 
