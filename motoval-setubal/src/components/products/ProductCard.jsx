@@ -54,16 +54,17 @@ export default function ProductCard({ product }) {
 
           <div className="mt-auto pt-3 border-t border-[#2D2D2D] flex items-center justify-between">
             <span className="text-[#FBE013] font-bold text-lg">{product.price}</span>
-            <a
-              href={`https://wa.me/351934803632?text=${whatsappMsg}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                window.open(`https://wa.me/351934803632?text=${whatsappMsg}`, '_blank', 'noopener,noreferrer')
+              }}
               className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium px-3 py-2 rounded-lg transition-colors min-h-[40px]"
             >
               <MessageCircle className="w-4 h-4" />
               Contactar
-            </a>
+            </button>
           </div>
         </div>
       </Link>
