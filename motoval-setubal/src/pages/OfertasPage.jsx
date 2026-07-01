@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { MessageCircle, Tag, Ruler, Award } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Seo from '../components/Seo'
 import { itemListSchema } from '../lib/seo/schema'
@@ -7,82 +7,9 @@ import { site } from '../data/site'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
-import Lightbox from '../components/products/Lightbox'
-import ProductImageGallery from '../components/products/ProductImageGallery'
+import ProductCard from '../components/products/ProductCard'
 
 const PAGE_SIZE = 9
-
-// ─── Card ─────────────────────────────────────────────────────────────────────
-
-function ProductCard({ product }) {
-  const [lightboxIndex, setLightboxIndex] = useState(null)
-
-  const whatsappMsg = encodeURIComponent(
-    `Olá! Tenho interesse no anúncio: "${product.title}"${product.tire_size ? ` (${product.tire_size})` : ''} pelo preço de ${product.price}. Poderia dar mais informações?`
-  )
-
-  return (
-    <>
-      <div className="bg-[#141414] border border-[#2D2D2D] rounded-xl overflow-hidden hover:border-[#FBE013]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col">
-        <ProductImageGallery
-          images={product.images}
-          title={product.title}
-          onOpen={(index) => setLightboxIndex(index)}
-        />
-
-        <div className="p-5 flex flex-col flex-1 gap-3">
-          <div>
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#FBE013] bg-[#FBE013]/10 px-2 py-1 rounded-full mb-2">
-              <Tag className="w-3 h-3" />
-              {product.condition || 'Usados'}
-            </span>
-            <h3 className="text-white font-semibold text-base leading-snug">{product.title}</h3>
-          </div>
-
-          <div className="flex flex-wrap gap-2 text-sm text-[#9CA3AF]">
-            {product.tire_size && (
-              <span className="flex items-center gap-1">
-                <Ruler className="w-3.5 h-3.5" />
-                {product.tire_size}
-              </span>
-            )}
-            {product.brand && (
-              <span className="flex items-center gap-1">
-                <Award className="w-3.5 h-3.5" />
-                {product.brand}
-              </span>
-            )}
-          </div>
-
-          {product.description && (
-            <p className="text-[#9CA3AF] text-sm leading-relaxed">{product.description}</p>
-          )}
-
-          <div className="mt-auto pt-3 border-t border-[#2D2D2D] flex items-center justify-between">
-            <span className="text-[#FBE013] font-bold text-lg">{product.price}</span>
-            <a
-              href={`https://wa.me/351934803632?text=${whatsappMsg}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium px-3 py-2 rounded-lg transition-colors min-h-[40px]"
-            >
-              <MessageCircle className="w-4 h-4" />
-              Contactar
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {lightboxIndex !== null && product.images?.length > 0 && (
-        <Lightbox
-          images={product.images}
-          initialIndex={lightboxIndex}
-          onClose={() => setLightboxIndex(null)}
-        />
-      )}
-    </>
-  )
-}
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
