@@ -18,10 +18,11 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     let cancelled = false
-    setStatus('loading')
-    setProduct(null)
 
     async function fetchProduct() {
+      setStatus('loading')
+      setProduct(null)
+
       const { data: candidates, error: listError } = await supabase
         .from('products')
         .select('id, title')
