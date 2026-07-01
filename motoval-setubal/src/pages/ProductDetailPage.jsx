@@ -6,6 +6,7 @@ import Seo from '../components/Seo'
 import { productSchema, breadcrumbSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { productSlug } from '../lib/slug'
+import { productWhatsappUrl } from '../lib/whatsapp'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import ProductImageGallery from '../components/products/ProductImageGallery'
 import Lightbox from '../components/products/Lightbox'
@@ -97,9 +98,6 @@ export default function ProductDetailPage() {
     )
   }
 
-  const whatsappMsg = encodeURIComponent(
-    `Olá! Tenho interesse no anúncio: "${product.title}"${product.tire_size ? ` (${product.tire_size})` : ''} pelo preço de ${product.price}. Poderia dar mais informações?`
-  )
   const slugForProduct = productSlug(product)
 
   return (
@@ -173,7 +171,7 @@ export default function ProductDetailPage() {
             <div className="mt-auto pt-4 border-t border-[#2D2D2D] flex items-center justify-between">
               <span className="text-[#FBE013] font-bold text-2xl">{product.price}</span>
               <a
-                href={`https://wa.me/351934803632?text=${whatsappMsg}`}
+                href={productWhatsappUrl(product)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium px-4 py-3 rounded-lg transition-colors min-h-[44px]"

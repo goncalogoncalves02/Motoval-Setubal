@@ -4,13 +4,10 @@ import { MessageCircle, Tag, Ruler, Award } from 'lucide-react'
 import ProductImageGallery from './ProductImageGallery'
 import Lightbox from './Lightbox'
 import { productSlug } from '../../lib/slug'
+import { productWhatsappUrl } from '../../lib/whatsapp'
 
 export default function ProductCard({ product }) {
   const [lightboxIndex, setLightboxIndex] = useState(null)
-
-  const whatsappMsg = encodeURIComponent(
-    `Olá! Tenho interesse no anúncio: "${product.title}"${product.tire_size ? ` (${product.tire_size})` : ''} pelo preço de ${product.price}. Poderia dar mais informações?`
-  )
 
   return (
     <>
@@ -58,7 +55,7 @@ export default function ProductCard({ product }) {
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
-                window.open(`https://wa.me/351934803632?text=${whatsappMsg}`, '_blank', 'noopener,noreferrer')
+                window.open(productWhatsappUrl(product), '_blank', 'noopener,noreferrer')
               }}
               className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white text-sm font-medium px-3 py-2 rounded-lg transition-colors min-h-[40px]"
             >
