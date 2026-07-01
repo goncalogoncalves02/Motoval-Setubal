@@ -112,6 +112,7 @@ export function breadcrumbSchema(items, site) {
 
 export function productSchema(product) {
   return {
+    '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.title,
     description: product.description || '',

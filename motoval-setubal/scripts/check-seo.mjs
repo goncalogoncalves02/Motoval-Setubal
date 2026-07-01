@@ -28,6 +28,7 @@ check('breadcrumb builds', breadcrumbSchema([{ name: 'X', path: '/x' }], site).i
 
 const novo = productSchema({ title: 'T', price: '80€', condition: 'Novos', images: [] }, site)
 check('Novos -> NewCondition', novo.offers.itemCondition === 'https://schema.org/NewCondition')
+check('productSchema has @context (used standalone on product detail pages)', novo['@context'] === 'https://schema.org')
 const usado = productSchema({ title: 'T', price: '80€', condition: 'Usados', images: [] }, site)
 check('Usados -> UsedCondition', usado.offers.itemCondition === 'https://schema.org/UsedCondition')
 
