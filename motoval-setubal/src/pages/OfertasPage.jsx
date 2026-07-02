@@ -6,6 +6,7 @@ import Seo from '../components/Seo'
 import { itemListSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { PRICE_BUCKETS } from '../lib/priceBuckets'
+import { escapeOrValue } from '../lib/postgrestFilter'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
@@ -94,8 +95,7 @@ export default function OfertasPage() {
 
       if (selectedBrands.length > 0) {
         // ilike without wildcards is a case-insensitive exact match.
-        // Assumes brand names never contain ',' or ')' (true for current data).
-        query = query.or(selectedBrands.map((b) => `brand.ilike.${b}`).join(','))
+        query = query.or(selectedBrands.map((b) => `brand.ilike.${escapeOrValue(b)}`).join(','))
       }
       if (selectedSizes.length > 0) {
         query = query.in('tire_size', selectedSizes)
