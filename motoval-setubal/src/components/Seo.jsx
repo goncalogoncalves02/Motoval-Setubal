@@ -8,12 +8,15 @@ import { site } from '../data/site'
 export default function Seo({ title, description, path = '', jsonLd, noindex = false }) {
   const url = `${site.siteUrl}${path}`
   const blocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
+  const robots = noindex
+    ? 'noindex,follow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 
   return (
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
-      {noindex && <meta name="robots" content="noindex,follow" />}
+      <meta name="robots" content={robots} />
       <link rel="canonical" href={url} />
       {blocks.map((b, i) => (
         <script key={i} type="application/ld+json">{JSON.stringify(b)}</script>
