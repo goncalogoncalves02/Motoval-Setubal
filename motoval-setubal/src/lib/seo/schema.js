@@ -119,7 +119,7 @@ export function productSchema(product) {
     image: product.images?.[0] || '',
     offers: {
       '@type': 'Offer',
-      price: product.price,
+      price: product.price_amount,
       priceCurrency: 'EUR',
       availability: 'https://schema.org/InStock',
       itemCondition:

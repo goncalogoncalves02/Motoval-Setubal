@@ -26,10 +26,10 @@ check('website url', websiteSchema(site).url === 'https://motovalsetubal.com')
 check('faq has entries', faqSchema(site.faq).mainEntity.length === site.faq.length)
 check('breadcrumb builds', breadcrumbSchema([{ name: 'X', path: '/x' }], site).itemListElement[0].item === 'https://motovalsetubal.com/x')
 
-const novo = productSchema({ title: 'T', price: '80€', condition: 'Novos', images: [] }, site)
+const novo = productSchema({ title: 'T', price_amount: 80, condition: 'Novos', images: [] }, site)
 check('Novos -> NewCondition', novo.offers.itemCondition === 'https://schema.org/NewCondition')
 check('productSchema has @context (used standalone on product detail pages)', novo['@context'] === 'https://schema.org')
-const usado = productSchema({ title: 'T', price: '80€', condition: 'Usados', images: [] }, site)
+const usado = productSchema({ title: 'T', price_amount: 80, condition: 'Usados', images: [] }, site)
 check('Usados -> UsedCondition', usado.offers.itemCondition === 'https://schema.org/UsedCondition')
 
 // Every JSON-LD must be valid JSON (no undefined/circular)
