@@ -131,14 +131,14 @@ export default function OfertasPage() {
     return () => { cancelled = true }
   }, [currentPage, selectedBrands, selectedSizes, selectedConditions, selectedPriceBucket])
 
-  function updateFilters(patch) {
+  function updateFilters(patch, { resetPage = true } = {}) {
     const next = new URLSearchParams(searchParams)
     for (const [key, value] of Object.entries(patch)) {
       const isEmpty = value == null || (Array.isArray(value) && value.length === 0)
       if (isEmpty) next.delete(key)
-      else next.set(key, Array.isArray(value) ? value.join(',') : value)
+      else next.set(key, Array.isArray(value) ? value.join(',') : String(value))
     }
-    next.delete('pagina')
+    if (resetPage) next.delete('pagina')
     setSearchParams(next, { replace: true })
   }
 
@@ -160,10 +160,7 @@ export default function OfertasPage() {
   }
 
   function handlePageChange(page) {
-    const next = new URLSearchParams(searchParams)
-    if (page <= 1) next.delete('pagina')
-    else next.set('pagina', String(page))
-    setSearchParams(next, { replace: true })
+    updateFilters({ pagina: page > 1 ? String(page) : null }, { resetPage: false })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
