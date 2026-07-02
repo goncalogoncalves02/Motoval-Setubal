@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
@@ -13,7 +12,6 @@ import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
   return (
-    <HelmetProvider>
     <AuthProvider>
       <BrowserRouter>
         <ScrollToTop />
@@ -30,7 +28,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
-    </HelmetProvider>
   );
 }
 
