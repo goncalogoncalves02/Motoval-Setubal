@@ -142,26 +142,14 @@ export default function OfertasPage() {
     setSearchParams(next, { replace: true })
   }
 
-  function toggleBrand(brand) {
-    const next = selectedBrands.includes(brand)
-      ? selectedBrands.filter((b) => b !== brand)
-      : [...selectedBrands, brand]
-    updateFilters({ marca: next })
+  function toggleListFilter(key, current, value) {
+    const next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value]
+    updateFilters({ [key]: next })
   }
 
-  function toggleSize(size) {
-    const next = selectedSizes.includes(size)
-      ? selectedSizes.filter((s) => s !== size)
-      : [...selectedSizes, size]
-    updateFilters({ medida: next })
-  }
-
-  function toggleCondition(condition) {
-    const next = selectedConditions.includes(condition)
-      ? selectedConditions.filter((c) => c !== condition)
-      : [...selectedConditions, condition]
-    updateFilters({ condicao: next })
-  }
+  const toggleBrand = (brand) => toggleListFilter('marca', selectedBrands, brand)
+  const toggleSize = (size) => toggleListFilter('medida', selectedSizes, size)
+  const toggleCondition = (condition) => toggleListFilter('condicao', selectedConditions, condition)
 
   function selectPriceBucket(bucketId) {
     updateFilters({ preco: selectedPriceBucket === bucketId ? null : bucketId })
