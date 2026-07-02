@@ -7,6 +7,7 @@ import { productSchema, breadcrumbSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { productSlug } from '../lib/slug'
 import { productWhatsappUrl } from '../lib/whatsapp'
+import { formatPrice } from '../lib/price'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import ProductImageGallery from '../components/products/ProductImageGallery'
 import Lightbox from '../components/products/Lightbox'
@@ -103,8 +104,8 @@ export default function ProductDetailPage() {
   return (
     <main className="min-h-screen bg-[#0A0A0A] pt-20 pb-24">
       <Seo
-        title={`${product.title} - ${product.price} | Motoval Setúbal`}
-        description={`${product.title}${product.tire_size ? ` (${product.tire_size})` : ''} por ${product.price}. Pneus ${product.condition === 'Novos' ? 'novos' : 'usados'} em Palmela, contacta-nos via WhatsApp.`}
+        title={`${product.title} - ${formatPrice(product.price_amount)} | Motoval Setúbal`}
+        description={`${product.title}${product.tire_size ? ` (${product.tire_size})` : ''} por ${formatPrice(product.price_amount)}. Pneus ${product.condition === 'Novos' ? 'novos' : 'usados'} em Palmela, contacta-nos via WhatsApp.`}
         path={`/ofertas/${slugForProduct}`}
         jsonLd={[
           productSchema(product),
@@ -169,7 +170,7 @@ export default function ProductDetailPage() {
             )}
 
             <div className="mt-auto pt-4 border-t border-[#2D2D2D] flex items-center justify-between">
-              <span className="text-[#FBE013] font-bold text-2xl">{product.price}</span>
+              <span className="text-[#FBE013] font-bold text-2xl">{formatPrice(product.price_amount)}</span>
               <a
                 href={productWhatsappUrl(product)}
                 target="_blank"
