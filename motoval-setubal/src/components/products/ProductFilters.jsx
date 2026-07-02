@@ -1,32 +1,27 @@
 import { useState } from 'react'
-import { SlidersHorizontal, X } from 'lucide-react'
+import { SlidersHorizontal, X, Check } from 'lucide-react'
 import { PRICE_BUCKETS } from '../../lib/priceBuckets'
+import FilterDropdown from './FilterDropdown'
 
 const CONDITIONS = ['Novos', 'Usados']
 
-function FilterChip({ active, onClick, children }) {
+function OptionRow({ label, checked, onClick, shape = 'checkbox' }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-pressed={active}
-      className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors min-h-[44px] ${
-        active
-          ? 'bg-[#FBE013] border-[#FBE013] text-[#0A0A0A] font-semibold'
-          : 'border-[#2D2D2D] text-[#9CA3AF] hover:border-[#FBE013]/50 hover:text-white'
-      }`}
+      aria-pressed={checked}
+      className="w-full flex items-center gap-2 px-2 py-2 rounded-md text-sm text-left text-white hover:bg-[#1F1F1F] transition-colors min-h-[40px]"
     >
-      {children}
+      <span
+        className={`flex items-center justify-center w-4 h-4 border shrink-0 ${
+          shape === 'radio' ? 'rounded-full' : 'rounded'
+        } ${checked ? 'bg-[#FBE013] border-[#FBE013]' : 'border-[#4A4A4A]'}`}
+      >
+        {checked && <Check className="w-3 h-3 text-[#0A0A0A]" />}
+      </span>
+      {label}
     </button>
-  )
-}
-
-function FilterGroup({ label, children }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <span className="text-[#9CA3AF] text-xs font-medium uppercase tracking-wide">{label}</span>
-      <div className="flex flex-wrap gap-2">{children}</div>
-    </div>
   )
 }
 
@@ -44,8 +39,13 @@ export default function ProductFilters({
   onClear,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [openFilter, setOpenFilter] = useState(null)
   const activeCount =
     selectedBrands.length + selectedSizes.length + selectedConditions.length + (selectedPriceBucket ? 1 : 0)
+
+  function toggleOpenFilter(key) {
+    setOpenFilter((current) => (current === key ? null : key))
+  }
 
   return (
     <div className="mb-8">
@@ -67,58 +67,85 @@ export default function ProductFilters({
         </button>
       </div>
 
-      <div
-        className={`${mobileOpen ? 'flex' : 'hidden'} sm:flex flex-col gap-5 bg-[#141414] border border-[#2D2D2D] rounded-xl p-4 sm:p-5`}
-      >
+      <div className={`${mobileOpen ? 'flex' : 'hidden'} sm:flex flex-wrap items-center gap-3`}>
         {brandOptions.length > 0 && (
-          <FilterGroup label="Marca">
+          <FilterDropdown
+            label="Marca"
+            count={selectedBrands.length}
+            isOpen={openFilter === 'marca'}
+            onToggle={() => toggleOpenFilter('marca')}
+            onClose={() => setOpenFilter(null)}
+          >
             {brandOptions.map((brand) => (
-              <FilterChip key={brand} active={selectedBrands.includes(brand)} onClick={() => onToggleBrand(brand)}>
-                {brand}
-              </FilterChip>
+              <OptionRow
+                key={brand}
+                label={brand}
+                checked={selectedBrands.includes(brand)}
+                onClick={() => onToggleBrand(brand)}
+              />
             ))}
-          </FilterGroup>
+          </FilterDropdown>
         )}
 
         {sizeOptions.length > 0 && (
-          <FilterGroup label="Medida">
+          <FilterDropdown
+            label="Medida"
+            count={selectedSizes.length}
+            isOpen={openFilter === 'medida'}
+            onToggle={() => toggleOpenFilter('medida')}
+            onClose={() => setOpenFilter(null)}
+          >
             {sizeOptions.map((size) => (
-              <FilterChip key={size} active={selectedSizes.includes(size)} onClick={() => onToggleSize(size)}>
-                {size}
-              </FilterChip>
+              <OptionRow
+                key={size}
+                label={size}
+                checked={selectedSizes.includes(size)}
+                onClick={() => onToggleSize(size)}
+              />
             ))}
-          </FilterGroup>
+          </FilterDropdown>
         )}
 
-        <FilterGroup label="Condição">
+        <FilterDropdown
+          label="Condição"
+          count={selectedConditions.length}
+          isOpen={openFilter === 'condicao'}
+          onToggle={() => toggleOpenFilter('condicao')}
+          onClose={() => setOpenFilter(null)}
+        >
           {CONDITIONS.map((condition) => (
-            <FilterChip
+            <OptionRow
               key={condition}
-              active={selectedConditions.includes(condition)}
+              label={condition}
+              checked={selectedConditions.includes(condition)}
               onClick={() => onToggleCondition(condition)}
-            >
-              {condition}
-            </FilterChip>
+            />
           ))}
-        </FilterGroup>
+        </FilterDropdown>
 
-        <FilterGroup label="Preço">
+        <FilterDropdown
+          label="Preço"
+          count={selectedPriceBucket ? 1 : 0}
+          isOpen={openFilter === 'preco'}
+          onToggle={() => toggleOpenFilter('preco')}
+          onClose={() => setOpenFilter(null)}
+        >
           {PRICE_BUCKETS.map((bucket) => (
-            <FilterChip
+            <OptionRow
               key={bucket.id}
-              active={selectedPriceBucket === bucket.id}
+              label={bucket.label}
+              checked={selectedPriceBucket === bucket.id}
               onClick={() => onSelectPriceBucket(bucket.id)}
-            >
-              {bucket.label}
-            </FilterChip>
+              shape="radio"
+            />
           ))}
-        </FilterGroup>
+        </FilterDropdown>
 
         {activeCount > 0 && (
           <button
             type="button"
             onClick={onClear}
-            className="self-start flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
+            className="flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
           >
             <X className="w-3.5 h-3.5" />
             Limpar filtros
