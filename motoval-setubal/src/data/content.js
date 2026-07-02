@@ -1,5 +1,8 @@
 import { Car, Bike, Gauge, CircleDot, Wrench, ShoppingCart } from 'lucide-react';
 import { WhatsappIcon } from '../components/icons/WhatsappIcon';
+import { site } from './site';
+
+const serviceIcons = { Car, Bike, Gauge, CircleDot, Wrench, ShoppingCart };
 
 export const hero = {
   headline: "Especialistas em Pneus para Carros e Motos",
@@ -21,50 +24,13 @@ export const hero = {
 export const services = {
   title: "Os Nossos Serviços",
   subtitle: "Soluções completas para o seu veículo, com qualidade e preços justos",
-  items: [
-    {
-      id: 1,
-      icon: Car,
-      title: "Montagem de Pneus - Carros",
-      description: "Jantes de aço, alumínio, 4x4 e runflat",
-      price: "Desde 15€"
-    },
-    {
-      id: 2,
-      icon: Bike,
-      title: "Montagem de Pneus - Motos",
-      description: "Todas as cilindradas e estilos",
-      price: "Desde 25€"
-    },
-    {
-      id: 3,
-      icon: Gauge,
-      title: "Alinhamento & Paralelismo",
-      description: "Controlo completo da geometria",
-      price: "Desde 25€"
-    },
-    {
-      id: 4,
-      icon: CircleDot,
-      title: "Equilibragem & Calibragem",
-      description: "Rodagem suave e segura",
-      price: "Apenas 5€ por roda"
-    },
-    {
-      id: 5,
-      icon: Wrench,
-      title: "Reparação de Furos",
-      description: "Solução rápida e duradoura",
-      price: "Desde 10€"
-    },
-    {
-      id: 6,
-      icon: ShoppingCart,
-      title: "Venda de Pneus",
-      description: "Todas as marcas | Stock permanente",
-      price: "Sob orçamento"
-    }
-  ]
+  items: site.services.map((s, i) => ({
+    id: i + 1,
+    icon: serviceIcons[s.iconName],
+    title: s.title,
+    description: s.description,
+    price: s.price,
+  })),
 };
 
 export const about = {
@@ -106,16 +72,8 @@ export const testimonials = {
 export const schedule = {
   title: "Horário de Funcionamento",
   subtitle: "Estamos aqui para o ajudar. Recomendamos marcação, especialmente aos sábados.",
-  hours: [
-    { day: "Segunda", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Terça", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Quarta", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Quinta", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Sexta", hours: "10:00-13:30 | 15:00-19:30" },
-    { day: "Sábado", hours: "10:00-13:30" },
-    { day: "Domingo", hours: "Fechado" }
-  ],
-  note: "Recomendamos marcação, especialmente aos sábados. Atendemos urgências conforme disponibilidade."
+  hours: site.scheduleHours,
+  note: site.scheduleNote,
 };
 
 export const contact = {
@@ -140,8 +98,8 @@ export const contact = {
       id: "email",
       icon: "Mail",
       label: "Email",
-      value: "motoval.setubal@gmail.com",
-      href: "mailto:motoval.setubal@gmail.com"
+      value: site.email,
+      href: `mailto:${site.email}`
     },
     {
       id: "address",
@@ -156,33 +114,7 @@ export const contact = {
 
 export const faq = {
   title: "Perguntas Frequentes",
-  items: [
-    {
-      id: 1,
-      question: "Preciso de marcação?",
-      answer: "Recomendada, especialmente aos sábados. Atendemos urgências conforme disponibilidade."
-    },
-    {
-      id: 2,
-      question: "Fazem montagem de pneus de moto?",
-      answer: "Sim, todos os tipos desde 25€. Trabalhamos com todas as cilindradas e estilos de motos."
-    },
-    {
-      id: 3,
-      question: "Quanto custa o alinhamento?",
-      answer: "Dianteiro 25€, dianteiro+traseiro 30€. Controlo completo da geometria do veículo."
-    },
-    {
-      id: 4,
-      question: "Aceitam cartão?",
-      answer: "Sim, crédito, débito e pagamentos NFC. Para sua comodidade aceitamos várias formas de pagamento."
-    },
-    {
-      id: 5,
-      question: "Têm pneus em stock?",
-      answer: "Sim, grande diversidade. Referências especiais em 2-3 dias."
-    }
-  ]
+  items: site.faq,
 };
 
 export const footer = {

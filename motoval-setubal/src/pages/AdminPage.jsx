@@ -83,7 +83,7 @@ function LoginView() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full bg-[#1A1A1A] border border-[#2D2D2D] text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-[#FBE013] transition-colors"
-              placeholder="motovalsetubal@gmail.com"
+              placeholder="motoval.setubal@gmail.com"
             />
           </div>
           <div>

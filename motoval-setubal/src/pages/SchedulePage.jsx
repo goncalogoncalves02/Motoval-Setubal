@@ -1,5 +1,7 @@
-import { Helmet } from 'react-helmet-async';
 import { Clock, Calendar, Phone, MessageCircle } from 'lucide-react';
+import Seo from '../components/Seo';
+import { breadcrumbSchema } from '../lib/seo/schema';
+import { site } from '../data/site';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import SectionTitle from '../components/ui/SectionTitle';
 import { schedule } from '../data/content';
@@ -8,13 +10,12 @@ import { WhatsappIcon } from '../components/icons/WhatsappIcon';
 const SchedulePage = () => {
   return (
     <div className="pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0A0A] min-h-screen mt-2">
-      <Helmet>
-        <title>Horário | Motoval Setúbal - Palmela</title>
-        <meta name="description" content="Horário da Motoval Setúbal em Palmela: Segunda a Sexta 10h-13h30 e 15h-19h30, Sábado 10h-13h30. Recomendamos marcação, especialmente aos sábados." />
-        <link rel="canonical" href="https://motovalsetubal.com/horario" />
-        <meta property="og:title" content="Horário | Motoval Setúbal" />
-        <meta property="og:url" content="https://motovalsetubal.com/horario" />
-      </Helmet>
+      <Seo
+        title="Horário | Motoval Setúbal - Palmela"
+        description="Horário da Motoval Setúbal em Palmela: Segunda a Sexta 10h-13h30 e 15h-19h30, Sábado 10h-13h30. Recomendamos marcação, especialmente aos sábados."
+        path="/horario"
+        jsonLd={breadcrumbSchema([{ name: 'Início', path: '/' }, { name: 'Horário', path: '/horario' }], site)}
+      />
       <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <AnimatedSection animation="fadeUp">
