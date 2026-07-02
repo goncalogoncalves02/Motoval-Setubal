@@ -10,7 +10,7 @@ function FilterChip({ active, onClick, children }) {
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors min-h-[40px] ${
+      className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors min-h-[44px] ${
         active
           ? 'bg-[#FBE013] border-[#FBE013] text-[#0A0A0A] font-semibold'
           : 'border-[#2D2D2D] text-[#9CA3AF] hover:border-[#FBE013]/50 hover:text-white'
