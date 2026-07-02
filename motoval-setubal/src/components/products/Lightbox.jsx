@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import useSwipe from '../../hooks/useSwipe'
 
 export default function Lightbox({ images, initialIndex, onClose }) {
   const [current, setCurrent] = useState(initialIndex)
+  const goNext = () => setCurrent((c) => (c + 1) % images.length)
+  const goPrev = () => setCurrent((c) => (c - 1 + images.length) % images.length)
+  const swipeHandlers = useSwipe(goNext, goPrev)
 
   useEffect(() => {
     function handleKey(e) {
@@ -23,6 +27,7 @@ export default function Lightbox({ images, initialIndex, onClose }) {
       <div
         className="relative max-w-4xl max-h-[90vh] w-full flex items-center justify-center"
         onClick={(e) => e.stopPropagation()}
+        {...(images.length > 1 ? swipeHandlers : null)}
       >
         <img
           src={images[current]}
@@ -41,14 +46,14 @@ export default function Lightbox({ images, initialIndex, onClose }) {
         {images.length > 1 && (
           <>
             <button
-              onClick={() => setCurrent((c) => (c - 1 + images.length) % images.length)}
+              onClick={goPrev}
               className="absolute left-2 bg-black/60 hover:bg-black/90 text-white rounded-full p-2 transition-colors"
               aria-label="Imagem anterior"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
-              onClick={() => setCurrent((c) => (c + 1) % images.length)}
+              onClick={goNext}
               className="absolute right-2 bg-black/60 hover:bg-black/90 text-white rounded-full p-2 transition-colors"
               aria-label="Próxima imagem"
             >
