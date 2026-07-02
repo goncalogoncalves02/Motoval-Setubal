@@ -3,6 +3,7 @@ import { LogOut, Plus, Pencil, Trash2, Eye, EyeOff, X, Upload, Loader2 } from 'l
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import Pagination from '../components/ui/Pagination'
+import { formatPrice } from '../lib/price'
 
 const PAGE_SIZE = 10
 
@@ -120,11 +121,11 @@ function LoginView() {
 
 // ─── Product Form ─────────────────────────────────────────────────────────────
 
-const EMPTY_FORM = { title: '', price: '', description: '', condition: 'Usados', tire_size: '', brand: '' }
+const EMPTY_FORM = { title: '', price_amount: '', description: '', condition: 'Usados', tire_size: '', brand: '' }
 
 function ProductForm({ product, onSave, onCancel }) {
   const [form, setForm] = useState(product
-    ? { title: product.title, price: product.price, description: product.description || '', condition: product.condition || 'Usados', tire_size: product.tire_size || '', brand: product.brand || '' }
+    ? { title: product.title, price_amount: product.price_amount, description: product.description || '', condition: product.condition || 'Usados', tire_size: product.tire_size || '', brand: product.brand || '' }
     : { ...EMPTY_FORM }
   )
   const [existingImages, setExistingImages] = useState(product?.images || [])
@@ -161,7 +162,7 @@ function ProductForm({ product, onSave, onCancel }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!form.title.trim() || !form.price.trim()) {
+    if (!form.title.trim() || form.price_amount === '' || Number(form.price_amount) < 0) {
       setError('Título e preço são obrigatórios.')
       return
     }
@@ -186,6 +187,7 @@ function ProductForm({ product, onSave, onCancel }) {
 
       const payload = {
         ...form,
+        price_amount: Number(form.price_amount),
         images: [...existingImages, ...uploadedUrls],
       }
 
@@ -239,14 +241,16 @@ function ProductForm({ product, onSave, onCancel }) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[#9CA3AF] text-sm mb-1.5">Preço *</label>
+              <label className="block text-[#9CA3AF] text-sm mb-1.5">Preço (€) *</label>
               <input
-                type="text"
-                value={form.price}
-                onChange={(e) => handleField('price', e.target.value)}
+                type="number"
+                min="0"
+                step="0.01"
+                value={form.price_amount}
+                onChange={(e) => handleField('price_amount', e.target.value)}
                 required
                 className={inputClass}
-                placeholder="Ex: 80€"
+                placeholder="Ex: 80"
               />
             </div>
             <div>
@@ -537,7 +541,7 @@ function Dashboard() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className="text-white font-medium text-sm leading-snug truncate">{product.title}</p>
-                  <p className="text-[#FBE013] text-sm font-semibold">{product.price}</p>
+                  <p className="text-[#FBE013] text-sm font-semibold">{formatPrice(product.price_amount)}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       product.is_active

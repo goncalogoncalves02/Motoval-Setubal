@@ -3,6 +3,7 @@ import { MessageCircle, Tag, Ruler, Award } from 'lucide-react'
 import ProductImageGallery from './ProductImageGallery'
 import { productSlug } from '../../lib/slug'
 import { productWhatsappUrl } from '../../lib/whatsapp'
+import { formatPrice } from '../../lib/price'
 
 export default function ProductCard({ product }) {
   return (
@@ -44,7 +45,7 @@ export default function ProductCard({ product }) {
         )}
 
         <div className="mt-auto pt-3 border-t border-[#2D2D2D] flex items-center justify-between">
-          <span className="text-[#FBE013] font-bold text-lg">{product.price}</span>
+          <span className="text-[#FBE013] font-bold text-lg">{formatPrice(product.price_amount)}</span>
           <button
             type="button"
             onClick={(e) => {

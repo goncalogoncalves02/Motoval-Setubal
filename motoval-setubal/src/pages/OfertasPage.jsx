@@ -1,15 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { MessageCircle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Seo from '../components/Seo'
 import { itemListSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
+import { PRICE_BUCKETS } from '../lib/priceBuckets'
+import { escapeOrValue } from '../lib/postgrestFilter'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
 import ProductCard from '../components/products/ProductCard'
+import ProductFilters from '../components/products/ProductFilters'
 
 const PAGE_SIZE = 9
+
+function parseListParam(value) {
+  return value.split(',').filter(Boolean)
+}
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
@@ -30,35 +38,129 @@ function SkeletonCard() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function OfertasPage() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
+  const [brandOptions, setBrandOptions] = useState([])
+  const [sizeOptions, setSizeOptions] = useState([])
+
+  const parsedPage = Math.floor(Number(searchParams.get('pagina')))
+  const currentPage = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1
+  const marcaParam = searchParams.get('marca') ?? ''
+  const medidaParam = searchParams.get('medida') ?? ''
+  const condicaoParam = searchParams.get('condicao') ?? ''
+  const precoParam = searchParams.get('preco')
+  const selectedPriceBucket = PRICE_BUCKETS.some((b) => b.id === precoParam) ? precoParam : null
+
+  // Memoized on the underlying URL param string so array identity stays
+  // stable across unrelated re-renders (e.g. brandOptions/sizeOptions
+  // loading) — otherwise the fetch effect below would refetch every render.
+  const selectedBrands = useMemo(() => parseListParam(marcaParam), [marcaParam])
+  const selectedSizes = useMemo(() => parseListParam(medidaParam), [medidaParam])
+  const selectedConditions = useMemo(() => parseListParam(condicaoParam), [condicaoParam])
+  const hasActiveFilters =
+    selectedBrands.length > 0 || selectedSizes.length > 0 || selectedConditions.length > 0 || !!selectedPriceBucket
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
 
+  // Filter options reflect ALL active products, independent of the current
+  // selection, so choosing a brand never hides other brands from the list.
   useEffect(() => {
+    async function fetchOptions() {
+      const { data } = await supabase
+        .from('products')
+        .select('brand, tire_size')
+        .eq('is_active', true)
+      if (!data) return
+
+      const brandMap = new Map()
+      const sizeSet = new Set()
+      for (const row of data) {
+        if (row.brand) {
+          const key = row.brand.trim().toLowerCase()
+          if (!brandMap.has(key)) brandMap.set(key, row.brand.trim())
+        }
+        if (row.tire_size) sizeSet.add(row.tire_size.trim())
+      }
+      setBrandOptions([...brandMap.values()].sort((a, b) => a.localeCompare(b, 'pt-PT')))
+      setSizeOptions([...sizeSet].sort((a, b) => a.localeCompare(b, 'pt-PT')))
+    }
+    fetchOptions()
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+
     async function fetchProducts() {
+      setLoading(true)
       const from = (currentPage - 1) * PAGE_SIZE
       const to = from + PAGE_SIZE - 1
-      const { data, count, error } = await supabase
-        .from('products')
-        .select('*', { count: 'exact' })
-        .eq('is_active', true)
+
+      let query = supabase.from('products').select('*', { count: 'exact' }).eq('is_active', true)
+
+      if (selectedBrands.length > 0) {
+        // ilike without wildcards is a case-insensitive exact match.
+        query = query.or(selectedBrands.map((b) => `brand.ilike.${escapeOrValue(b)}`).join(','))
+      }
+      if (selectedSizes.length > 0) {
+        query = query.in('tire_size', selectedSizes)
+      }
+      if (selectedConditions.length > 0) {
+        query = query.in('condition', selectedConditions)
+      }
+      const bucket = PRICE_BUCKETS.find((b) => b.id === selectedPriceBucket)
+      if (bucket) {
+        if (bucket.min != null) query = query.gt('price_amount', bucket.min)
+        if (bucket.max != null) query = query.lte('price_amount', bucket.max)
+      }
+
+      const { data, count, error } = await query
         .order('created_at', { ascending: false })
         .range(from, to)
 
+      if (cancelled) return
       if (!error) {
         setProducts(data || [])
         setTotalCount(count || 0)
       }
       setLoading(false)
     }
+
     fetchProducts()
-  }, [currentPage])
+    return () => { cancelled = true }
+  }, [currentPage, selectedBrands, selectedSizes, selectedConditions, selectedPriceBucket])
+
+  function updateFilters(patch, { resetPage = true } = {}) {
+    const next = new URLSearchParams(searchParams)
+    for (const [key, value] of Object.entries(patch)) {
+      const isEmpty = value == null || (Array.isArray(value) && value.length === 0)
+      if (isEmpty) next.delete(key)
+      else next.set(key, Array.isArray(value) ? value.join(',') : String(value))
+    }
+    if (resetPage) next.delete('pagina')
+    setSearchParams(next, { replace: true })
+  }
+
+  function toggleListFilter(key, current, value) {
+    const next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value]
+    updateFilters({ [key]: next })
+  }
+
+  const toggleBrand = (brand) => toggleListFilter('marca', selectedBrands, brand)
+  const toggleSize = (size) => toggleListFilter('medida', selectedSizes, size)
+  const toggleCondition = (condition) => toggleListFilter('condicao', selectedConditions, condition)
+
+  function selectPriceBucket(bucketId) {
+    updateFilters({ preco: selectedPriceBucket === bucketId ? null : bucketId })
+  }
+
+  function clearFilters() {
+    setSearchParams(new URLSearchParams(), { replace: true })
+  }
 
   function handlePageChange(page) {
-    setCurrentPage(page)
+    updateFilters({ pagina: page > 1 ? String(page) : null }, { resetPage: false })
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -79,6 +181,7 @@ export default function OfertasPage() {
         description={pageDescription}
         path="/ofertas"
         jsonLd={!loading && products.length > 0 ? itemListSchema(products, site) : undefined}
+        noindex={hasActiveFilters}
       />
       <div className="max-w-7xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-12 pb-10">
@@ -88,10 +191,41 @@ export default function OfertasPage() {
           />
         </AnimatedSection>
 
+        <ProductFilters
+          brandOptions={brandOptions}
+          sizeOptions={sizeOptions}
+          selectedBrands={selectedBrands}
+          selectedSizes={selectedSizes}
+          selectedConditions={selectedConditions}
+          selectedPriceBucket={selectedPriceBucket}
+          onToggleBrand={toggleBrand}
+          onToggleSize={toggleSize}
+          onToggleCondition={toggleCondition}
+          onSelectPriceBucket={selectPriceBucket}
+          onClear={clearFilters}
+        />
+
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(9)].map((_, i) => <SkeletonCard key={i} />)}
           </div>
+        ) : products.length === 0 && hasActiveFilters ? (
+          <AnimatedSection animation="fadeUp">
+            <div className="text-center py-24">
+              <div className="text-6xl mb-4">🔍</div>
+              <h2 className="text-white text-xl font-semibold mb-2">Nenhum artigo encontrado</h2>
+              <p className="text-[#9CA3AF] text-sm max-w-sm mx-auto mb-6">
+                Não há artigos que correspondam aos filtros selecionados.
+              </p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="inline-flex items-center gap-2 bg-[#FBE013] hover:bg-[#E5C800] text-black font-semibold px-5 py-3 rounded-lg transition-colors"
+              >
+                Limpar filtros
+              </button>
+            </div>
+          </AnimatedSection>
         ) : products.length === 0 ? (
           <AnimatedSection animation="fadeUp">
             <div className="text-center py-24">
