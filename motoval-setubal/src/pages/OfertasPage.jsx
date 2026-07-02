@@ -15,6 +15,10 @@ import ProductFilters from '../components/products/ProductFilters'
 
 const PAGE_SIZE = 9
 
+function parseListParam(value) {
+  return value.split(',').filter(Boolean)
+}
+
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
 function SkeletonCard() {
@@ -41,18 +45,20 @@ export default function OfertasPage() {
   const [brandOptions, setBrandOptions] = useState([])
   const [sizeOptions, setSizeOptions] = useState([])
 
-  const currentPage = Number(searchParams.get('pagina')) || 1
+  const parsedPage = Math.floor(Number(searchParams.get('pagina')))
+  const currentPage = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1
   const marcaParam = searchParams.get('marca') ?? ''
   const medidaParam = searchParams.get('medida') ?? ''
   const condicaoParam = searchParams.get('condicao') ?? ''
-  const selectedPriceBucket = searchParams.get('preco') || null
+  const precoParam = searchParams.get('preco')
+  const selectedPriceBucket = PRICE_BUCKETS.some((b) => b.id === precoParam) ? precoParam : null
 
   // Memoized on the underlying URL param string so array identity stays
   // stable across unrelated re-renders (e.g. brandOptions/sizeOptions
   // loading) — otherwise the fetch effect below would refetch every render.
-  const selectedBrands = useMemo(() => marcaParam.split(',').filter(Boolean), [marcaParam])
-  const selectedSizes = useMemo(() => medidaParam.split(',').filter(Boolean), [medidaParam])
-  const selectedConditions = useMemo(() => condicaoParam.split(',').filter(Boolean), [condicaoParam])
+  const selectedBrands = useMemo(() => parseListParam(marcaParam), [marcaParam])
+  const selectedSizes = useMemo(() => parseListParam(medidaParam), [medidaParam])
+  const selectedConditions = useMemo(() => parseListParam(condicaoParam), [condicaoParam])
   const hasActiveFilters =
     selectedBrands.length > 0 || selectedSizes.length > 0 || selectedConditions.length > 0 || !!selectedPriceBucket
 
