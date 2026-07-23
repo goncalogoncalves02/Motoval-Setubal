@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { SlidersHorizontal, X, Check } from 'lucide-react'
 import { PRICE_BUCKETS } from '../../lib/priceBuckets'
+import {
+  VEHICLE_FILTER_OPTIONS,
+  vehicleTypeFilterValue,
+} from '../../lib/vehicleType'
 import FilterDropdown from './FilterDropdown'
 
 const CONDITIONS = ['Novos', 'Usados']
@@ -32,16 +36,23 @@ export default function ProductFilters({
   selectedSizes,
   selectedConditions,
   selectedPriceBucket,
+  selectedVehicleType,
   onToggleBrand,
   onToggleSize,
   onToggleCondition,
   onSelectPriceBucket,
+  onSelectVehicleType,
   onClear,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openFilter, setOpenFilter] = useState(null)
+  const vehicleFilterActive = Boolean(vehicleTypeFilterValue(selectedVehicleType))
   const activeCount =
-    selectedBrands.length + selectedSizes.length + selectedConditions.length + (selectedPriceBucket ? 1 : 0)
+    selectedBrands.length +
+    selectedSizes.length +
+    selectedConditions.length +
+    (selectedPriceBucket ? 1 : 0) +
+    (vehicleFilterActive ? 1 : 0)
 
   function toggleOpenFilter(key) {
     setOpenFilter((current) => (current === key ? null : key))
@@ -68,6 +79,24 @@ export default function ProductFilters({
       </div>
 
       <div className={`${mobileOpen ? 'flex' : 'hidden'} sm:flex flex-wrap items-center gap-3`}>
+        <FilterDropdown
+          label="Veículo"
+          count={vehicleFilterActive ? 1 : 0}
+          isOpen={openFilter === 'veiculo'}
+          onToggle={() => toggleOpenFilter('veiculo')}
+          onClose={() => setOpenFilter(null)}
+        >
+          {VEHICLE_FILTER_OPTIONS.map((option) => (
+            <OptionRow
+              key={option.value}
+              label={option.label}
+              checked={selectedVehicleType === option.value}
+              onClick={() => onSelectVehicleType(option.value)}
+              shape="radio"
+            />
+          ))}
+        </FilterDropdown>
+
         {brandOptions.length > 0 && (
           <FilterDropdown
             label="Marca"

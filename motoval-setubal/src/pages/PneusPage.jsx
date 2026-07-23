@@ -7,6 +7,12 @@ import { itemListSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { PRICE_BUCKETS } from '../lib/priceBuckets'
 import { escapeOrValue } from '../lib/postgrestFilter'
+import {
+  applyVehicleTypeFilter,
+  normalizeVehicleParam,
+  toggleVehicleType,
+  vehicleTypeFilterValue,
+} from '../lib/vehicleType'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
@@ -51,7 +57,10 @@ export default function PneusPage() {
   const medidaParam = searchParams.get('medida') ?? ''
   const condicaoParam = searchParams.get('condicao') ?? ''
   const precoParam = searchParams.get('preco')
+  const vehicleParam = searchParams.get('veiculo')
   const selectedPriceBucket = PRICE_BUCKETS.some((b) => b.id === precoParam) ? precoParam : null
+  const selectedVehicleType = normalizeVehicleParam(vehicleParam)
+  const selectedVehicleFilter = vehicleTypeFilterValue(selectedVehicleType)
 
   // Memoized on the underlying URL param string so array identity stays
   // stable across unrelated re-renders (e.g. brandOptions/sizeOptions
@@ -60,7 +69,11 @@ export default function PneusPage() {
   const selectedSizes = useMemo(() => parseListParam(medidaParam), [medidaParam])
   const selectedConditions = useMemo(() => parseListParam(condicaoParam), [condicaoParam])
   const hasActiveFilters =
-    selectedBrands.length > 0 || selectedSizes.length > 0 || selectedConditions.length > 0 || !!selectedPriceBucket
+    selectedBrands.length > 0 ||
+    selectedSizes.length > 0 ||
+    selectedConditions.length > 0 ||
+    !!selectedPriceBucket ||
+    !!selectedVehicleFilter
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
 
@@ -102,6 +115,7 @@ export default function PneusPage() {
       const to = from + PAGE_SIZE - 1
 
       let query = supabase.from('products').select('*', { count: 'exact' }).eq('is_active', true)
+      query = applyVehicleTypeFilter(query, selectedVehicleType)
 
       if (selectedBrands.length > 0) {
         // ilike without wildcards is a case-insensitive exact match.
@@ -133,7 +147,7 @@ export default function PneusPage() {
 
     fetchProducts()
     return () => { cancelled = true }
-  }, [currentPage, selectedBrands, selectedSizes, selectedConditions, selectedPriceBucket])
+  }, [currentPage, selectedBrands, selectedSizes, selectedConditions, selectedPriceBucket, selectedVehicleType])
 
   function updateFilters(patch, { resetPage = true } = {}) {
     const next = new URLSearchParams(searchParams)
@@ -159,8 +173,13 @@ export default function PneusPage() {
     updateFilters({ preco: selectedPriceBucket === bucketId ? null : bucketId })
   }
 
+  function selectVehicleType(vehicleType) {
+    const next = toggleVehicleType(selectedVehicleType, vehicleType)
+    updateFilters({ veiculo: next })
+  }
+
   function clearFilters() {
-    setSearchParams(new URLSearchParams(), { replace: true })
+    setSearchParams(new URLSearchParams({ veiculo: 'todos' }), { replace: true })
   }
 
   function handlePageChange(page) {
@@ -202,10 +221,12 @@ export default function PneusPage() {
           selectedSizes={selectedSizes}
           selectedConditions={selectedConditions}
           selectedPriceBucket={selectedPriceBucket}
+          selectedVehicleType={selectedVehicleType}
           onToggleBrand={toggleBrand}
           onToggleSize={toggleSize}
           onToggleCondition={toggleCondition}
           onSelectPriceBucket={selectPriceBucket}
+          onSelectVehicleType={selectVehicleType}
           onClear={clearFilters}
         />
 

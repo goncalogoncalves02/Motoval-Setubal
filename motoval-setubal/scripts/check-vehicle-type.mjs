@@ -87,6 +87,22 @@ check(
 check('migration backfills Battlax 180 as mota', migration.includes('Bridgestone Battlax T33 180/55 ZR17'))
 check('migration backfills Battlax 120 as mota', migration.includes('Bridgestone Battlax T33 120/70 ZR17'))
 
+const read = (relativePath) =>
+  readFileSync(new URL(relativePath, import.meta.url), 'utf8')
+
+const pneusPage = read('../src/pages/PneusPage.jsx')
+const productFilters = read('../src/components/products/ProductFilters.jsx')
+
+check('page reads veiculo from URL', pneusPage.includes("searchParams.get('veiculo')"))
+check('page normalizes vehicle param', pneusPage.includes('normalizeVehicleParam(vehicleParam)'))
+check('page applies vehicle query filter', pneusPage.includes('applyVehicleTypeFilter(query, selectedVehicleType)'))
+check('page vehicle filter participates in active state', pneusPage.includes('selectedVehicleFilter'))
+check('clear filters stores todos', pneusPage.includes("new URLSearchParams({ veiculo: 'todos' })"))
+check('page passes vehicle props', pneusPage.includes('selectedVehicleType={selectedVehicleType}'))
+check('filters expose Veículo dropdown', productFilters.includes('label="Veículo"'))
+check('filters render all vehicle options', productFilters.includes('VEHICLE_FILTER_OPTIONS.map'))
+check('filters use radio behavior', productFilters.includes('shape="radio"'))
+
 if (failures) {
   console.error(`\n${failures} check(s) failed`)
   process.exit(1)
