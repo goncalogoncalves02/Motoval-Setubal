@@ -97,7 +97,7 @@ export const site = {
 
   routes: [
     { path: '/', changefreq: 'weekly', priority: '1.0' },
-    { path: '/ofertas', changefreq: 'daily', priority: '0.9' },
+    { path: '/pneus', changefreq: 'daily', priority: '0.9' },
     { path: '/contacto', changefreq: 'monthly', priority: '0.7' },
     { path: '/faq', changefreq: 'monthly', priority: '0.6' },
     { path: '/horario', changefreq: 'monthly', priority: '0.5' },

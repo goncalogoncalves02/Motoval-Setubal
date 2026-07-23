@@ -134,8 +134,8 @@ export function itemListSchema(products, site) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Ofertas de Pneus - Motoval Setúbal',
-    url: `${site.siteUrl}/ofertas`,
+    name: 'Pneus Novos e Usados - Motoval Setúbal',
+    url: `${site.siteUrl}/pneus`,
     numberOfItems: products.length,
     itemListElement: products.map((product, i) => ({
       '@type': 'ListItem',

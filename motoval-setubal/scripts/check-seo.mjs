@@ -5,6 +5,7 @@ import {
   faqSchema,
   breadcrumbSchema,
   productSchema,
+  itemListSchema,
 } from '../src/lib/seo/schema.js'
 
 let failures = 0
@@ -31,6 +32,17 @@ check('Novos -> NewCondition', novo.offers.itemCondition === 'https://schema.org
 check('productSchema has @context (used standalone on product detail pages)', novo['@context'] === 'https://schema.org')
 const usado = productSchema({ title: 'T', price_amount: 80, condition: 'Usados', images: [] }, site)
 check('Usados -> UsedCondition', usado.offers.itemCondition === 'https://schema.org/UsedCondition')
+
+const pneusRoute = site.routes.find((route) => route.path === '/pneus')
+check('sitemap source includes /pneus', pneusRoute?.changefreq === 'daily' && pneusRoute?.priority === '0.9')
+check('sitemap source excludes /ofertas', !site.routes.some((route) => route.path === '/ofertas'))
+
+const pneusList = itemListSchema(
+  [{ id: 1, title: 'Pneu 205/55 R16', price_amount: 50, condition: 'Usados', images: [] }],
+  site
+)
+check('item list uses Pneus name', pneusList.name === 'Pneus Novos e Usados - Motoval Setúbal')
+check('item list uses /pneus URL', pneusList.url === 'https://motovalsetubal.com/pneus')
 
 // Every JSON-LD must be valid JSON (no undefined/circular)
 for (const [name, obj] of [['biz', biz], ['website', websiteSchema(site)], ['faq', faqSchema(site.faq)]]) {
