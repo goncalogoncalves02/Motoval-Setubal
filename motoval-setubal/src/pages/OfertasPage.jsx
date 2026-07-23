@@ -179,7 +179,7 @@ export default function OfertasPage() {
       <Seo
         title={pageTitle}
         description={pageDescription}
-        path="/ofertas"
+        path="/pneus"
         jsonLd={!loading && products.length > 0 ? itemListSchema(products, site) : undefined}
         noindex={hasActiveFilters}
       />

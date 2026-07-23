@@ -79,7 +79,7 @@ export default function ProductDetailPage() {
         <Seo
           title="Artigo não disponível | Motoval Setúbal"
           description="Este artigo já não está disponível. Consulta as nossas ofertas atuais de pneus em Palmela."
-          path="/ofertas"
+          path="/pneus"
         />
         <div className="max-w-3xl mx-auto px-5 text-center py-24">
           <div className="text-6xl mb-4">🔧</div>
@@ -88,7 +88,7 @@ export default function ProductDetailPage() {
             Pode já ter sido vendido ou removido. Consulta as nossas ofertas atuais.
           </p>
           <Link
-            to="/ofertas"
+            to="/pneus"
             className="inline-flex items-center gap-2 bg-[#FBE013] hover:bg-[#E5C800] text-black font-semibold px-5 py-3 rounded-lg transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -106,14 +106,14 @@ export default function ProductDetailPage() {
       <Seo
         title={`${product.title} - ${formatPrice(product.price_amount)} | Motoval Setúbal`}
         description={`${product.title}${product.tire_size ? ` (${product.tire_size})` : ''} por ${formatPrice(product.price_amount)}. Pneus ${product.condition === 'Novos' ? 'novos' : 'usados'} em Palmela, contacta-nos via WhatsApp.`}
-        path={`/ofertas/${slugForProduct}`}
+        path={`/pneus/${slugForProduct}`}
         jsonLd={[
           productSchema(product),
           breadcrumbSchema(
             [
               { name: 'Início', path: '/' },
-              { name: 'Ofertas', path: '/ofertas' },
-              { name: product.title, path: `/ofertas/${slugForProduct}` },
+              { name: 'Ofertas', path: '/pneus' },
+              { name: product.title, path: `/pneus/${slugForProduct}` },
             ],
             site
           ),
@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
       <div className="max-w-5xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-8 pb-6">
           <Link
-            to="/ofertas"
+            to="/pneus"
             className="inline-flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
