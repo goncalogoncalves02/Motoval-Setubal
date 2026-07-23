@@ -120,6 +120,22 @@ check('prompt locks page scroll', prompt.includes("document.body.style.overflow 
 check('prompt traps Tab focus', prompt.includes("event.key !== 'Tab'"))
 check('page opens prompt for invalid vehicle', pneusPage.includes('selectedVehicleType === null'))
 
+const productCard = read('../src/components/products/ProductCard.jsx')
+const productDetail = read('../src/pages/ProductDetailPage.jsx')
+
+check('product card reads current query', productCard.includes('useLocation'))
+check(
+  'product card preserves query in detail link',
+  productCard.includes('pathname: `/pneus/${productSlug(product)}`') &&
+    productCard.includes('search,')
+)
+check('product detail reads current query', productDetail.includes('useLocation'))
+check(
+  'detail creates filtered listing destination',
+  productDetail.includes("pathname: '/pneus'") && productDetail.includes('search,')
+)
+check('detail links use listing destination', productDetail.match(/to=\{listingDestination\}/g)?.length >= 2)
+
 if (failures) {
   console.error(`\n${failures} check(s) failed`)
   process.exit(1)

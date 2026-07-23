@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import { MessageCircle, Tag, Ruler, Award, ChevronLeft } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Seo from '../components/Seo'
@@ -14,6 +14,11 @@ import Lightbox from '../components/products/Lightbox'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
+  const { search } = useLocation()
+  const listingDestination = {
+    pathname: '/pneus',
+    search,
+  }
   const [status, setStatus] = useState(supabase ? 'loading' : 'not-found') // 'loading' | 'found' | 'not-found'
   const [product, setProduct] = useState(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
@@ -90,7 +95,7 @@ export default function ProductDetailPage() {
             Pode já ter sido vendido ou removido. Consulta os nossos pneus disponíveis.
           </p>
           <Link
-            to="/pneus"
+            to={listingDestination}
             className="inline-flex items-center gap-2 bg-[#FBE013] hover:bg-[#E5C800] text-black font-semibold px-5 py-3 rounded-lg transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -124,7 +129,7 @@ export default function ProductDetailPage() {
       <div className="max-w-5xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-8 pb-6">
           <Link
-            to="/pneus"
+            to={listingDestination}
             className="inline-flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />

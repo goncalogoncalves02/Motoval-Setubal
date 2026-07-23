@@ -65,7 +65,12 @@ check('React redirects legacy list route', app.includes('path="ofertas"') && app
 check('React redirects legacy detail route', app.includes('path="ofertas/:slug"'))
 check('list canonical uses /pneus', listPage.includes('path="/pneus"') && !listPage.includes('path="/ofertas"'))
 check('detail URLs use /pneus', detailPage.includes('path={`/pneus/${slugForProduct}`}') && !detailPage.includes('/ofertas'))
-check('cards link to /pneus', productCard.includes('to={`/pneus/${productSlug(product)}`}'))
+check(
+  'cards preserve the listing query in /pneus detail links',
+  productCard.includes('useLocation') &&
+    productCard.includes('pathname: `/pneus/${productSlug(product)}`') &&
+    productCard.includes('search,')
+)
 
 const listRedirect = netlify.indexOf('from = "/ofertas"')
 const detailRedirect = netlify.indexOf('from = "/ofertas/*"')
