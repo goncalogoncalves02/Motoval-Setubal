@@ -78,21 +78,21 @@ export default function ProductDetailPage() {
       <main className="min-h-screen bg-[#0A0A0A] pt-20 pb-24">
         <Seo
           title="Artigo não disponível | Motoval Setúbal"
-          description="Este artigo já não está disponível. Consulta as nossas ofertas atuais de pneus em Palmela."
+          description="Este artigo já não está disponível. Consulta os nossos pneus disponíveis em Palmela."
           path="/pneus"
         />
         <div className="max-w-3xl mx-auto px-5 text-center py-24">
           <div className="text-6xl mb-4">🔧</div>
           <h1 className="text-white text-xl font-semibold mb-2">Este artigo já não está disponível</h1>
           <p className="text-[#9CA3AF] text-sm max-w-sm mx-auto mb-6">
-            Pode já ter sido vendido ou removido. Consulta as nossas ofertas atuais.
+            Pode já ter sido vendido ou removido. Consulta os nossos pneus disponíveis.
           </p>
           <Link
             to="/pneus"
             className="inline-flex items-center gap-2 bg-[#FBE013] hover:bg-[#E5C800] text-black font-semibold px-5 py-3 rounded-lg transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Ver Ofertas
+            Ver Pneus
           </Link>
         </div>
       </main>
@@ -112,7 +112,7 @@ export default function ProductDetailPage() {
           breadcrumbSchema(
             [
               { name: 'Início', path: '/' },
-              { name: 'Ofertas', path: '/pneus' },
+              { name: 'Pneus', path: '/pneus' },
               { name: product.title, path: `/pneus/${slugForProduct}` },
             ],
             site
@@ -126,7 +126,7 @@ export default function ProductDetailPage() {
             className="inline-flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Voltar às Ofertas
+            Voltar aos Pneus
           </Link>
         </AnimatedSection>
 

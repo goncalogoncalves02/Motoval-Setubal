@@ -73,10 +73,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/ofertas"
+                  to="/pneus"
                   className="text-[#9CA3AF] hover:text-[#FBE013] transition-colors text-sm sm:text-base py-1 inline-block"
                 >
-                  Ofertas
+                  Pneus
                 </Link>
               </li>
               <li>

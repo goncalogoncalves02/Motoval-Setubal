@@ -1,6 +1,6 @@
 import Seo from '../components/Seo';
 import Hero from '../components/Hero';
-import OfertasTeaser from '../components/OfertasTeaser';
+import PneusTeaser from '../components/PneusTeaser';
 import Services from '../components/Services';
 import About from '../components/About';
 import Testimonials from '../components/Testimonials';
@@ -14,7 +14,7 @@ const HomePage = () => {
         path="/"
       />
       <Hero />
-      <OfertasTeaser />
+      <PneusTeaser />
       <Services />
       <About />
       <Testimonials />

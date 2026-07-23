@@ -142,10 +142,10 @@ export const nav = {
   }
 };
 
-export const ofertasTeaser = {
-  badge: "Pneus Novos e Usados",
-  title: "Ofertas Especiais",
+export const pneusTeaser = {
+  badge: "Para Carros e Motos",
+  title: "Pneus Novos e Usados",
   subtitle: "Pneus a preços acessíveis — carros e motos. Stock limitado, atualizado regularmente.",
-  cta: "Ver Todas as Ofertas",
-  href: "/ofertas"
+  cta: "Ver Todos os Pneus",
+  href: "/pneus"
 };

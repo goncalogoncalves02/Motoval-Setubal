@@ -37,7 +37,7 @@ function SkeletonCard() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function OfertasPage() {
+export default function PneusPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -166,9 +166,9 @@ export default function OfertasPage() {
 
   const pageTitle = !loading && totalCount > 0
     ? currentPage > 1
-      ? `Pneus em Oferta — Página ${currentPage} | Motoval Setúbal`
-      : `${totalCount} Pneus em Oferta | Motoval Setúbal`
-    : 'Ofertas Especiais de Pneus | Motoval Setúbal'
+      ? `Pneus Novos e Usados — Página ${currentPage} | Motoval Setúbal`
+      : `${totalCount} Pneus Novos e Usados | Motoval Setúbal`
+    : 'Pneus Novos e Usados em Palmela | Motoval Setúbal'
 
   const pageDescription = !loading && products.length > 0
     ? `Pneus usados a preços acessíveis em Palmela. ${products.slice(0, 3).map(p => p.title).join(', ')} e mais. Contacta-nos para mais informações.`
@@ -186,7 +186,7 @@ export default function OfertasPage() {
       <div className="max-w-7xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-12 pb-10">
           <SectionTitle
-            title="Ofertas Especiais"
+            title="Pneus Novos e Usados"
             subtitle="Pneus a preços acessíveis. Stock limitado, contacta-nos para mais informações."
           />
         </AnimatedSection>
@@ -230,7 +230,7 @@ export default function OfertasPage() {
           <AnimatedSection animation="fadeUp">
             <div className="text-center py-24">
               <div className="text-6xl mb-4">🔧</div>
-              <h2 className="text-white text-xl font-semibold mb-2">Brevemente novas ofertas disponíveis</h2>
+              <h2 className="text-white text-xl font-semibold mb-2">Brevemente novos pneus disponíveis</h2>
               <p className="text-[#9CA3AF] text-sm max-w-sm mx-auto">
                 De momento não temos stock de pneus. Consulta-nos sobre pneus novos ou volta mais tarde.
               </p>

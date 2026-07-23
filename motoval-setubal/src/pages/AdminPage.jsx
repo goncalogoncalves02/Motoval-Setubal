@@ -491,7 +491,7 @@ function Dashboard() {
         {/* Actions bar */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-white font-semibold text-lg">Ofertas</h2>
+            <h2 className="text-white font-semibold text-lg">Pneus</h2>
             <p className="text-[#9CA3AF] text-sm">{totalCount} produto(s) no total</p>
           </div>
           <button
