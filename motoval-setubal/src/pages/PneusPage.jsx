@@ -18,6 +18,7 @@ import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
 import ProductCard from '../components/products/ProductCard'
 import ProductFilters from '../components/products/ProductFilters'
+import VehicleTypePrompt from '../components/products/VehicleTypePrompt'
 
 const PAGE_SIZE = 9
 
@@ -287,6 +288,9 @@ export default function PneusPage() {
           </>
         )}
       </div>
+      {selectedVehicleType === null && (
+        <VehicleTypePrompt onSelect={selectVehicleType} />
+      )}
     </main>
   )
 }

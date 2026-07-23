@@ -103,6 +103,23 @@ check('filters expose Veículo dropdown', productFilters.includes('label="Veícu
 check('filters render all vehicle options', productFilters.includes('VEHICLE_FILTER_OPTIONS.map'))
 check('filters use radio behavior', productFilters.includes('shape="radio"'))
 
+let prompt = ''
+try {
+  prompt = read('../src/components/products/VehicleTypePrompt.jsx')
+} catch {
+  prompt = ''
+}
+
+check('vehicle prompt component exists', prompt.length > 0)
+check('prompt is an accessible modal', prompt.includes('role="dialog"') && prompt.includes('aria-modal="true"'))
+check('prompt uses blurred backdrop', prompt.includes('backdrop-blur'))
+check('prompt offers carro', prompt.includes("value: 'carro'") && prompt.includes('Pneus para carro'))
+check('prompt offers mota', prompt.includes("value: 'mota'") && prompt.includes('Pneus para mota'))
+check('prompt selection calls handler', prompt.includes('onClick={() => onSelect(value)}'))
+check('prompt locks page scroll', prompt.includes("document.body.style.overflow = 'hidden'"))
+check('prompt traps Tab focus', prompt.includes("event.key !== 'Tab'"))
+check('page opens prompt for invalid vehicle', pneusPage.includes('selectedVehicleType === null'))
+
 if (failures) {
   console.error(`\n${failures} check(s) failed`)
   process.exit(1)
