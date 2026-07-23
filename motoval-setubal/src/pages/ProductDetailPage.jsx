@@ -14,11 +14,13 @@ import Lightbox from '../components/products/Lightbox'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
-  const [status, setStatus] = useState('loading') // 'loading' | 'found' | 'not-found'
+  const [status, setStatus] = useState(supabase ? 'loading' : 'not-found') // 'loading' | 'found' | 'not-found'
   const [product, setProduct] = useState(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
   useEffect(() => {
+    if (!supabase) return
+
     let cancelled = false
 
     async function fetchProduct() {

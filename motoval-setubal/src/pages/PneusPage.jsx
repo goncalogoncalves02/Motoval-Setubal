@@ -40,7 +40,7 @@ function SkeletonCard() {
 export default function PneusPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(Boolean(supabase))
   const [totalCount, setTotalCount] = useState(0)
   const [brandOptions, setBrandOptions] = useState([])
   const [sizeOptions, setSizeOptions] = useState([])
@@ -67,6 +67,8 @@ export default function PneusPage() {
   // Filter options reflect ALL active products, independent of the current
   // selection, so choosing a brand never hides other brands from the list.
   useEffect(() => {
+    if (!supabase) return
+
     async function fetchOptions() {
       const { data } = await supabase
         .from('products')
@@ -90,6 +92,8 @@ export default function PneusPage() {
   }, [])
 
   useEffect(() => {
+    if (!supabase) return
+
     let cancelled = false
 
     async function fetchProducts() {
