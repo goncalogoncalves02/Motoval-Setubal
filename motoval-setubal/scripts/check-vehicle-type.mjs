@@ -136,6 +136,17 @@ check(
 )
 check('detail links use listing destination', productDetail.match(/to=\{listingDestination\}/g)?.length >= 2)
 
+const admin = read('../src/pages/AdminPage.jsx')
+
+check('admin imports vehicle domain', admin.includes('PRODUCT_VEHICLE_TYPES'))
+check("new admin form has no default vehicle", admin.includes("vehicle_type: ''"))
+check('edit form loads vehicle type', admin.includes("vehicle_type: product.vehicle_type || ''"))
+check('admin requires a vehicle type', admin.includes('PRODUCT_VEHICLE_TYPES.includes(form.vehicle_type)'))
+check('admin renders vehicle select label', admin.includes('Tipo de veículo *'))
+check('admin renders vehicle placeholder', admin.includes('Seleciona o tipo'))
+check('admin payload includes form vehicle type', admin.includes('...form'))
+check('admin list renders vehicle badge', admin.includes('vehicleTypeLabel(product.vehicle_type)'))
+
 if (failures) {
   console.error(`\n${failures} check(s) failed`)
   process.exit(1)
