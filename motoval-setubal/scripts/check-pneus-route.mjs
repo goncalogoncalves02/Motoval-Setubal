@@ -43,6 +43,11 @@ if (existsSync(pneusPageUrl) && existsSync(pneusTeaserUrl)) {
   check('page H1 uses Pneus', pneusPage.includes('title="Pneus Novos e Usados"'))
   check('page empty state uses Pneus', pneusPage.includes('Brevemente novos pneus disponíveis'))
   check('page title uses Palmela', pneusPage.includes("'Pneus Novos e Usados em Palmela | Motoval Setúbal'"))
+  check(
+    'page descriptions mention new and used tyres',
+    pneusPage.includes('Pneus novos e usados a preços acessíveis em Palmela.') &&
+      pneusPage.includes('Pneus novos e usados a preços acessíveis para carros e motos em Palmela.')
+  )
   check('navbar uses Pneus', navbar.includes('{ label: "Pneus", href: "/pneus" }'))
   check('footer uses Pneus link', footer.includes('to="/pneus"') && footer.includes('Pneus'))
   check('teaser consumes pneusTeaser', pneusTeaser.includes('pneusTeaser'))

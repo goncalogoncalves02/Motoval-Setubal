@@ -171,8 +171,8 @@ export default function PneusPage() {
     : 'Pneus Novos e Usados em Palmela | Motoval Setúbal'
 
   const pageDescription = !loading && products.length > 0
-    ? `Pneus usados a preços acessíveis em Palmela. ${products.slice(0, 3).map(p => p.title).join(', ')} e mais. Contacta-nos para mais informações.`
-    : 'Pneus usados a preços acessíveis para carros e motos em Palmela. Stock limitado e atualizado regularmente. Ligue 934 803 632.'
+    ? `Pneus novos e usados a preços acessíveis em Palmela. ${products.slice(0, 3).map(p => p.title).join(', ')} e mais. Contacta-nos para mais informações.`
+    : 'Pneus novos e usados a preços acessíveis para carros e motos em Palmela. Stock limitado e atualizado regularmente. Ligue 934 803 632.'
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] pt-20 pb-24">
