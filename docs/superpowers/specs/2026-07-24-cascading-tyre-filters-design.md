@@ -234,7 +234,7 @@ Se a query auxiliar falhar:
 - continuar a permitir Veículo e Limpar filtros;
 - não bloquear nem deixar a página vazia por causa da falha auxiliar.
 
-Numa falha inicial sem opções anteriores, valores já selecionados no URL devem continuar acessíveis para serem removidos. Condição e Preço podem usar as listas completas atuais como fallback; Marca e Medida podem usar os valores selecionados.
+Numa falha inicial sem opções anteriores, apenas os valores já selecionados no URL continuam acessíveis para serem removidos. Marca, Medida e Condição usam os respetivos valores selecionados; Preço usa apenas o intervalo selecionado, quando existir. Opções não confirmadas pela query auxiliar ficam escondidas.
 
 ## Testes
 

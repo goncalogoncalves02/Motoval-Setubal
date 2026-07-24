@@ -451,7 +451,7 @@ git commit -m "feat(pneus): calcular opções de filtros em cadeia"
 - Modify: `motoval-setubal/src/components/products/ProductFilters.jsx`
 
 **Interfaces:**
-- Consumes: `PRODUCT_CONDITIONS` e `getFacetedFilterState(products, filters)` da Task 1.
+- Consumes: `getFacetedFilterState(products, filters)` da Task 1.
 - Produces: `ProductFilters` com props `conditionOptions` e `priceBucketOptions`, além das props existentes.
 - Mantém `searchParams` como fonte de verdade e a query paginada existente.
 
@@ -492,6 +492,16 @@ check(
     pneusPage.includes('priceBucketOptions={facetState.priceBucketOptions}')
 )
 check(
+  'failed facet load exposes only selected conditions',
+  pneusPage.includes('conditionOptions: selectedConditions')
+)
+check(
+  'failed facet load exposes only selected price bucket',
+  pneusPage.includes(
+    'PRICE_BUCKETS.filter((bucket) => bucket.id === selectedPriceBucket)'
+  )
+)
+check(
   'filters consume dynamic conditions',
   productFilters.includes('conditionOptions.map') &&
     !productFilters.includes('const CONDITIONS')
@@ -522,10 +532,7 @@ Expected: FAIL nos novos contratos de integração.
 Em `PneusPage.jsx`, adicionar o import:
 
 ```js
-import {
-  PRODUCT_CONDITIONS,
-  getFacetedFilterState,
-} from '../lib/facetedFilters'
+import { getFacetedFilterState } from '../lib/facetedFilters'
 ```
 
 Substituir:
@@ -565,8 +572,10 @@ const facetState = useMemo(() => {
       filters: selectedFilterState,
       brandOptions: selectedBrands,
       sizeOptions: selectedSizes,
-      conditionOptions: PRODUCT_CONDITIONS,
-      priceBucketOptions: PRICE_BUCKETS,
+      conditionOptions: selectedConditions,
+      priceBucketOptions: PRICE_BUCKETS.filter(
+        (bucket) => bucket.id === selectedPriceBucket
+      ),
     }
   }
   return getFacetedFilterState(facetProducts, selectedFilterState)
