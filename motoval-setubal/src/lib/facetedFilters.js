@@ -24,7 +24,11 @@ function normalizeProducts(products) {
       const brand = typeof product.brand === 'string' ? product.brand.trim() : ''
       const size = typeof product.tire_size === 'string' ? product.tire_size.trim() : ''
       const condition = PRODUCT_CONDITIONS.includes(product.condition) ? product.condition : null
-      const price = Number(product.price_amount)
+      const rawPrice = product.price_amount
+      const price =
+        rawPrice == null || (typeof rawPrice === 'string' && rawPrice.trim() === '')
+          ? null
+          : Number(rawPrice)
       return {
         vehicleType: product.vehicle_type,
         brand,
@@ -125,7 +129,7 @@ export function buildFacetOptions(products, filters) {
   const brandRows = filterRows(rows, filters, 'brands')
   const brandMap = canonicalBrands(brandRows)
   for (const brand of selectedList(filters.brands)) {
-    if (!brandMap.has(brandKey(brand))) brandMap.set(brandKey(brand), brand)
+    brandMap.set(brandKey(brand), brand)
   }
 
   const sizeRows = filterRows(rows, filters, 'sizes')

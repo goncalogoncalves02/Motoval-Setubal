@@ -9,6 +9,10 @@ function check(label, condition) {
   }
 }
 
+function ids(options) {
+  return options.map((option) => option.id)
+}
+
 let facets
 try {
   facets = await import('../src/lib/facetedFilters.js')
@@ -171,6 +175,171 @@ if (facets) {
       priceBucket: 'mais-100',
     })
   )
+
+  const cascadeProducts = [
+    {
+      vehicle_type: 'carro',
+      brand: 'Michelin',
+      tire_size: 'A medida',
+      condition: 'Novos',
+      price_amount: 30,
+    },
+    {
+      vehicle_type: 'carro',
+      brand: 'Michelin',
+      tire_size: 'B medida',
+      condition: 'Usados',
+      price_amount: 60,
+    },
+    {
+      vehicle_type: 'carro',
+      brand: 'Michelin',
+      tire_size: 'C medida',
+      condition: 'Novos',
+      price_amount: 100,
+    },
+    {
+      vehicle_type: 'carro',
+      brand: 'Michelin',
+      tire_size: 'D medida',
+      condition: 'Novos',
+      price_amount: 101,
+    },
+    {
+      vehicle_type: 'carro',
+      brand: 'Bridgestone',
+      tire_size: 'E medida',
+      condition: 'Novos',
+      price_amount: 45,
+    },
+    {
+      vehicle_type: 'mota',
+      brand: 'Michelin',
+      tire_size: 'F medida',
+      condition: 'Novos',
+      price_amount: 45,
+    },
+  ]
+
+  const measureAcrossFacets = buildFacetOptions(cascadeProducts, {
+    ...empty,
+    vehicleType: 'carro',
+    brands: ['Michelin'],
+    conditions: ['Novos'],
+    priceBucket: '60-100',
+  })
+  check(
+    'measure respects vehicle, brand, condition, and price together',
+    JSON.stringify(measureAcrossFacets.sizeOptions) === '["C medida"]'
+  )
+
+  const brandsForTwoMeasures = buildFacetOptions(cascadeProducts, {
+    ...empty,
+    sizes: ['A medida', 'E medida'],
+  })
+  check(
+    'multiple measures combine with OR',
+    brandsForTwoMeasures.brandOptions.includes('Michelin') &&
+      brandsForTwoMeasures.brandOptions.includes('Bridgestone')
+  )
+
+  const measuresForTwoConditions = buildFacetOptions(cascadeProducts, {
+    ...empty,
+    vehicleType: 'carro',
+    brands: ['Michelin'],
+    conditions: ['Novos', 'Usados'],
+  })
+  check(
+    'multiple conditions combine with OR',
+    JSON.stringify(measuresForTwoConditions.sizeOptions) ===
+      '["A medida","B medida","C medida","D medida"]'
+  )
+
+  const priceAcrossFacets = buildFacetOptions(cascadeProducts, {
+    ...empty,
+    vehicleType: 'carro',
+    brands: ['Michelin'],
+    sizes: ['B medida'],
+    conditions: ['Usados'],
+  })
+  check(
+    'different facets combine with AND',
+    JSON.stringify(ids(priceAcrossFacets.priceBucketOptions)) === '["30-60"]'
+  )
+
+  const boundaryCases = [
+    [30, 'ate-30'],
+    [60, '30-60'],
+    [100, '60-100'],
+    [101, 'mais-100'],
+  ]
+  for (const [price, expectedBucket] of boundaryCases) {
+    const boundaryOptions = buildFacetOptions(
+      [{
+        vehicle_type: 'carro',
+        brand: 'Boundary',
+        tire_size: `${price}`,
+        condition: 'Novos',
+        price_amount: price,
+      }],
+      empty
+    )
+    check(
+      `price ${price} belongs only to ${expectedBucket}`,
+      JSON.stringify(ids(boundaryOptions.priceBucketOptions)) ===
+        JSON.stringify([expectedBucket])
+    )
+  }
+
+  for (const [label, price] of [
+    ['null', null],
+    ['undefined', undefined],
+    ['empty string', ''],
+  ]) {
+    const invalidPriceOptions = buildFacetOptions(
+      [{
+        vehicle_type: 'carro',
+        brand: 'No price',
+        tire_size: label,
+        condition: 'Novos',
+        price_amount: price,
+      }],
+      empty
+    )
+    check(
+      `${label} price does not create a price bucket`,
+      invalidPriceOptions.priceBucketOptions.length === 0
+    )
+  }
+
+  const divergentBrandState = getFacetedFilterState(
+    [
+      {
+        vehicle_type: 'carro',
+        brand: 'BRIDGESTONE',
+        tire_size: 'Primeira medida',
+        condition: 'Novos',
+        price_amount: 55,
+      },
+      {
+        vehicle_type: 'carro',
+        brand: 'Bridgestone',
+        tire_size: 'Medida selecionada',
+        condition: 'Novos',
+        price_amount: 55,
+      },
+    ],
+    {
+      ...empty,
+      vehicleType: 'carro',
+      brands: ['BRIDGESTONE'],
+      sizes: ['Medida selecionada'],
+    }
+  )
+  check(
+    'reconciled brand spelling is exactly present in displayed options',
+    divergentBrandState.brandOptions.includes(divergentBrandState.filters.brands[0])
+  )
 }
 
 const read = (relativePath) =>
@@ -187,7 +356,16 @@ check(
 )
 check('page tracks successful facet loading', pneusPage.includes('facetsReady'))
 check('page derives cascading state', pneusPage.includes('getFacetedFilterState('))
-check('page does not reconcile before facets are ready', pneusPage.includes('if (!facetsReady) return'))
+check(
+  'facet load error returns before marking facets ready',
+  /if \(error\) \{[\s\S]*?return\s*\n\s*\}[\s\S]*?setFacetProducts\(data \|\| \[\]\)[\s\S]*?setFacetsReady\(true\)/
+    .test(pneusPage)
+)
+check(
+  'facets-ready guard precedes reconciliation URL write',
+  /useEffect\(\(\) => \{\s*if \(!facetsReady\) return[\s\S]*?setSearchParams\(next, \{ replace: true \}\)/
+    .test(pneusPage)
+)
 check('page reconciliation removes pagination', pneusPage.includes("next.delete('pagina')"))
 check(
   'page reconciliation replaces current URL',
