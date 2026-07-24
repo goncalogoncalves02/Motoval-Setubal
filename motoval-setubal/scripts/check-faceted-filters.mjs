@@ -199,6 +199,16 @@ check(
     pneusPage.includes('priceBucketOptions={facetState.priceBucketOptions}')
 )
 check(
+  'failed facet load exposes only selected conditions',
+  pneusPage.includes('conditionOptions: selectedConditions')
+)
+check(
+  'failed facet load exposes only selected price bucket',
+  pneusPage.includes(
+    'PRICE_BUCKETS.filter((bucket) => bucket.id === selectedPriceBucket)'
+  )
+)
+check(
   'filters consume dynamic conditions',
   productFilters.includes('conditionOptions.map') &&
     !productFilters.includes('const CONDITIONS')

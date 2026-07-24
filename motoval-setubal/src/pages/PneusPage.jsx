@@ -6,10 +6,7 @@ import Seo from '../components/Seo'
 import { itemListSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { PRICE_BUCKETS } from '../lib/priceBuckets'
-import {
-  PRODUCT_CONDITIONS,
-  getFacetedFilterState,
-} from '../lib/facetedFilters'
+import { getFacetedFilterState } from '../lib/facetedFilters'
 import { escapeOrValue } from '../lib/postgrestFilter'
 import {
   applyVehicleTypeFilter,
@@ -93,8 +90,8 @@ export default function PneusPage() {
         filters: selectedFilterState,
         brandOptions: selectedBrands,
         sizeOptions: selectedSizes,
-        conditionOptions: PRODUCT_CONDITIONS,
-        priceBucketOptions: PRICE_BUCKETS,
+        conditionOptions: selectedConditions,
+        priceBucketOptions: PRICE_BUCKETS.filter((bucket) => bucket.id === selectedPriceBucket),
       }
     }
     return getFacetedFilterState(facetProducts, selectedFilterState)
@@ -104,6 +101,8 @@ export default function PneusPage() {
     selectedFilterState,
     selectedBrands,
     selectedSizes,
+    selectedConditions,
+    selectedPriceBucket,
   ])
   const hasActiveFilters =
     selectedBrands.length > 0 ||
