@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+
 let failures = 0
 
 function check(label, condition) {
@@ -170,6 +172,46 @@ if (facets) {
     })
   )
 }
+
+const read = (relativePath) =>
+  readFileSync(new URL(relativePath, import.meta.url), 'utf8')
+
+const pneusPage = read('../src/pages/PneusPage.jsx')
+const productFilters = read('../src/components/products/ProductFilters.jsx')
+
+check(
+  'page selects only fields required for facets',
+  pneusPage.includes(
+    ".select('vehicle_type, brand, tire_size, condition, price_amount')"
+  )
+)
+check('page tracks successful facet loading', pneusPage.includes('facetsReady'))
+check('page derives cascading state', pneusPage.includes('getFacetedFilterState('))
+check('page does not reconcile before facets are ready', pneusPage.includes('if (!facetsReady) return'))
+check('page reconciliation removes pagination', pneusPage.includes("next.delete('pagina')"))
+check(
+  'page reconciliation replaces current URL',
+  pneusPage.includes('setSearchParams(next, { replace: true })')
+)
+check(
+  'page passes all dynamic option lists',
+  pneusPage.includes('conditionOptions={facetState.conditionOptions}') &&
+    pneusPage.includes('priceBucketOptions={facetState.priceBucketOptions}')
+)
+check(
+  'filters consume dynamic conditions',
+  productFilters.includes('conditionOptions.map') &&
+    !productFilters.includes('const CONDITIONS')
+)
+check(
+  'filters consume dynamic prices',
+  productFilters.includes('priceBucketOptions.map') &&
+    !productFilters.includes('PRICE_BUCKETS.map')
+)
+check(
+  'vehicle dropdown remains unconditional',
+  productFilters.indexOf('label="Veículo"') < productFilters.indexOf('brandOptions.length > 0')
+)
 
 if (failures) {
   console.error(`\n${failures} check(s) failed`)

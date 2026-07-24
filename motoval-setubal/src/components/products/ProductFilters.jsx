@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { SlidersHorizontal, X, Check } from 'lucide-react'
-import { PRICE_BUCKETS } from '../../lib/priceBuckets'
 import {
   VEHICLE_FILTER_OPTIONS,
   vehicleTypeFilterValue,
 } from '../../lib/vehicleType'
 import FilterDropdown from './FilterDropdown'
-
-const CONDITIONS = ['Novos', 'Usados']
 
 function OptionRow({ label, checked, onClick, shape = 'checkbox' }) {
   return (
@@ -32,6 +29,8 @@ function OptionRow({ label, checked, onClick, shape = 'checkbox' }) {
 export default function ProductFilters({
   brandOptions,
   sizeOptions,
+  conditionOptions,
+  priceBucketOptions,
   selectedBrands,
   selectedSizes,
   selectedConditions,
@@ -135,40 +134,44 @@ export default function ProductFilters({
           </FilterDropdown>
         )}
 
-        <FilterDropdown
-          label="Condição"
-          count={selectedConditions.length}
-          isOpen={openFilter === 'condicao'}
-          onToggle={() => toggleOpenFilter('condicao')}
-          onClose={() => setOpenFilter(null)}
-        >
-          {CONDITIONS.map((condition) => (
-            <OptionRow
-              key={condition}
-              label={condition}
-              checked={selectedConditions.includes(condition)}
-              onClick={() => onToggleCondition(condition)}
-            />
-          ))}
-        </FilterDropdown>
+        {conditionOptions.length > 0 && (
+          <FilterDropdown
+            label="Condição"
+            count={selectedConditions.length}
+            isOpen={openFilter === 'condicao'}
+            onToggle={() => toggleOpenFilter('condicao')}
+            onClose={() => setOpenFilter(null)}
+          >
+            {conditionOptions.map((condition) => (
+              <OptionRow
+                key={condition}
+                label={condition}
+                checked={selectedConditions.includes(condition)}
+                onClick={() => onToggleCondition(condition)}
+              />
+            ))}
+          </FilterDropdown>
+        )}
 
-        <FilterDropdown
-          label="Preço"
-          count={selectedPriceBucket ? 1 : 0}
-          isOpen={openFilter === 'preco'}
-          onToggle={() => toggleOpenFilter('preco')}
-          onClose={() => setOpenFilter(null)}
-        >
-          {PRICE_BUCKETS.map((bucket) => (
-            <OptionRow
-              key={bucket.id}
-              label={bucket.label}
-              checked={selectedPriceBucket === bucket.id}
-              onClick={() => onSelectPriceBucket(bucket.id)}
-              shape="radio"
-            />
-          ))}
-        </FilterDropdown>
+        {priceBucketOptions.length > 0 && (
+          <FilterDropdown
+            label="Preço"
+            count={selectedPriceBucket ? 1 : 0}
+            isOpen={openFilter === 'preco'}
+            onToggle={() => toggleOpenFilter('preco')}
+            onClose={() => setOpenFilter(null)}
+          >
+            {priceBucketOptions.map((bucket) => (
+              <OptionRow
+                key={bucket.id}
+                label={bucket.label}
+                checked={selectedPriceBucket === bucket.id}
+                onClick={() => onSelectPriceBucket(bucket.id)}
+                shape="radio"
+              />
+            ))}
+          </FilterDropdown>
+        )}
 
         {activeCount > 0 && (
           <button

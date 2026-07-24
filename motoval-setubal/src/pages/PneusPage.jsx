@@ -6,6 +6,10 @@ import Seo from '../components/Seo'
 import { itemListSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { PRICE_BUCKETS } from '../lib/priceBuckets'
+import {
+  PRODUCT_CONDITIONS,
+  getFacetedFilterState,
+} from '../lib/facetedFilters'
 import { escapeOrValue } from '../lib/postgrestFilter'
 import {
   applyVehicleTypeFilter,
@@ -49,8 +53,8 @@ export default function PneusPage() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(Boolean(supabase))
   const [totalCount, setTotalCount] = useState(0)
-  const [brandOptions, setBrandOptions] = useState([])
-  const [sizeOptions, setSizeOptions] = useState([])
+  const [facetProducts, setFacetProducts] = useState([])
+  const [facetsReady, setFacetsReady] = useState(false)
 
   const parsedPage = Math.floor(Number(searchParams.get('pagina')))
   const currentPage = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1
@@ -69,6 +73,38 @@ export default function PneusPage() {
   const selectedBrands = useMemo(() => parseListParam(marcaParam), [marcaParam])
   const selectedSizes = useMemo(() => parseListParam(medidaParam), [medidaParam])
   const selectedConditions = useMemo(() => parseListParam(condicaoParam), [condicaoParam])
+  const selectedFilterState = useMemo(() => ({
+    vehicleType: selectedVehicleType,
+    brands: selectedBrands,
+    sizes: selectedSizes,
+    conditions: selectedConditions,
+    priceBucket: selectedPriceBucket,
+  }), [
+    selectedVehicleType,
+    selectedBrands,
+    selectedSizes,
+    selectedConditions,
+    selectedPriceBucket,
+  ])
+
+  const facetState = useMemo(() => {
+    if (!facetsReady) {
+      return {
+        filters: selectedFilterState,
+        brandOptions: selectedBrands,
+        sizeOptions: selectedSizes,
+        conditionOptions: PRODUCT_CONDITIONS,
+        priceBucketOptions: PRICE_BUCKETS,
+      }
+    }
+    return getFacetedFilterState(facetProducts, selectedFilterState)
+  }, [
+    facetsReady,
+    facetProducts,
+    selectedFilterState,
+    selectedBrands,
+    selectedSizes,
+  ])
   const hasActiveFilters =
     selectedBrands.length > 0 ||
     selectedSizes.length > 0 ||
@@ -78,32 +114,65 @@ export default function PneusPage() {
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
 
-  // Filter options reflect ALL active products, independent of the current
-  // selection, so choosing a brand never hides other brands from the list.
   useEffect(() => {
     if (!supabase) return
 
-    async function fetchOptions() {
-      const { data } = await supabase
-        .from('products')
-        .select('brand, tire_size')
-        .eq('is_active', true)
-      if (!data) return
+    let cancelled = false
 
-      const brandMap = new Map()
-      const sizeSet = new Set()
-      for (const row of data) {
-        if (row.brand) {
-          const key = row.brand.trim().toLowerCase()
-          if (!brandMap.has(key)) brandMap.set(key, row.brand.trim())
-        }
-        if (row.tire_size) sizeSet.add(row.tire_size.trim())
+    async function fetchFacetProducts() {
+      const { data, error } = await supabase
+        .from('products')
+        .select('vehicle_type, brand, tire_size, condition, price_amount')
+        .eq('is_active', true)
+
+      if (cancelled) return
+      if (error) {
+        console.error('Não foi possível carregar as opções dos filtros.', error)
+        return
       }
-      setBrandOptions([...brandMap.values()].sort((a, b) => a.localeCompare(b, 'pt-PT')))
-      setSizeOptions([...sizeSet].sort((a, b) => a.localeCompare(b, 'pt-PT')))
+
+      setFacetProducts(data || [])
+      setFacetsReady(true)
     }
-    fetchOptions()
+
+    fetchFacetProducts()
+    return () => { cancelled = true }
   }, [])
+
+  useEffect(() => {
+    if (!facetsReady) return
+
+    const reconciled = facetState.filters
+    const sameBrands = reconciled.brands.join(',') === selectedBrands.join(',')
+    const sameSizes = reconciled.sizes.join(',') === selectedSizes.join(',')
+    const sameConditions = reconciled.conditions.join(',') === selectedConditions.join(',')
+    const samePrice = reconciled.priceBucket === selectedPriceBucket
+
+    if (sameBrands && sameSizes && sameConditions && samePrice) return
+
+    const next = new URLSearchParams(searchParams)
+    const setList = (key, values) => {
+      if (values.length > 0) next.set(key, values.join(','))
+      else next.delete(key)
+    }
+
+    setList('marca', reconciled.brands)
+    setList('medida', reconciled.sizes)
+    setList('condicao', reconciled.conditions)
+    if (reconciled.priceBucket) next.set('preco', reconciled.priceBucket)
+    else next.delete('preco')
+    next.delete('pagina')
+    setSearchParams(next, { replace: true })
+  }, [
+    facetsReady,
+    facetState.filters,
+    searchParams,
+    setSearchParams,
+    selectedBrands,
+    selectedSizes,
+    selectedConditions,
+    selectedPriceBucket,
+  ])
 
   useEffect(() => {
     if (!supabase) return
@@ -216,8 +285,10 @@ export default function PneusPage() {
         </AnimatedSection>
 
         <ProductFilters
-          brandOptions={brandOptions}
-          sizeOptions={sizeOptions}
+          brandOptions={facetState.brandOptions}
+          sizeOptions={facetState.sizeOptions}
+          conditionOptions={facetState.conditionOptions}
+          priceBucketOptions={facetState.priceBucketOptions}
           selectedBrands={selectedBrands}
           selectedSizes={selectedSizes}
           selectedConditions={selectedConditions}
