@@ -6,12 +6,20 @@ import Seo from '../components/Seo'
 import { itemListSchema } from '../lib/seo/schema'
 import { site } from '../data/site'
 import { PRICE_BUCKETS } from '../lib/priceBuckets'
+import { getFacetedFilterState } from '../lib/facetedFilters'
 import { escapeOrValue } from '../lib/postgrestFilter'
+import {
+  applyVehicleTypeFilter,
+  normalizeVehicleParam,
+  toggleVehicleType,
+  vehicleTypeFilterValue,
+} from '../lib/vehicleType'
 import AnimatedSection from '../components/ui/AnimatedSection'
 import SectionTitle from '../components/ui/SectionTitle'
 import Pagination from '../components/ui/Pagination'
 import ProductCard from '../components/products/ProductCard'
 import ProductFilters from '../components/products/ProductFilters'
+import VehicleTypePrompt from '../components/products/VehicleTypePrompt'
 
 const PAGE_SIZE = 9
 
@@ -37,13 +45,13 @@ function SkeletonCard() {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function OfertasPage() {
+export default function PneusPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(Boolean(supabase))
   const [totalCount, setTotalCount] = useState(0)
-  const [brandOptions, setBrandOptions] = useState([])
-  const [sizeOptions, setSizeOptions] = useState([])
+  const [facetProducts, setFacetProducts] = useState([])
+  const [facetsReady, setFacetsReady] = useState(false)
 
   const parsedPage = Math.floor(Number(searchParams.get('pagina')))
   const currentPage = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1
@@ -51,7 +59,10 @@ export default function OfertasPage() {
   const medidaParam = searchParams.get('medida') ?? ''
   const condicaoParam = searchParams.get('condicao') ?? ''
   const precoParam = searchParams.get('preco')
+  const vehicleParam = searchParams.get('veiculo')
   const selectedPriceBucket = PRICE_BUCKETS.some((b) => b.id === precoParam) ? precoParam : null
+  const selectedVehicleType = normalizeVehicleParam(vehicleParam)
+  const selectedVehicleFilter = vehicleTypeFilterValue(selectedVehicleType)
 
   // Memoized on the underlying URL param string so array identity stays
   // stable across unrelated re-renders (e.g. brandOptions/sizeOptions
@@ -59,37 +70,112 @@ export default function OfertasPage() {
   const selectedBrands = useMemo(() => parseListParam(marcaParam), [marcaParam])
   const selectedSizes = useMemo(() => parseListParam(medidaParam), [medidaParam])
   const selectedConditions = useMemo(() => parseListParam(condicaoParam), [condicaoParam])
+  const selectedFilterState = useMemo(() => ({
+    vehicleType: selectedVehicleType,
+    brands: selectedBrands,
+    sizes: selectedSizes,
+    conditions: selectedConditions,
+    priceBucket: selectedPriceBucket,
+  }), [
+    selectedVehicleType,
+    selectedBrands,
+    selectedSizes,
+    selectedConditions,
+    selectedPriceBucket,
+  ])
+
+  const facetState = useMemo(() => {
+    if (!facetsReady) {
+      return {
+        filters: selectedFilterState,
+        brandOptions: selectedBrands,
+        sizeOptions: selectedSizes,
+        conditionOptions: selectedConditions,
+        priceBucketOptions: PRICE_BUCKETS.filter((bucket) => bucket.id === selectedPriceBucket),
+      }
+    }
+    return getFacetedFilterState(facetProducts, selectedFilterState)
+  }, [
+    facetsReady,
+    facetProducts,
+    selectedFilterState,
+    selectedBrands,
+    selectedSizes,
+    selectedConditions,
+    selectedPriceBucket,
+  ])
   const hasActiveFilters =
-    selectedBrands.length > 0 || selectedSizes.length > 0 || selectedConditions.length > 0 || !!selectedPriceBucket
+    selectedBrands.length > 0 ||
+    selectedSizes.length > 0 ||
+    selectedConditions.length > 0 ||
+    !!selectedPriceBucket ||
+    !!selectedVehicleFilter
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
 
-  // Filter options reflect ALL active products, independent of the current
-  // selection, so choosing a brand never hides other brands from the list.
   useEffect(() => {
-    async function fetchOptions() {
-      const { data } = await supabase
-        .from('products')
-        .select('brand, tire_size')
-        .eq('is_active', true)
-      if (!data) return
+    if (!supabase) return
 
-      const brandMap = new Map()
-      const sizeSet = new Set()
-      for (const row of data) {
-        if (row.brand) {
-          const key = row.brand.trim().toLowerCase()
-          if (!brandMap.has(key)) brandMap.set(key, row.brand.trim())
-        }
-        if (row.tire_size) sizeSet.add(row.tire_size.trim())
+    let cancelled = false
+
+    async function fetchFacetProducts() {
+      const { data, error } = await supabase
+        .from('products')
+        .select('vehicle_type, brand, tire_size, condition, price_amount')
+        .eq('is_active', true)
+
+      if (cancelled) return
+      if (error) {
+        console.error('Não foi possível carregar as opções dos filtros.', error)
+        return
       }
-      setBrandOptions([...brandMap.values()].sort((a, b) => a.localeCompare(b, 'pt-PT')))
-      setSizeOptions([...sizeSet].sort((a, b) => a.localeCompare(b, 'pt-PT')))
+
+      setFacetProducts(data || [])
+      setFacetsReady(true)
     }
-    fetchOptions()
+
+    fetchFacetProducts()
+    return () => { cancelled = true }
   }, [])
 
   useEffect(() => {
+    if (!facetsReady) return
+
+    const reconciled = facetState.filters
+    const sameBrands = reconciled.brands.join(',') === selectedBrands.join(',')
+    const sameSizes = reconciled.sizes.join(',') === selectedSizes.join(',')
+    const sameConditions = reconciled.conditions.join(',') === selectedConditions.join(',')
+    const samePrice = reconciled.priceBucket === selectedPriceBucket
+
+    if (sameBrands && sameSizes && sameConditions && samePrice) return
+
+    const next = new URLSearchParams(searchParams)
+    const setList = (key, values) => {
+      if (values.length > 0) next.set(key, values.join(','))
+      else next.delete(key)
+    }
+
+    setList('marca', reconciled.brands)
+    setList('medida', reconciled.sizes)
+    setList('condicao', reconciled.conditions)
+    if (reconciled.priceBucket) next.set('preco', reconciled.priceBucket)
+    else next.delete('preco')
+    next.delete('pagina')
+    setSearchParams(next, { replace: true })
+  }, [
+    facetsReady,
+    facetState.filters,
+    searchParams,
+    setSearchParams,
+    selectedBrands,
+    selectedSizes,
+    selectedConditions,
+    selectedPriceBucket,
+  ])
+
+  useEffect(() => {
+    if (!supabase) return
+
     let cancelled = false
 
     async function fetchProducts() {
@@ -98,6 +184,7 @@ export default function OfertasPage() {
       const to = from + PAGE_SIZE - 1
 
       let query = supabase.from('products').select('*', { count: 'exact' }).eq('is_active', true)
+      query = applyVehicleTypeFilter(query, selectedVehicleType)
 
       if (selectedBrands.length > 0) {
         // ilike without wildcards is a case-insensitive exact match.
@@ -129,7 +216,7 @@ export default function OfertasPage() {
 
     fetchProducts()
     return () => { cancelled = true }
-  }, [currentPage, selectedBrands, selectedSizes, selectedConditions, selectedPriceBucket])
+  }, [currentPage, selectedBrands, selectedSizes, selectedConditions, selectedPriceBucket, selectedVehicleType])
 
   function updateFilters(patch, { resetPage = true } = {}) {
     const next = new URLSearchParams(searchParams)
@@ -155,8 +242,13 @@ export default function OfertasPage() {
     updateFilters({ preco: selectedPriceBucket === bucketId ? null : bucketId })
   }
 
+  function selectVehicleType(vehicleType) {
+    const next = toggleVehicleType(selectedVehicleType, vehicleType)
+    updateFilters({ veiculo: next })
+  }
+
   function clearFilters() {
-    setSearchParams(new URLSearchParams(), { replace: true })
+    setSearchParams(new URLSearchParams({ veiculo: 'todos' }), { replace: true })
   }
 
   function handlePageChange(page) {
@@ -166,42 +258,46 @@ export default function OfertasPage() {
 
   const pageTitle = !loading && totalCount > 0
     ? currentPage > 1
-      ? `Pneus em Oferta — Página ${currentPage} | Motoval Setúbal`
-      : `${totalCount} Pneus em Oferta | Motoval Setúbal`
-    : 'Ofertas Especiais de Pneus | Motoval Setúbal'
+      ? `Pneus Novos e Usados — Página ${currentPage} | Motoval Setúbal`
+      : `${totalCount} Pneus Novos e Usados | Motoval Setúbal`
+    : 'Pneus Novos e Usados em Palmela | Motoval Setúbal'
 
   const pageDescription = !loading && products.length > 0
-    ? `Pneus usados a preços acessíveis em Palmela. ${products.slice(0, 3).map(p => p.title).join(', ')} e mais. Contacta-nos para mais informações.`
-    : 'Pneus usados a preços acessíveis para carros e motos em Palmela. Stock limitado e atualizado regularmente. Ligue 934 803 632.'
+    ? `Pneus novos e usados a preços acessíveis em Palmela. ${products.slice(0, 3).map(p => p.title).join(', ')} e mais. Contacta-nos para mais informações.`
+    : 'Pneus novos e usados a preços acessíveis para carros e motos em Palmela. Stock limitado e atualizado regularmente. Ligue 934 803 632.'
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] pt-20 pb-24">
       <Seo
         title={pageTitle}
         description={pageDescription}
-        path="/ofertas"
+        path="/pneus"
         jsonLd={!loading && products.length > 0 ? itemListSchema(products, site) : undefined}
         noindex={hasActiveFilters}
       />
       <div className="max-w-7xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-12 pb-10">
           <SectionTitle
-            title="Ofertas Especiais"
+            title="Pneus Novos e Usados"
             subtitle="Pneus a preços acessíveis. Stock limitado, contacta-nos para mais informações."
           />
         </AnimatedSection>
 
         <ProductFilters
-          brandOptions={brandOptions}
-          sizeOptions={sizeOptions}
+          brandOptions={facetState.brandOptions}
+          sizeOptions={facetState.sizeOptions}
+          conditionOptions={facetState.conditionOptions}
+          priceBucketOptions={facetState.priceBucketOptions}
           selectedBrands={selectedBrands}
           selectedSizes={selectedSizes}
           selectedConditions={selectedConditions}
           selectedPriceBucket={selectedPriceBucket}
+          selectedVehicleType={selectedVehicleType}
           onToggleBrand={toggleBrand}
           onToggleSize={toggleSize}
           onToggleCondition={toggleCondition}
           onSelectPriceBucket={selectPriceBucket}
+          onSelectVehicleType={selectVehicleType}
           onClear={clearFilters}
         />
 
@@ -230,7 +326,7 @@ export default function OfertasPage() {
           <AnimatedSection animation="fadeUp">
             <div className="text-center py-24">
               <div className="text-6xl mb-4">🔧</div>
-              <h2 className="text-white text-xl font-semibold mb-2">Brevemente novas ofertas disponíveis</h2>
+              <h2 className="text-white text-xl font-semibold mb-2">Brevemente novos pneus disponíveis</h2>
               <p className="text-[#9CA3AF] text-sm max-w-sm mx-auto">
                 De momento não temos stock de pneus. Consulta-nos sobre pneus novos ou volta mais tarde.
               </p>
@@ -262,6 +358,9 @@ export default function OfertasPage() {
           </>
         )}
       </div>
+      {selectedVehicleType === null && (
+        <VehicleTypePrompt onSelect={selectVehicleType} />
+      )}
     </main>
   )
 }

@@ -9,7 +9,7 @@ import heroImage from "../assets/img/hero.webp";
 
 const Hero = () => {
   const handleScrollToServices = () => {
-    const element = document.querySelector("#ofertas-teaser");
+    const element = document.querySelector("#pneus-teaser");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { MessageCircle, Tag, Ruler, Award } from 'lucide-react'
 import ProductImageGallery from './ProductImageGallery'
 import { productSlug } from '../../lib/slug'
@@ -6,9 +6,14 @@ import { productWhatsappUrl } from '../../lib/whatsapp'
 import { formatPrice } from '../../lib/price'
 
 export default function ProductCard({ product }) {
+  const { search } = useLocation()
+
   return (
     <Link
-      to={`/ofertas/${productSlug(product)}`}
+      to={{
+        pathname: `/pneus/${productSlug(product)}`,
+        search,
+      }}
       className="bg-[#141414] border border-[#2D2D2D] rounded-xl overflow-hidden hover:border-[#FBE013]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col"
     >
       <ProductImageGallery

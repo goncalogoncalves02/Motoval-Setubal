@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import { MessageCircle, Tag, Ruler, Award, ChevronLeft } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Seo from '../components/Seo'
@@ -14,11 +14,18 @@ import Lightbox from '../components/products/Lightbox'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
-  const [status, setStatus] = useState('loading') // 'loading' | 'found' | 'not-found'
+  const { search } = useLocation()
+  const listingDestination = {
+    pathname: '/pneus',
+    search,
+  }
+  const [status, setStatus] = useState(supabase ? 'loading' : 'not-found') // 'loading' | 'found' | 'not-found'
   const [product, setProduct] = useState(null)
   const [lightboxIndex, setLightboxIndex] = useState(null)
 
   useEffect(() => {
+    if (!supabase) return
+
     let cancelled = false
 
     async function fetchProduct() {
@@ -78,21 +85,21 @@ export default function ProductDetailPage() {
       <main className="min-h-screen bg-[#0A0A0A] pt-20 pb-24">
         <Seo
           title="Artigo não disponível | Motoval Setúbal"
-          description="Este artigo já não está disponível. Consulta as nossas ofertas atuais de pneus em Palmela."
-          path="/ofertas"
+          description="Este artigo já não está disponível. Consulta os nossos pneus disponíveis em Palmela."
+          path="/pneus"
         />
         <div className="max-w-3xl mx-auto px-5 text-center py-24">
           <div className="text-6xl mb-4">🔧</div>
           <h1 className="text-white text-xl font-semibold mb-2">Este artigo já não está disponível</h1>
           <p className="text-[#9CA3AF] text-sm max-w-sm mx-auto mb-6">
-            Pode já ter sido vendido ou removido. Consulta as nossas ofertas atuais.
+            Pode já ter sido vendido ou removido. Consulta os nossos pneus disponíveis.
           </p>
           <Link
-            to="/ofertas"
+            to={listingDestination}
             className="inline-flex items-center gap-2 bg-[#FBE013] hover:bg-[#E5C800] text-black font-semibold px-5 py-3 rounded-lg transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Ver Ofertas
+            Ver Pneus
           </Link>
         </div>
       </main>
@@ -106,14 +113,14 @@ export default function ProductDetailPage() {
       <Seo
         title={`${product.title} - ${formatPrice(product.price_amount)} | Motoval Setúbal`}
         description={`${product.title}${product.tire_size ? ` (${product.tire_size})` : ''} por ${formatPrice(product.price_amount)}. Pneus ${product.condition === 'Novos' ? 'novos' : 'usados'} em Palmela, contacta-nos via WhatsApp.`}
-        path={`/ofertas/${slugForProduct}`}
+        path={`/pneus/${slugForProduct}`}
         jsonLd={[
           productSchema(product),
           breadcrumbSchema(
             [
               { name: 'Início', path: '/' },
-              { name: 'Ofertas', path: '/ofertas' },
-              { name: product.title, path: `/ofertas/${slugForProduct}` },
+              { name: 'Pneus', path: '/pneus' },
+              { name: product.title, path: `/pneus/${slugForProduct}` },
             ],
             site
           ),
@@ -122,11 +129,11 @@ export default function ProductDetailPage() {
       <div className="max-w-5xl mx-auto px-5 sm:px-10 lg:px-12">
         <AnimatedSection animation="fadeUp" className="pt-8 pb-6">
           <Link
-            to="/ofertas"
+            to={listingDestination}
             className="inline-flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#FBE013] transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Voltar às Ofertas
+            Voltar aos Pneus
           </Link>
         </AnimatedSection>
 

@@ -34,7 +34,7 @@ const Navbar = () => {
     { label: "Início", href: "/" },
     { label: "Serviços", href: "/#services" },
     { label: "Sobre", href: "/#about" },
-    { label: "Ofertas", href: "/ofertas" },
+    { label: "Pneus", href: "/pneus" },
     { label: "Horário", href: "/horario" },
     { label: "FAQ", href: "/faq" },
     { label: "Contactos", href: "/contacto" },

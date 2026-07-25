@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { SlidersHorizontal, X, Check } from 'lucide-react'
-import { PRICE_BUCKETS } from '../../lib/priceBuckets'
+import {
+  VEHICLE_FILTER_OPTIONS,
+  vehicleTypeFilterValue,
+} from '../../lib/vehicleType'
 import FilterDropdown from './FilterDropdown'
-
-const CONDITIONS = ['Novos', 'Usados']
 
 function OptionRow({ label, checked, onClick, shape = 'checkbox' }) {
   return (
@@ -28,20 +29,29 @@ function OptionRow({ label, checked, onClick, shape = 'checkbox' }) {
 export default function ProductFilters({
   brandOptions,
   sizeOptions,
+  conditionOptions,
+  priceBucketOptions,
   selectedBrands,
   selectedSizes,
   selectedConditions,
   selectedPriceBucket,
+  selectedVehicleType,
   onToggleBrand,
   onToggleSize,
   onToggleCondition,
   onSelectPriceBucket,
+  onSelectVehicleType,
   onClear,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openFilter, setOpenFilter] = useState(null)
+  const vehicleFilterActive = Boolean(vehicleTypeFilterValue(selectedVehicleType))
   const activeCount =
-    selectedBrands.length + selectedSizes.length + selectedConditions.length + (selectedPriceBucket ? 1 : 0)
+    selectedBrands.length +
+    selectedSizes.length +
+    selectedConditions.length +
+    (selectedPriceBucket ? 1 : 0) +
+    (vehicleFilterActive ? 1 : 0)
 
   function toggleOpenFilter(key) {
     setOpenFilter((current) => (current === key ? null : key))
@@ -68,6 +78,24 @@ export default function ProductFilters({
       </div>
 
       <div className={`${mobileOpen ? 'flex' : 'hidden'} sm:flex flex-wrap items-center gap-3`}>
+        <FilterDropdown
+          label="Veículo"
+          count={vehicleFilterActive ? 1 : 0}
+          isOpen={openFilter === 'veiculo'}
+          onToggle={() => toggleOpenFilter('veiculo')}
+          onClose={() => setOpenFilter(null)}
+        >
+          {VEHICLE_FILTER_OPTIONS.map((option) => (
+            <OptionRow
+              key={option.value}
+              label={option.label}
+              checked={selectedVehicleType === option.value}
+              onClick={() => onSelectVehicleType(option.value)}
+              shape="radio"
+            />
+          ))}
+        </FilterDropdown>
+
         {brandOptions.length > 0 && (
           <FilterDropdown
             label="Marca"
@@ -106,40 +134,44 @@ export default function ProductFilters({
           </FilterDropdown>
         )}
 
-        <FilterDropdown
-          label="Condição"
-          count={selectedConditions.length}
-          isOpen={openFilter === 'condicao'}
-          onToggle={() => toggleOpenFilter('condicao')}
-          onClose={() => setOpenFilter(null)}
-        >
-          {CONDITIONS.map((condition) => (
-            <OptionRow
-              key={condition}
-              label={condition}
-              checked={selectedConditions.includes(condition)}
-              onClick={() => onToggleCondition(condition)}
-            />
-          ))}
-        </FilterDropdown>
+        {conditionOptions.length > 0 && (
+          <FilterDropdown
+            label="Condição"
+            count={selectedConditions.length}
+            isOpen={openFilter === 'condicao'}
+            onToggle={() => toggleOpenFilter('condicao')}
+            onClose={() => setOpenFilter(null)}
+          >
+            {conditionOptions.map((condition) => (
+              <OptionRow
+                key={condition}
+                label={condition}
+                checked={selectedConditions.includes(condition)}
+                onClick={() => onToggleCondition(condition)}
+              />
+            ))}
+          </FilterDropdown>
+        )}
 
-        <FilterDropdown
-          label="Preço"
-          count={selectedPriceBucket ? 1 : 0}
-          isOpen={openFilter === 'preco'}
-          onToggle={() => toggleOpenFilter('preco')}
-          onClose={() => setOpenFilter(null)}
-        >
-          {PRICE_BUCKETS.map((bucket) => (
-            <OptionRow
-              key={bucket.id}
-              label={bucket.label}
-              checked={selectedPriceBucket === bucket.id}
-              onClick={() => onSelectPriceBucket(bucket.id)}
-              shape="radio"
-            />
-          ))}
-        </FilterDropdown>
+        {priceBucketOptions.length > 0 && (
+          <FilterDropdown
+            label="Preço"
+            count={selectedPriceBucket ? 1 : 0}
+            isOpen={openFilter === 'preco'}
+            onToggle={() => toggleOpenFilter('preco')}
+            onClose={() => setOpenFilter(null)}
+          >
+            {priceBucketOptions.map((bucket) => (
+              <OptionRow
+                key={bucket.id}
+                label={bucket.label}
+                checked={selectedPriceBucket === bucket.id}
+                onClick={() => onSelectPriceBucket(bucket.id)}
+                shape="radio"
+              />
+            ))}
+          </FilterDropdown>
+        )}
 
         {activeCount > 0 && (
           <button

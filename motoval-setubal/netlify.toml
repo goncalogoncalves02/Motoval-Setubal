@@ -6,7 +6,18 @@
   # Pasta de publicação (onde ficam os ficheiros após o build)
   publish = "dist"
 
-# Redireciona todas as rotas para index.html (necessário para React Router SPA)
+# Preserva os URLs antigos do catálogo com redirects permanentes
+[[redirects]]
+  from = "/ofertas"
+  to = "/pneus"
+  status = 301
+
+[[redirects]]
+  from = "/ofertas/*"
+  to = "/pneus/:splat"
+  status = 301
+
+# Redireciona todas as rotas restantes para a SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"

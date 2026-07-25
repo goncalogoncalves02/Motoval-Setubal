@@ -4,6 +4,10 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import Pagination from '../components/ui/Pagination'
 import { formatPrice } from '../lib/price'
+import {
+  PRODUCT_VEHICLE_TYPES,
+  vehicleTypeLabel,
+} from '../lib/vehicleType'
 
 const PAGE_SIZE = 10
 
@@ -121,11 +125,27 @@ function LoginView() {
 
 // ─── Product Form ─────────────────────────────────────────────────────────────
 
-const EMPTY_FORM = { title: '', price_amount: '', description: '', condition: 'Usados', tire_size: '', brand: '' }
+const EMPTY_FORM = {
+  title: '',
+  price_amount: '',
+  description: '',
+  condition: 'Usados',
+  tire_size: '',
+  brand: '',
+  vehicle_type: '',
+}
 
 function ProductForm({ product, onSave, onCancel }) {
   const [form, setForm] = useState(product
-    ? { title: product.title, price_amount: product.price_amount, description: product.description || '', condition: product.condition || 'Usados', tire_size: product.tire_size || '', brand: product.brand || '' }
+    ? {
+        title: product.title,
+        price_amount: product.price_amount,
+        description: product.description || '',
+        condition: product.condition || 'Usados',
+        tire_size: product.tire_size || '',
+        brand: product.brand || '',
+        vehicle_type: product.vehicle_type || '',
+      }
     : { ...EMPTY_FORM }
   )
   const [existingImages, setExistingImages] = useState(product?.images || [])
@@ -162,8 +182,13 @@ function ProductForm({ product, onSave, onCancel }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!form.title.trim() || form.price_amount === '' || Number(form.price_amount) < 0) {
-      setError('Título e preço são obrigatórios.')
+    if (
+      !form.title.trim() ||
+      form.price_amount === '' ||
+      Number(form.price_amount) < 0 ||
+      !PRODUCT_VEHICLE_TYPES.includes(form.vehicle_type)
+    ) {
+      setError('Título, preço e tipo de veículo são obrigatórios.')
       return
     }
     setSaving(true)
@@ -264,6 +289,23 @@ function ProductForm({ product, onSave, onCancel }) {
                 <option value="Novos">Novos</option>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-[#9CA3AF] text-sm mb-1.5">Tipo de veículo *</label>
+            <select
+              value={form.vehicle_type}
+              onChange={(e) => handleField('vehicle_type', e.target.value)}
+              required
+              className={inputClass}
+            >
+              <option value="" disabled>Seleciona o tipo</option>
+              {PRODUCT_VEHICLE_TYPES.map((value) => (
+                <option key={value} value={value}>
+                  {vehicleTypeLabel(value)}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -491,7 +533,7 @@ function Dashboard() {
         {/* Actions bar */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-white font-semibold text-lg">Ofertas</h2>
+            <h2 className="text-white font-semibold text-lg">Pneus</h2>
             <p className="text-[#9CA3AF] text-sm">{totalCount} produto(s) no total</p>
           </div>
           <button
@@ -550,6 +592,11 @@ function Dashboard() {
                     }`}>
                       {product.is_active ? 'Ativo' : 'Inativo'}
                     </span>
+                    {product.vehicle_type && (
+                      <span className="rounded-full bg-blue-500/15 px-2 py-0.5 text-xs font-medium text-blue-300">
+                        {vehicleTypeLabel(product.vehicle_type)}
+                      </span>
+                    )}
                     {product.tire_size && (
                       <span className="text-xs text-[#9CA3AF]">{product.tire_size}</span>
                     )}
